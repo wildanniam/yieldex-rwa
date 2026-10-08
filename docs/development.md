@@ -68,12 +68,14 @@ Server-only provider keys tidak menggunakan prefix NEXT_PUBLIC_. Signing key fin
 
 ## Spec-driven development bersama
 
-1. Sinkronkan branch/revision. Baca README, AGENTS, keputusan aktif, task dan interface modul.
+Langkah Git, standar testing sebelum push dan proses PR/review ada di [CONTRIBUTING](../CONTRIBUTING.md). Itu acuan workflow kontribusi; bagian ini merangkum hubungan dengan spec.
+
+1. Sinkronkan branch/revision. Baca README, CONTRIBUTING, AGENTS, keputusan aktif, task dan interface modul.
 2. Pilih satu task dan ownership file; koordinasikan perubahan schema/ABI sebelum coding consumer.
 3. Ubah source spec/schema terlebih dahulu bila memang perlu; `pnpm generate`. Jangan edit generated files.
 4. Implementasikan, jalankan tes terkait dan `pnpm check`, review diff termasuk generated outputs.
 5. Dokumentasikan bukti aktual dan batas. Checkbox produk tidak selesai hanya karena fixture/stub lulus.
-6. Gunakan issue → branch fitur → commit → PR → review sesuai otorisasi tim. Initial push langsung ke main hanya pengecualian bootstrap; hindari mengedit branch bersama langsung.
+6. Gunakan branch fitur → tes → commit/push → PR → review. Issue opsional untuk tim; cukup ringkasan perubahan, hasil tes dan catatan di PR. Initial direct-main push hanya pengecualian bootstrap.
 
 Interface Solidity dihasilkan dari tujuh code fences normative dalam contract-interface.md dengan pembagian market/registry/adapter. Penambahan struktur/metode memerlukan review generator dan interface ownership. CI memeriksa drift; generated ABI belum menjanjikan kompatibilitas implementasi yang belum dibuat.
 

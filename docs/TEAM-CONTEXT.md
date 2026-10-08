@@ -6,20 +6,21 @@ Sumber asli, urutan bagian, dan SHA-256 tercantum di bawah. Link relatif di bagi
 File ini menyertakan kontrak data dan fixtures; beberapa fixture sengaja invalid untuk pengujian. Jangan menganggap fixture sebagai transaksi/provider data nyata.
 UI visual mengikuti desainer tim. Jobdesk ditentukan saat meet. Jangan menambah swap execution/NFT/training ML di luar scope.
 
-Bundle source digest: `61d6707fa83121b3e90770522849554842828def2798d84076607f0bd25137f8`
+Bundle source digest: `b6d2f9226255db987262c0f32f6aada64e011cd7a5a5b9f8c44e6abfbe5b6eaa`
 
 ## Source Manifest
 
 | Source | SHA-256 |
 | --- | --- |
-| `README.md` | `d0e69dbd6466a3777c85cf1d30b53b5abfe7becf5c8d5525756bf1dfe54547f3` |
-| `AGENTS.md` | `dd41da096ce892d6a5a2c269ee744720144774ec1d058c9d96eb8c561fe06eba` |
+| `README.md` | `c46a00374460f5a2ef65062ab08cd150f1a5299ca4f8487da0c704fadbe35d75` |
+| `CONTRIBUTING.md` | `a38142b224a27d2f2b29e0b3b1a70081541b41b7ac29d249ec52306e67dc4d52` |
+| `AGENTS.md` | `22ac836502d3610db71433dc896abe0980985854cfd8168f23c4c102e009e322` |
 | `docs/product.md` | `9bfe11d7a5b540559447d113263a3f6a5c1c57a853a2ba726726fd0723328342` |
 | `docs/spec/decisions.md` | `43683740dc64587245a5ae88714a7545eb072a33b4a8c299eb0c2037cf344e22` |
 | `openspec/config.yaml` | `62fe9089023f9166ccd3cfae49b372288c5fc02fa065a036cc950a7e457e3ed8` |
 | `openspec/changes/build-rwa-income-rights/proposal.md` | `c792ee51f9fa8f665f8a940daec814d9c434057f090a682834a8852e4773f8c2` |
 | `openspec/changes/build-rwa-income-rights/design.md` | `7eaa0ddbb88bfa784a1335690e421b4aadcbbf5f13fe00d8e26a901bca5aee49` |
-| `docs/development.md` | `3513a02ee558a058f95812912544d0263755535b09642b03353bca973045a6f3` |
+| `docs/development.md` | `cc76d7e832069913788914a5c52e165eaa1c4ab77805361ea1cd64f3755044c7` |
 | `openspec/changes/build-rwa-income-rights/specs/ai-assistant/spec.md` | `069c6c4b018a33fbb973cff3680c6c79decfeaa8f57f28090e5af0a2b87fe846` |
 | `openspec/changes/build-rwa-income-rights/specs/asset-events/spec.md` | `6f1895037abb634b7fc0077f140c9b80be7151897dc8a2fe9444ebb96f90b3f8` |
 | `openspec/changes/build-rwa-income-rights/specs/income-accounting/spec.md` | `fd7bbeb37d3ccdfb4aba50f690f4d36c4971a7e186d0022aa894d2b0e6949c29` |
@@ -35,7 +36,7 @@ Bundle source digest: `61d6707fa83121b3e90770522849554842828def2798d84076607f0bd
 | `docs/spec/coverage.md` | `6586e7a2dc384f65c95fda75bccb8cb030a691197ab61f85377a28b8b7611184` |
 | `docs/spec/data-contracts.md` | `752a9d59e7d6c9c34095d0e82f952ab8b153c9672bbf66fa2eab9aa3a3586439` |
 | `docs/spec/sources.md` | `a1819d19113a41a401e78ef7fd72f04e01c71b17e8fbcc015ea3233f74121bc3` |
-| `docs/spec/team-workflow.md` | `257f27eaf4d6e3d93caa57d2a4015abeeaaeddab0d440702fcbdfaedc0662c31` |
+| `docs/spec/team-workflow.md` | `f9aa6b9f202ac4f091de28501502ae8c741909d4be5d59393f304542ccd3d38f` |
 | `docs/spec/verification.md` | `66f9c23c6b4d8c653bf01987733cbbbdad4ec8e2c69b4d12862a4ffc8699a24b` |
 | `schemas/api.schema.json` | `0073701e9a248447ccc0701ba7e85265234279e39dca046582347840f68145e3` |
 | `schemas/common.schema.json` | `22f6c828c56dbe5dd7fb0d1fe54224dbf85dfae58b15cf170c1222aae4e312ef` |
@@ -70,7 +71,7 @@ Bundle source digest: `61d6707fa83121b3e90770522849554842828def2798d84076607f0bd
 | `examples/uint256-max.valid.json` | `445dc6951c3597b4a57108db0755fa2d1e8603114175049031ac6e8b53cc1a60` |
 | `examples/uint256-overflow.invalid.json` | `fb939b2c5a21d397e95423da4e837ba63318e9892419e1fcd4d2eafc6a24e9ff` |
 | `examples/uint64-overflow.invalid.json` | `4a324732507ee662c232e67abf269d69bcc5fe6c4ee58d1f8398bc0b6a108d5e` |
-| `openspec/changes/build-rwa-income-rights/tasks.md` | `0c58a33a9ef7b715daddcbea8c0e8f5808c4a3848427de61cd6c801ef9c17ef2` |
+| `openspec/changes/build-rwa-income-rights/tasks.md` | `adc11218db373f9684267d81b6a57603b926187893db7e7796ed2f085f4983df` |
 
 ---
 
@@ -110,6 +111,8 @@ ABI saat ini **INTERFACE_ONLY**. Tidak ada deployment address atau transaksi yan
 
 ## Mulai dari sini
 
+**Sebelum mulai kontribusi, baca [CONTRIBUTING.md](CONTRIBUTING.md):** clone repo tim yang sama → branch per task → tes → push branch → PR ke main → review. Panduan itu memuat contoh command dan standar bukti pengujian untuk manusia serta AI.
+
 1. [PRD](docs/product.md): penjelasan produk dan simulasi.
 2. [Keputusan aktif](docs/spec/decisions.md): scope yang berlaku dan usulan lama yang digantikan.
 3. [Proposal OpenSpec](openspec/changes/build-rwa-income-rights/proposal.md), [design](openspec/changes/build-rwa-income-rights/design.md), [tasks](openspec/changes/build-rwa-income-rights/tasks.md).
@@ -142,7 +145,7 @@ Validator dokumen memerlukan `jsonschema==4.25.1`; `pnpm spec:check` menjalankan
 
 ## Batas tahap ini
 
-Repository tim: [wildanniam/eth-jkt](https://github.com/wildanniam/eth-jkt) (private). Wildan mengotorisasi satu initial push langsung ke `main` setelah pembersihan. Pekerjaan berikutnya menggunakan issue → branch fitur → checks → PR → review tim; pengecualian initial push tidak berlaku otomatis untuk perubahan berikutnya.
+Repository tim: [wildanniam/eth-jkt](https://github.com/wildanniam/eth-jkt) (private). Wildan mengotorisasi satu initial push langsung ke `main` setelah pembersihan. Workflow tim berikutnya: branch fitur → coding → tes → push → PR → review; issue opsional. Satu PR dapat berisi beberapa commit terkait. Pengecualian initial push tidak berlaku otomatis untuk perubahan berikutnya.
 
 Arsitektur ada di [design](openspec/changes/build-rwa-income-rights/design.md). Foundation ini menyediakan proses, interface dan tooling; **market/accounting, token demo, provider, AI, wallet, database/RLS dan deployment tetap pekerjaan berikutnya**. Hanya task dengan bukti acceptance yang boleh dicentang. Test interface/schema tidak membuktikan keamanan ekonomi kontrak atau keberhasilan integrasi provider.
 
@@ -153,13 +156,105 @@ Arsitektur ada di [design](openspec/changes/build-rwa-income-rights/design.md). 
 
 ---
 
+# Source: CONTRIBUTING.md
+
+# Kontribusi tim
+
+Kita bekerja di **satu repo private: [wildanniam/eth-jkt](https://github.com/wildanniam/eth-jkt)**. Setelah mendapat akses write, anggota clone repo ini, push branch masing-masing ke `origin` yang sama, lalu membuat PR ke `main`. Tidak perlu fork atau repo pribadi.
+
+**Alur tim: pilih pekerjaan → branch → coding → tes → push → PR → review → merge.**
+
+**Issue opsional.** Tidak perlu membuat issue untuk setiap perubahan. Issue berguna untuk menyimpan bug, backlog atau diskusi yang panjang. Satu PR boleh berisi beberapa commit dan perbaikan kecil yang masih satu tujuan; tidak perlu PR baru untuk setiap commit.
+
+## Mulai mengerjakan
+
+Ikuti [setup development](docs/development.md) saat pertama clone. Sebelum coding, sepakati bagian yang dikerjakan lewat meet/chat atau task OpenSpec supaya tidak bertabrakan. Baca spec dan interface yang berkaitan dengan pekerjaanmu; task OpenSpec tidak harus disalin menjadi GitHub issue.
+
+Dari working tree yang bersih:
+
+```sh
+git switch main
+git pull --ff-only origin main
+git switch -c feat/create-listing
+```
+
+Nama branch cukup jelas, misalnya `feat/create-listing`, `fix/claim-button`, atau `docs/setup-guide`. Nomor issue tidak wajib. Simpan pekerjaan yang belum selesai di branch-nya sebelum berpindah; jangan membuang perubahan agar bisa pull.
+
+Jangan push langsung ke `main` atau menimpa branch teman. Initial push starter langsung main hanya pengecualian setup awal.
+
+## Sebelum push
+
+1. Coba fitur yang kamu ubah dari awal sampai hasilnya benar. Cek input salah/kasus gagal yang relevan, lalu fitur lain yang bisa ikut terdampak. Untuk UI, lihat juga error browser dan hasil setelah refresh; untuk bug, pastikan langkah yang tadinya gagal sudah bekerja.
+2. Tambahkan atau perbarui tes sesuai perubahan. Jalankan `pnpm check` dari root. Kalau gagal, perbaiki sebelum push; jangan sekadar mengubah expected test agar hijau.
+3. Periksa diff. Jangan ikutkan `.env` privat, secrets, node_modules, build output atau perubahan teman.
+
+```sh
+pnpm check
+git diff --check
+git status --short
+```
+
+Jika mengubah spec/schema/interface atau dokumen yang masuk konteks AI, jalankan `pnpm generate` sebelum check dan sertakan hasilnya. Jika format gagal, jalankan `pnpm format`, regenerate bila diperlukan, lalu ulangi check. Jangan mengedit file generated secara langsung.
+
+**Catatan tes di PR boleh singkat**, misalnya: “`pnpm check` lulus; create listing normal dan input kosong sudah dicoba; error RPC belum dites.” Tidak wajib membuat tabel risiko, laporan panjang, atau mencatat hash commit secara manual untuk setiap PR. GitHub sudah menampilkan commit PR. Jelaskan dengan jujur apa yang sudah dan belum diuji.
+
+Tetap ikuti acceptance spec. Untuk perubahan yang menyentuh dana, hak, smart contract, auth atau migrasi, koordinasikan dengan reviewer yang memahami modul dan jalankan pengujian lebih kuat yang relevan. [Panduan pengujian produk](docs/spec/verification.md) menjadi rujukan saat dibutuhkan. Administrasi yang lebih ringan tidak mengurangi pemeriksaan kebenaran fitur tersebut.
+
+Tes starter saat ini baru mencakup foundation dan interface; belum membuktikan lifecycle ekonomi, wallet, provider atau RLS produk. Tambahkan tes perilaku saat fiturnya dibuat. Jangan menganggap `pnpm check` hijau berarti semua fitur produk sudah teruji.
+
+## Push dan PR
+
+Pilih/stage file yang sudah ditinjau melalui Git atau IDE, lalu commit. Contoh berikut mengasumsikan file yang ingin dikirim sudah di-stage:
+
+```sh
+git diff --cached
+# Ganti pesan sesuai pekerjaanmu.
+git commit -m "feat: add listing form"
+git branch --show-current
+# Pastikan branch yang tercetak adalah branch tugasmu, bukan main.
+git push -u origin HEAD
+```
+
+Di GitHub, buat PR dengan **base: main** dan **compare: branch-mu**. Isi tiga hal saja:
+
+- Apa yang berubah.
+- Apa yang sudah dites dan hasilnya.
+- Catatan atau hal yang belum selesai/belum diuji, jika ada.
+
+Nomor issue atau `Closes #N` hanya dicantumkan jika memang ada issue terkait. Perubahan lanjutan cukup di-push ke branch yang sama; PR otomatis diperbarui. Tidak perlu membuat issue/PR baru untuk setiap revisi review.
+
+Kalau fitur belum memenuhi acceptance, gunakan draft PR dan sebutkan yang belum selesai. Draft bukan tanda siap merge. Check yang tersedia tetap dijalankan sebelum push; verifikasi fitur yang masih tertunda jangan diklaim lulus.
+
+## Review dan sinkronisasi
+
+Minta satu teman meninjau PR. Tunggu CI pada revisi terbaru hijau, selesaikan komentar penting dan konflik, lalu maintainer dapat merge sesuai kesepakatan tim. PR membuat perubahan mudah dicek sebelum masuk main; deskripsinya cukup ringkas. CI tidak menggantikan mencoba fitur.
+
+CI saat ini berjalan pada PR dan push main, bukan pada push feature branch yang belum mempunyai PR. Aturan ini belum dipaksakan oleh branch protection atau pre-push hook.
+
+Jika main berubah ketika kamu sedang coding, dari branch tugas dengan working tree bersih:
+
+```sh
+git fetch origin
+git merge origin/main
+```
+
+Selesaikan konflik bersama pemilik file, regenerate bila perlu, lalu ulangi tes yang terdampak dan `pnpm check`. Jangan force push branch bersama atau memilih seluruh perubahan sendiri untuk menimpa pekerjaan teman. Jika perlu membatalkan merge yang baru dimulai, gunakan `git merge --abort`.
+
+Setelah PR merged, kembali ke main dan `git pull --ff-only origin main` sebelum membuat branch task berikutnya.
+
+## Aturan pribadi Wildan
+
+Workflow issue wajib dan laporan verifikasi terperinci untuk **Codex yang bekerja atas nama Wildan** tetap berlaku sesuai [AGENTS](AGENTS.md). Itu aturan pribadi, bukan kewajiban teman-teman atau AI yang mereka gunakan. Workflow umum tim tetap panduan singkat di atas, baik coding manual maupun dengan AI.
+
+---
+
 # Source: AGENTS.md
 
 # RWA-ETHJKT — Aturan Agen dan Tim
 
 ## Scope dan urutan baca
 
-Read README.md, docs/development.md, docs/spec/decisions.md, active proposal/design/tasks, then related capability specs and schemas before changing anything. Baseline change: `build-rwa-income-rights`. User approved the monorepo starter. Web/worker shells and interface tooling exist; economic contracts/product flows remain unimplemented. No remote/push/deployment authorization is inferred.
+Read README.md, CONTRIBUTING.md, docs/development.md, docs/spec/decisions.md, active proposal/design/tasks, then related capability specs and schemas before changing anything. Baseline change: `build-rwa-income-rights`. User approved the monorepo starter. Web/worker shells and interface tooling exist; economic contracts/product flows remain unimplemented. No remote/push/deployment authorization is inferred.
 
 Default prose Indonesian. Data identifiers and technical schemas English. Visual design belongs to human UI/UX designer; spec owns data, states, user actions and accessibility semantics, not colors/layout taste.
 
@@ -175,9 +270,17 @@ Default prose Indonesian. Data identifiers and technical schemas English. Visual
 
 ## Workflow
 
-Repository: https://github.com/wildanniam/eth-jkt (private). Wildan explicitly authorized a clean initial push directly to main on 8 October 2026; issue/PR is skipped only for that bootstrap. Subsequent meaningful implementation needs an issue, non-main branch, risk matrix, verification and PR. Do not publish/push/merge beyond applicable user authorization.
+Repository: https://github.com/wildanniam/eth-jkt (private). Team workflow is deliberately lightweight: branch → implementation → tests → push branch → PR → human review. GitHub issues are optional for teammates, including when they use AI; OpenSpec task coordination does not require a duplicate issue. Do not publish/push/merge beyond applicable user authorization. Initial direct-main push was only a bootstrap exception.
 
-Keep task scope, acceptance and verification evidence in the active OpenSpec change and linked reports. Tests and audit evidence must describe actual behavior and limits.
+[CONTRIBUTING.md](CONTRIBUTING.md) is the canonical team workflow for manual coding and AI-assisted work. Collaborators push their own task branch to the same origin repository and open a PR to main; no fork required. Names such as `feat/create-listing`, `fix/claim-button` or `docs/setup-guide` need no issue number. One PR can contain related commits; no new issue/PR for each review revision. Do not push directly to main, force-push a shared branch, or overwrite another contributor's work.
+
+Before push, run `pnpm check` and relevant feature tests and review the diff. The shared PR template only needs the change, actual test results and relevant unfinished/untested work. Teammates need no mandatory risk table or manual commit-hash report for every PR. A green foundation suite alone does not prove product behavior. Keep incomplete acceptance gates in a draft PR. Review/CI and financial/security acceptance still apply. Repository settings/hooks are not changed merely by writing this policy.
+
+Keep task scope and acceptance tied to the active OpenSpec change. Tests and evidence must describe actual behavior and limits; a concise PR report is sufficient unless the affected product acceptance requires more detail.
+
+### Additional workflow only for Codex acting for Wildan
+
+Wildan retains his personal issue-driven workflow: standard/high-risk work needs an issue (reuse an existing one where appropriate), a non-main branch, a risk-based verification plan, actual scenario evidence and PR. Record the tested revision and passed/failed/blocked/not-tested results. Tiny typo/copy changes may skip an issue. Never merge without Wildan's explicit approval for the PR. These extra process/reporting requirements apply only to Codex working on Wildan's behalf, not to teammates or their AI sessions. Do not enforce the personal workflow as a team contribution requirement.
 
 Never check off implementation tasks merely because a spec/fixture exists. Keep `openspec/specs/` empty until implementation is verified and change legitimately archived. No routine global dependency upgrades. Pin the local OpenSpec CLI used for validation (currently 1.3.1).
 
@@ -189,7 +292,7 @@ Run `openspec validate build-rwa-income-rights --strict --no-interactive`, `pyth
 
 Use Node 24.18.0 and pinned pnpm 11.3.0 (`.nvmrc`, packageManager). Run `pnpm check` from root. `pnpm generate` owns shared types/schema registry/ABI, interface Solidity and team context; `pnpm generate:check` detects drift. Forge/Anvil are local npm binaries. Do not introduce a second schema/type/ABI or put secrets/server imports in shared. Contract ABIs are INTERFACE_ONLY until a verified implementation/deployment exists. Private env examples are optional for starter boot; absent external integrations must stay visibly unimplemented.
 
-Meaningful implementation must exercise normal, boundary, concurrency, failure/recovery, real UI/requests/console and persisted chain outcomes as relevant. Report passed/failed/blocked/not-tested and tested revision. Preserve mock/fork/live/mainnet distinctions. For contract/finality risks, stronger Foundry fuzz/invariant/fork tests required; no auto-merge.
+For meaningful implementation, validate normal, boundary, concurrency, failure/recovery and persisted outcomes as relevant to the feature; UI changes need real UI/requests/console checks. Preserve mock/fork/live/mainnet distinctions. For contract/finality risks, stronger Foundry fuzz/invariant/fork tests remain required by product acceptance. Codex acting for Wildan additionally records the detailed scenario matrix and tested revision under the personal workflow above.
 
 Never commit personal chat exports, local machine paths, credentials, build output or browser QA artifacts. Keep accepted/proposed/verified/history distinctions in team documentation.
 
@@ -914,12 +1017,14 @@ Server-only provider keys tidak menggunakan prefix NEXT_PUBLIC_. Signing key fin
 
 ## Spec-driven development bersama
 
-1. Sinkronkan branch/revision. Baca README, AGENTS, keputusan aktif, task dan interface modul.
+Langkah Git, standar testing sebelum push dan proses PR/review ada di [CONTRIBUTING](../CONTRIBUTING.md). Itu acuan workflow kontribusi; bagian ini merangkum hubungan dengan spec.
+
+1. Sinkronkan branch/revision. Baca README, CONTRIBUTING, AGENTS, keputusan aktif, task dan interface modul.
 2. Pilih satu task dan ownership file; koordinasikan perubahan schema/ABI sebelum coding consumer.
 3. Ubah source spec/schema terlebih dahulu bila memang perlu; `pnpm generate`. Jangan edit generated files.
 4. Implementasikan, jalankan tes terkait dan `pnpm check`, review diff termasuk generated outputs.
 5. Dokumentasikan bukti aktual dan batas. Checkbox produk tidak selesai hanya karena fixture/stub lulus.
-6. Gunakan issue → branch fitur → commit → PR → review sesuai otorisasi tim. Initial push langsung ke main hanya pengecualian bootstrap; hindari mengedit branch bersama langsung.
+6. Gunakan branch fitur → tes → commit/push → PR → review. Issue opsional untuk tim; cukup ringkasan perubahan, hasil tes dan catatan di PR. Initial direct-main push hanya pengecualian bootstrap.
 
 Interface Solidity dihasilkan dari tujuh code fences normative dalam contract-interface.md dengan pembagian market/registry/adapter. Penambahan struktur/metode memerlukan review generator dan interface ownership. CI memeriksa drift; generated ABI belum menjanjikan kompatibilitas implementasi yang belum dibuat.
 
@@ -3200,35 +3305,41 @@ Provider-specific detailed sources are also kept near the affected design in acc
 
 # Bekerja Bersama dengan AI
 
+Panduan kontribusi manusia dan AI ada di [CONTRIBUTING](../../CONTRIBUTING.md): branch/task, testing sebelum push, PR dan review. Dokumen ini melengkapi koordinasi spec dan konteks AI; tidak membuat workflow Git terpisah.
+
 ## Satu acuan dan satu perubahan terkoordinasi
 
 Repo terbaru adalah acuan. `docs/TEAM-CONTEXT.md` adalah ekspor agar mudah diupload, bukan salinan yang diedit terpisah. Sebelum mulai sesi, tiap anggota memastikan branch/revision terbaru serta membaca decisions, change aktif dan interface modulnya. Designer boleh mengubah visual; perubahan field/status/action harus direview sebagai perubahan spec.
 
-Pada baseline besar ini gunakan satu OpenSpec change agar semua interface awal dapat diperiksa sebagai satu paket. Pecah implementation menjadi task/issue kecil dari checklist. Jangan membuat empat spec bertentangan untuk frontend, backend, AI dan kontrak. Setelah baseline benar-benar diterapkan/diverifikasi, archive memperbarui main specs; fitur berikutnya memakai change baru.
+Pada baseline besar ini gunakan satu OpenSpec change agar semua interface awal dapat diperiksa sebagai satu paket. Pecah implementation menjadi pekerjaan terarah dari checklist; GitHub issue opsional untuk tim. Jangan membuat empat spec bertentangan untuk frontend, backend, AI dan kontrak. Setelah baseline benar-benar diterapkan/diverifikasi, archive memperbarui main specs; fitur berikutnya memakai change baru.
 
 ## Kontrak kerja tiap task
 
-Sebelum coding: sebut task ID, requirement yang dipenuhi, modul yang dimiliki, dependency yang harus selesai, test matrix dan interface yang dikonsumsi. Catat file bersama yang akan berubah. Assignee ditetapkan saat meet; spec tidak mengasumsikan seorang tertentu mampu seluruh modul.
+Sebelum coding: koordinasikan task/modul, dependency dan interface yang terkait lewat meet/chat atau task OpenSpec. Sepakati cara memeriksa hasilnya; tidak perlu issue atau tabel pengujian formal untuk setiap perubahan tim. Catat perubahan file/interface bersama agar tidak bertabrakan. Assignee ditetapkan saat meet; spec tidak mengasumsikan seorang tertentu mampu seluruh modul.
 
 Satu anggota dapat memakai fixtures setelah schema disetujui meski provider/kontrak belum berjalan. Tandai data fixture, kontrak stub dan bukti runtime terpisah. Setelah interface berubah, regenerasi types/ABI/fixtures dan update semua consumer dalam perubahan terkoordinasi sebelum merge. Jangan mengubah expected test diam-diam supaya implementasi yang menyimpang lulus.
 
 ## Prompt awal untuk AI teman
 
 ```text
-Baca README.md, AGENTS.md, docs/spec/decisions.md dan change OpenSpec
+Baca README.md, CONTRIBUTING.md, AGENTS.md, docs/spec/decisions.md dan change OpenSpec
 build-rwa-income-rights. Kerjakan hanya task [ID], modul [nama].
 Baca capability spec serta kontrak data/interface yang terkait.
-Jelaskan dependency dan matriks pengujian sebelum mengubah kode.
+Jelaskan dependency dan tes yang relevan sebelum mengubah kode.
+Issue opsional untuk tim; jangan memaksakan workflow pribadi Wildan ke anggota lain.
 Gunakan nama field/enum/schema yang sama. Jika dokumen bertentangan,
 laporkan konflik konkret dan perbaiki spec bersama sebelum mengasumsikan.
 Jangan menambah NFT, swap execution, model training, atau mengubah hak ekonomi.
 Visual mengikuti desain UI/UX tim. Jangan klaim fixture sebagai integrasi nyata.
 Di akhir laporkan revision, task, file, hasil checks dan hal belum diuji.
+Sebelum push jalankan pnpm check dan tes fitur terdampak; push hanya branch
+task sendiri ke origin repo tim. Isi PR ke main dengan bukti aktual.
+Jangan merge tanpa persetujuan manusia yang berlaku.
 ```
 
 ## Git dan review
 
-Repo tim adalah [wildanniam/eth-jkt](https://github.com/wildanniam/eth-jkt), private. Initial push langsung ke main diotorisasi khusus oleh Wildan pada 8 Oktober 2026. Pekerjaan berikutnya memakai issue → non-main branch → implementation → verification → commit/push/PR sesuai otorisasi → human review. Smart contracts/finality high-risk, tidak auto-merge. Akses anggota dan deployment memerlukan pengaturan terpisah.
+Repo tim adalah [wildanniam/eth-jkt](https://github.com/wildanniam/eth-jkt), private. Anggota dengan akses write melakukan clone dan push branch masing-masing ke origin yang sama, lalu PR ke main; tidak memerlukan fork. Langkah dan gate mengikuti [CONTRIBUTING](../../CONTRIBUTING.md). Initial direct push hanya pengecualian bootstrap. Akses anggota, enforcement branch protection dan deployment memerlukan pengaturan terpisah.
 
 Tidak menggabungkan dua perubahan antarmodul yang belum disepakati hanya karena CI schema lulus. Reviewer memeriksa perilaku, otorisasi, conservation dan user-visible state. Test setiap task dan jalur lengkap lintas modul; lihat verification.md.
 
@@ -3242,7 +3353,7 @@ Tidak menggabungkan dua perubahan antarmodul yang belum disepakati hanya karena 
 
 ## Definisi selesai
 
-Checkbox task hanya setelah acceptance nyata terpenuhi dengan bukti. PRD/spec selesai tidak menandai task build selesai. Provider docs bukan runtime compatibility. Initial source snapshot bukan audit. Mainnet read-only bukan mainnet deployment. `openspec validate` tidak memverifikasi ekonomi atau smart contract. Catat empat status: passed, failed, blocked, not tested.
+Checkbox task hanya setelah acceptance nyata terpenuhi dengan bukti. PRD/spec selesai tidak menandai task build selesai. Provider docs bukan runtime compatibility. Initial source snapshot bukan audit. Mainnet read-only bukan mainnet deployment. `openspec validate` tidak memverifikasi ekonomi atau smart contract. Ringkasan PR cukup menyebut apa yang diuji, hasilnya, dan batas/bagian belum diuji. Status passed/failed/blocked/not tested boleh dipakai bila membantu; laporan terperinci wajib hanya bila acceptance fitur membutuhkannya atau dalam workflow pribadi Codex untuk Wildan.
 
 ---
 
@@ -9165,7 +9276,7 @@ Alice lists backed income → Bob asks AI and buys → controlled labelled divid
 
 ## 0. Cara memakai checklist
 
-Checklist membedakan foundation yang sudah tersedia dan fitur produk yang belum dikerjakan. Dependency memakai ID task; assignee ditentukan saat meet. Tulis issue terkait untuk pekerjaan tim di wildanniam/eth-jkt. Tiap task selesai mempunyai evidence; keberadaan interface/fixture bukan bukti fitur ekonomi berjalan. Wildan mengotorisasi starter sebelum meet, sehingga task 1.2 dapat dikerjakan terpisah dari review bersama 1.1; review itu tetap gate sebelum coding paralel tim.
+Checklist membedakan foundation yang sudah tersedia dan fitur produk yang belum dikerjakan. Dependency memakai ID task; assignee ditentukan saat meet. GitHub issue opsional untuk tim; gunakan task ini untuk koordinasi dan tautkan PR terkait bila ada. Tiap task selesai mempunyai evidence; keberadaan interface/fixture bukan bukti fitur ekonomi berjalan. Wildan mengotorisasi starter sebelum meet, sehingga task 1.2 dapat dikerjakan terpisah dari review bersama 1.1; review itu tetap gate sebelum coding paralel tim.
 
 ## 1. Foundation dan kontrak bersama
 

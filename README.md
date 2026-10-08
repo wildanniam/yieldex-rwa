@@ -32,6 +32,8 @@ ABI saat ini **INTERFACE_ONLY**. Tidak ada deployment address atau transaksi yan
 
 ## Mulai dari sini
 
+**Sebelum mulai kontribusi, baca [CONTRIBUTING.md](CONTRIBUTING.md):** clone repo tim yang sama → branch per task → tes → push branch → PR ke main → review. Panduan itu memuat contoh command dan standar bukti pengujian untuk manusia serta AI.
+
 1. [PRD](docs/product.md): penjelasan produk dan simulasi.
 2. [Keputusan aktif](docs/spec/decisions.md): scope yang berlaku dan usulan lama yang digantikan.
 3. [Proposal OpenSpec](openspec/changes/build-rwa-income-rights/proposal.md), [design](openspec/changes/build-rwa-income-rights/design.md), [tasks](openspec/changes/build-rwa-income-rights/tasks.md).
@@ -64,7 +66,7 @@ Validator dokumen memerlukan `jsonschema==4.25.1`; `pnpm spec:check` menjalankan
 
 ## Batas tahap ini
 
-Repository tim: [wildanniam/eth-jkt](https://github.com/wildanniam/eth-jkt) (private). Wildan mengotorisasi satu initial push langsung ke `main` setelah pembersihan. Pekerjaan berikutnya menggunakan issue → branch fitur → checks → PR → review tim; pengecualian initial push tidak berlaku otomatis untuk perubahan berikutnya.
+Repository tim: [wildanniam/eth-jkt](https://github.com/wildanniam/eth-jkt) (private). Wildan mengotorisasi satu initial push langsung ke `main` setelah pembersihan. Workflow tim berikutnya: branch fitur → coding → tes → push → PR → review; issue opsional. Satu PR dapat berisi beberapa commit terkait. Pengecualian initial push tidak berlaku otomatis untuk perubahan berikutnya.
 
 Arsitektur ada di [design](openspec/changes/build-rwa-income-rights/design.md). Foundation ini menyediakan proses, interface dan tooling; **market/accounting, token demo, provider, AI, wallet, database/RLS dan deployment tetap pekerjaan berikutnya**. Hanya task dengan bukti acceptance yang boleh dicentang. Test interface/schema tidak membuktikan keamanan ekonomi kontrak atau keberhasilan integrasi provider.
 

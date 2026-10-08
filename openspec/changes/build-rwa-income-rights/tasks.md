@@ -1,6 +1,6 @@
 ## 0. Cara memakai checklist
 
-Checklist membedakan foundation yang sudah tersedia dan fitur produk yang belum dikerjakan. Dependency memakai ID task; assignee ditentukan saat meet. Tulis issue terkait untuk pekerjaan tim di wildanniam/eth-jkt. Tiap task selesai mempunyai evidence; keberadaan interface/fixture bukan bukti fitur ekonomi berjalan. Wildan mengotorisasi starter sebelum meet, sehingga task 1.2 dapat dikerjakan terpisah dari review bersama 1.1; review itu tetap gate sebelum coding paralel tim.
+Checklist membedakan foundation yang sudah tersedia dan fitur produk yang belum dikerjakan. Dependency memakai ID task; assignee ditentukan saat meet. GitHub issue opsional untuk tim; gunakan task ini untuk koordinasi dan tautkan PR terkait bila ada. Tiap task selesai mempunyai evidence; keberadaan interface/fixture bukan bukti fitur ekonomi berjalan. Wildan mengotorisasi starter sebelum meet, sehingga task 1.2 dapat dikerjakan terpisah dari review bersama 1.1; review itu tetap gate sebelum coding paralel tim.
 
 ## 1. Foundation dan kontrak bersama
 

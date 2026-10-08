@@ -6,7 +6,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 CHANGE = ROOT / 'openspec/changes/build-rwa-income-rights'
-paths = [ROOT/'README.md', ROOT/'AGENTS.md', ROOT/'docs/product.md',
+paths = [ROOT/'README.md', ROOT/'CONTRIBUTING.md', ROOT/'AGENTS.md', ROOT/'docs/product.md',
          ROOT/'docs/spec/decisions.md', ROOT/'openspec/config.yaml',
          CHANGE/'proposal.md', CHANGE/'design.md']
 paths += [ROOT/'docs/development.md'] if (ROOT/'docs/development.md').exists() else []
