@@ -1,0 +1,17 @@
+{
+  "name": "@rwa/worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch --env-file-if-exists=.env --import tsx src/main.ts",
+    "once": "node --env-file-if-exists=.env --import tsx src/main.ts --once",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node --env-file-if-exists=.env --import tsx dist/main.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@rwa/shared": "workspace:*",
+    "tsx": "4.23.15"
+  }
+}

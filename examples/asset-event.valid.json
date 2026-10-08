@@ -1,0 +1,24 @@
+{
+  "eventId": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  "assetKey": "eip155:11155111:0x2222222222222222222222222222222222222222:0x3333333333333333333333333333333333333333333333333333333333333333",
+  "sequence": "1",
+  "effectiveAt": 1791417500,
+  "kind": "DIVIDEND",
+  "multiplierBefore": "1000000000000000000",
+  "multiplierAfter": "1020000000000000000",
+  "issuerNonceAfter": "2",
+  "historyIndex": "1",
+  "sourceOccurrenceKey": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  "sourceRevision": 1,
+  "evidenceHash": "0xdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "recordedTransactionHash": "0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "snapshot": {
+    "chainId": 11155111,
+    "blockNumber": "11868384",
+    "blockHash": "0x4444444444444444444444444444444444444444444444444444444444444444",
+    "blockTimestamp": 1791417600,
+    "observedAt": 1791417605,
+    "finality": "FINALIZED",
+    "indexerStatus": "HEALTHY"
+  }
+}

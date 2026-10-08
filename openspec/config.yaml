@@ -1,0 +1,27 @@
+schema: spec-driven
+context: |
+  RWA Income Rights: hackathon marketplace for temporary income rights over tokenized stock backing.
+  Read README.md, docs/spec/decisions.md and the active change before making assumptions.
+  Monorepo starter exists; product behavior remains largely unimplemented. openspec/specs remains empty until implementation/archive.
+  User-approved: ledger without NFT, whole-position marketplace-only resale, fixed prices,
+  backing locked at primary listing, original expiry unchanged, old claims/growth stay with old owner.
+  Team-operated constrained metadata finalizer is accepted for hackathon; trust limits must be explicit.
+  Three AI functions: discovery, explain/prepare marketplace purchases, read-only token quote recommendations.
+  NO swap/bridge execution, ML training requirement, auto-signing, arbitrary AI calldata, or production funds.
+  Solidity/Foundry, Next.js/TypeScript, wagmi/viem, OpenAI, Supabase, Sepolia demo; mainnet quotes read-only.
+  JSON schemas and docs/spec define shared interfaces; UI visual design belongs to the team's designer.
+  Team is four people; task assignees are set at the meeting. Read docs/development.md for implemented starter boundaries.
+  Write explanatory prose in Indonesian; identifiers, normative SHALL/MUST and API names in English.
+rules:
+  proposal:
+    - State concrete product behavior, boundaries, and exact capability names.
+  specs:
+    - Use stable requirement IDs and at least one GIVEN/WHEN/THEN scenario per requirement.
+    - Include ordinary, failure/recovery, boundary, and concurrency scenarios where relevant.
+    - Distinguish demo tokens, real-provider fork evidence, mainnet read-only quotes, and production readiness.
+  design:
+    - Define units, authorization, state transitions, dependency interfaces and verifiable trust assumptions.
+    - Label untested runtime integrations as validation gates, not unresolved product consent.
+  tasks:
+    - Use unchecked numbered tasks with dependencies, affected modules and measurable acceptance.
+    - Leave assignees open until team meeting; preserve meaningfully staged integration.

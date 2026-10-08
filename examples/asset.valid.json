@@ -1,0 +1,34 @@
+{
+  "assetKey": "eip155:11155111:0x2222222222222222222222222222222222222222:0x3333333333333333333333333333333333333333333333333333333333333333",
+  "assetId": "0x3333333333333333333333333333333333333333333333333333333333333333",
+  "registryAddress": "0x2222222222222222222222222222222222222222",
+  "token": {
+    "chainId": 11155111,
+    "kind": "ERC20",
+    "address": "0x6666666666666666666666666666666666666666",
+    "name": "Demo SPY",
+    "symbol": "DemoSPY",
+    "decimals": 18,
+    "isDemo": true
+  },
+  "adapterAddress": "0x7777777777777777777777777777777777777777",
+  "newPositionsEnabled": true,
+  "safetyState": "NORMAL",
+  "syncStatus": "SYNCED",
+  "assetHeadHash": "0x9999999999999999999999999999999999999999999999999999999999999999",
+  "currentMultiplier": "1000000000000000000",
+  "multiplierScale": "1000000000000000000",
+  "currentNonce": "1",
+  "eventCount": "0",
+  "finalizedThrough": 1791417000,
+  "metadataStatus": "SYNCED",
+  "snapshot": {
+    "chainId": 11155111,
+    "blockNumber": "11868384",
+    "blockHash": "0x4444444444444444444444444444444444444444444444444444444444444444",
+    "blockTimestamp": 1791417600,
+    "observedAt": 1791417605,
+    "finality": "FINALIZED",
+    "indexerStatus": "HEALTHY"
+  }
+}

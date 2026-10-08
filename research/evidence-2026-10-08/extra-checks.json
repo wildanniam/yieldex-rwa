@@ -1,0 +1,128 @@
+{
+  "blockscout": {
+    "url": "https://eth.blockscout.com/api/v2/smart-contracts/0x65c40d624af3b18c109fbf87b7deff34cdc5f19b",
+    "keys": [
+      "file_path",
+      "creation_status",
+      "source_code",
+      "deployed_bytecode",
+      "optimization_enabled",
+      "verified_twin_address_hash",
+      "is_verified",
+      "compiler_settings",
+      "optimization_runs",
+      "sourcify_repo_url",
+      "decoded_constructor_args",
+      "compiler_version",
+      "is_verified_via_verifier_alliance",
+      "verified_at",
+      "implementations",
+      "proxy_type",
+      "external_libraries",
+      "creation_bytecode",
+      "name",
+      "is_blueprint",
+      "license_type",
+      "is_fully_verified",
+      "is_verified_via_eth_bytecode_db",
+      "language",
+      "evm_version",
+      "can_be_visualized_via_sol2uml",
+      "is_verified_via_sourcify",
+      "additional_sources",
+      "certified",
+      "conflicting_implementations",
+      "abi",
+      "is_changed_bytecode",
+      "is_partially_verified",
+      "constructor_args"
+    ],
+    "bytes": 199858,
+    "verified": true,
+    "name": "BackedAutoFeeTokenImplementation"
+  },
+  "sourcify-v2": {
+    "url": "https://sourcify.dev/server/v2/contract/1/0x65c40d624af3b18c109fbf87b7deff34cdc5f19b?fields=all",
+    "keys": [
+      "matchId",
+      "creationMatch",
+      "runtimeMatch",
+      "verifiedAt",
+      "creationBytecode",
+      "runtimeBytecode",
+      "deployment",
+      "sources",
+      "compilation",
+      "abi",
+      "metadata",
+      "storageLayout",
+      "transientStorageLayout",
+      "userdoc",
+      "devdoc",
+      "sourceIds",
+      "additionalInput",
+      "stdJsonInput",
+      "stdJsonOutput",
+      "signatures",
+      "proxyResolution",
+      "match",
+      "chainId",
+      "address"
+    ],
+    "bytes": 688162,
+    "verified": null,
+    "name": null
+  },
+  "SPYx": {
+    "holderSource": "issuer asset API Ethereum wrapperAddressV2",
+    "holder": "0xe7e553cd128f0011777323a0b44a7b96ea1cb540",
+    "historyEntries": [
+      [
+        1000000000000000000,
+        1000000000000000000,
+        0
+      ]
+    ],
+    "holderShares": 526876011547347724635,
+    "transferSharesEthCallReturn": 1,
+    "simulatedShares": 1000000000000000
+  },
+  "AAPLx": {
+    "holderSource": "issuer asset API Ethereum wrapperAddressV2",
+    "holder": "0x943bf64d566c32a2bcd41ac92fb63c111cc9de8f",
+    "historyEntries": [
+      [
+        1000000000000000000,
+        1000000000000000000,
+        0
+      ],
+      [
+        1002664207589379700,
+        1003269012539818700,
+        1786149000
+      ]
+    ],
+    "holderShares": 10178541927102524656,
+    "transferSharesEthCallReturn": 1,
+    "simulatedShares": 1000000000000000
+  },
+  "MSFTx": {
+    "holderSource": "issuer asset API Ethereum wrapperAddressV2",
+    "holder": "0x166fbe68274b6a47e025f4ba17388c539f1fa1d0",
+    "historyEntries": [
+      [
+        1000000000000000000,
+        1000000000000000000,
+        0
+      ],
+      [
+        1004582090502563800,
+        1005903390478745600,
+        1787185800
+      ]
+    ],
+    "holderShares": 5483762477303802132,
+    "transferSharesEthCallReturn": 1,
+    "simulatedShares": 1000000000000000
+  }
+}
