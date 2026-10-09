@@ -6,7 +6,7 @@ Sumber asli, urutan bagian, dan SHA-256 tercantum di bawah. Link relatif di bagi
 File ini menyertakan kontrak data dan fixtures; beberapa fixture sengaja invalid untuk pengujian. Jangan menganggap fixture sebagai transaksi/provider data nyata.
 UI visual mengikuti Afer; chatbot Rafi; core/backend/contracts/quote Wildan/Codex. Lihat execution plan untuk scope dan gate. Jangan menambah swap execution/NFT/training ML di luar scope.
 
-Bundle source digest: `5df9e35ce6583ba3ae6a365fa8079b192859e76cdf1d777b2d4596dfebc38ede`
+Bundle source digest: `09ed3cac8ae4740986cacf48dc4e3ca2e1d0171c5fcd328331e8b0f1e34de66a`
 
 ## Source Manifest
 
@@ -78,7 +78,7 @@ Bundle source digest: `5df9e35ce6583ba3ae6a365fa8079b192859e76cdf1d777b2d4596dfe
 | `examples/uint256-max.valid.json` | `445dc6951c3597b4a57108db0755fa2d1e8603114175049031ac6e8b53cc1a60` |
 | `examples/uint256-overflow.invalid.json` | `fb939b2c5a21d397e95423da4e837ba63318e9892419e1fcd4d2eafc6a24e9ff` |
 | `examples/uint64-overflow.invalid.json` | `4a324732507ee662c232e67abf269d69bcc5fe6c4ee58d1f8398bc0b6a108d5e` |
-| `openspec/changes/build-rwa-income-rights/tasks.md` | `b66c7ebaf1e1ebb62fca419c91255cf804eccca20b789ffec618436779d1713e` |
+| `openspec/changes/build-rwa-income-rights/tasks.md` | `66fe1b73d89718b90ff4bfb6d4b1283ea077a4e839d19f99a0da09f2850af350` |
 
 ---
 
@@ -10118,6 +10118,8 @@ Checklist membedakan bagian terverifikasi dan acceptance produk yang masih terbu
 - [ ] 5.6 Test real UI with request/console and persisted state evidence. Depends: 5.3–5.5. Acceptance: normal/race/two-tabs/reload/cancel/failure matrix recorded with source commit and isolated accounts.
 
 ## 6. AI dan quote recommendations
+
+Integrasi awal PR #2 dibahas dalam [chatbot integration](../../../docs/chatbot-integration.md). Status acceptance tetap terbuka sampai seluruh skenario masing-masing task terbukti; popup yang berjalan tidak menutup saved history, wallet handoff, atau final UI.
 
 - [ ] 6.1 Pin CopilotKit v2/OpenAI runtime and demonstrate one server tool → validated card. Depends: 1.3. Scope: apps/web. Acceptance: one orchestration loop, server keys private, loading/failure/completion states work; version compatibility tested. Refs: ai-assistant.
 - [ ] 6.2 Implement listing search, position context and explanation tools over canonical APIs. Depends: 4.3, 6.1. Acceptance: no invented listings/dividends/guaranteed return; prompt injection payload cannot expand authority.

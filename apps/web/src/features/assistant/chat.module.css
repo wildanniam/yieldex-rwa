@@ -1,0 +1,65 @@
+.card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  margin: 12px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
+  color: #1e293b;
+  overflow-wrap: anywhere;
+}
+.card h4 {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 8px;
+}
+.card p {
+  margin: 6px 0;
+}
+.card pre {
+  white-space: pre-wrap;
+  font-size: 11px;
+}
+.row {
+  padding: 12px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  margin: 8px 0;
+}
+.asset {
+  background: #ffffff;
+}
+.quote {
+  background: #ffffff;
+}
+.launcher {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 90;
+  max-width: min(360px, calc(100vw - 48px));
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 20px #0001;
+  font-size: 13px;
+}
+.launcher button {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  background: #175342;
+  color: white;
+  cursor: pointer;
+}
+.launcher button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}

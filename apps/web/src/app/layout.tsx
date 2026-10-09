@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { ChatbotWrapper } from '../components/ChatbotWrapper';
 
 export const metadata: Metadata = {
   title: 'RWA · Development starter',
@@ -11,7 +12,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="id">
-      <body>{children}</body>
+      <body>
+        <ChatbotWrapper>{children}</ChatbotWrapper>
+      </body>
     </html>
   );
 }
