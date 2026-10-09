@@ -1156,3 +1156,268 @@
     margin-block: 76px 60px;
   }
 }
+
+/* Hero preview: protected backing, an offer, then a transferable income right. */
+.vaultArtwork {
+  height: 152px;
+  position: relative;
+  margin: 20px 0 6px;
+  perspective: 700px;
+}
+.vaultBase {
+  position: absolute;
+  width: 142px;
+  height: 76px;
+  left: calc(50% - 71px);
+  bottom: 12px;
+  border-radius: 17px;
+  background: linear-gradient(135deg, #344c3c, #0c1913);
+  transform: rotateX(58deg) rotateZ(-24deg);
+  box-shadow:
+    0 8px 0 #101f18,
+    0 20px 25px #0006;
+  border: 1px solid #66856e55;
+}
+.vaultGlass {
+  position: absolute;
+  width: 130px;
+  height: 108px;
+  left: calc(50% - 65px);
+  top: 8px;
+  border: 1px solid #a1cdae30;
+  border-radius: 24px;
+  background: linear-gradient(130deg, #c1e8c212, transparent 65%);
+  transform: rotate(-8deg);
+  transition: transform 0.5s ease;
+}
+.vaultCoin {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  top: 18px;
+  left: calc(50% - 42px);
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8bac82, #304e3c 55%, #162d20);
+  border: 1px solid #bcd7a780;
+  box-shadow:
+    3px 5px 0 #193524,
+    5px 8px 0 #45634a,
+    0 18px 24px #0005,
+    inset 0 0 0 6px #a0cb9920;
+  transform: rotate(-13deg);
+  transition:
+    transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.5s;
+  color: #d8eacc;
+}
+.vaultCoin svg {
+  width: 36px;
+  height: 36px;
+}
+.vaultLock {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 7px;
+  letter-spacing: 0.09em;
+  padding: 7px 10px;
+  border-radius: 7px;
+  background: #14251c;
+  color: #b4cfb1;
+}
+.backingCard,
+.receiptCard {
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.4s,
+    box-shadow 0.4s;
+}
+.assetDot svg {
+  width: 20px;
+  height: 20px;
+}
+.price {
+  position: relative;
+  min-height: 86px;
+}
+.rightsSeal {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: conic-gradient(#a8d79d 0 50%, #294332 50% 100%);
+  display: grid;
+  place-content: center;
+  text-align: center;
+  box-shadow:
+    inset 0 0 0 7px #0d1e16,
+    inset 0 0 0 8px #84a57d55;
+  transform: rotate(12deg);
+  transition: transform 0.45s;
+}
+.rightsSeal::before {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  background: #14271b;
+}
+.rightsSeal span,
+.rightsSeal i {
+  position: relative;
+  z-index: 1;
+}
+.rightsSeal span {
+  font-size: 23px;
+  color: #c7e8bc;
+  letter-spacing: -0.04em;
+}
+.rightsSeal small {
+  font-size: 11px;
+}
+.rightsSeal i {
+  font-style: normal;
+  font-size: 5px;
+  letter-spacing: 0.08em;
+  color: #a1bd9d;
+}
+.ticketArtwork {
+  position: relative;
+  height: 145px;
+  margin: 23px 0 20px;
+  perspective: 700px;
+}
+.ticketShadow,
+.incomeTicket {
+  position: absolute;
+  inset: 7px 5px 8px;
+  border-radius: 12px;
+}
+.ticketShadow {
+  transform: rotate(7deg) translateY(4px);
+  background: #1a2f24;
+  border: 1px solid #62857040;
+}
+.incomeTicket {
+  background: linear-gradient(140deg, #314b3b, #16291e 65%);
+  border: 1px solid #8eb79a60;
+  box-shadow: 0 14px 25px #0004;
+  transform: rotate(-5deg);
+  padding: 15px;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.incomeTicket > span {
+  font-size: 7px;
+  letter-spacing: 0.1em;
+  color: #b5cbb9;
+}
+.incomeTicket > strong {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 9px 0 12px;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #dcf1d4;
+}
+.incomeTicket small {
+  font-weight: 400;
+  font-size: 9px;
+  letter-spacing: 0;
+  color: #a8bdaa;
+}
+.incomeTicket > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 8px;
+  color: #a9c2ac;
+}
+@media (hover: hover) and (pointer: fine) {
+  .backingCard:hover {
+    transform: rotate(-1deg) translateY(-5px);
+    border-color: #87b68e70;
+    box-shadow: 0 20px 35px #0003;
+  }
+  .backingCard:hover .vaultCoin {
+    transform: translateY(-8px) rotate(0);
+    box-shadow:
+      3px 5px 0 #193524,
+      5px 8px 0 #45634a,
+      0 26px 30px #0005,
+      inset 0 0 0 6px #a0cb9920;
+  }
+  .backingCard:hover .vaultGlass {
+    transform: rotate(0);
+  }
+  .receiptCard:hover {
+    transform: rotate(1deg) translateY(-5px);
+    border-color: #87b68e70;
+  }
+  .receiptCard:hover .incomeTicket {
+    transform: rotate(-1deg) translateY(-5px);
+  }
+  .listingCard:hover .rightsSeal {
+    transform: rotate(0);
+  }
+}
+@media (max-width: 600px) {
+  .backingCard {
+    display: block;
+  }
+  .backingCard h3 {
+    margin-top: 14px;
+  }
+  .backingCard .miniRow {
+    margin-top: 9px;
+  }
+  .backingCard > small {
+    margin-top: 12px;
+  }
+  .vaultArtwork {
+    height: 138px;
+    margin-top: 12px;
+  }
+  .price p {
+    font-size: 46px;
+  }
+  .rightsSeal {
+    width: 66px;
+    height: 66px;
+  }
+  .rightsSeal span {
+    font-size: 20px;
+  }
+  .ticketArtwork {
+    max-width: 230px;
+    margin-inline: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vaultCoin,
+  .vaultGlass,
+  .incomeTicket,
+  .rightsSeal,
+  .backingCard,
+  .receiptCard {
+    transition: none !important;
+  }
+  .backingCard:hover,
+  .receiptCard:hover,
+  .backingCard:hover .vaultCoin,
+  .backingCard:hover .vaultGlass,
+  .receiptCard:hover .incomeTicket,
+  .listingCard:hover .rightsSeal {
+    transform: none;
+  }
+}

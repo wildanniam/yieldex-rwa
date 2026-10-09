@@ -7,6 +7,7 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { useAssistant } from '@/components/ChatbotWrapper';
 import s from './landing.module.css';
+import { AssetMark } from './asset-mark';
 
 export function LinkAction({
   children,
@@ -206,14 +207,21 @@ export function ProductPreview() {
         </span>
         <span>Interactive example · No transaction</span>
       </div>
-      <div className={s.previewScene}>
+      <div className={s.previewScene} data-stage={stage}>
         <div className={s.backingCard}>
           <div className={s.cardKicker}>
             <Icon name="vault" alt="" inheritColor />
             <span>ALICE’S BACKING</span>
           </div>
-          <div className={s.assetMonogram}>
-            A<span>DEMO</span>
+          <div className={s.vaultArtwork} aria-hidden="true">
+            <div className={s.vaultBase} />
+            <div className={s.vaultGlass} />
+            <div className={s.vaultCoin}>
+              <AssetMark symbol="demoAAPL" />
+            </div>
+            <span className={s.vaultLock}>
+              <Icon name="lock" alt="" inheritColor size={13} /> BACKING SECURED
+            </span>
           </div>
           <h3>
             100 <span>demoAAPL</span>
@@ -258,6 +266,10 @@ export function ProductPreview() {
               );
               rotateY.set(((event.clientX - rect.left) / rect.width - 0.5) * 8);
             }}
+            onPointerCancel={() => {
+              rotateX.set(0);
+              rotateY.set(0);
+            }}
             onPointerLeave={() => {
               rotateX.set(0);
               rotateY.set(0);
@@ -265,7 +277,9 @@ export function ProductPreview() {
           >
             <div className={s.listingHeader}>
               <div>
-                <span className={s.assetDot}>A</span>
+                <span className={s.assetDot}>
+                  <AssetMark symbol="demoAAPL" />
+                </span>
                 <div>
                   <strong>demoAAPL</strong>
                   <small>Income rights</small>
@@ -274,6 +288,12 @@ export function ProductPreview() {
               <span className={s.exampleBadge}>EXAMPLE</span>
             </div>
             <div className={s.price}>
+              <div className={s.rightsSeal} aria-hidden="true">
+                <span>
+                  50<small>%</small>
+                </span>
+                <i>INCOME ONLY</i>
+              </div>
               <span>Fixed upfront price</span>
               <p>
                 90<span>DemoUSD</span>
@@ -332,13 +352,36 @@ export function ProductPreview() {
             animate={{ opacity: 1, y: 0 }}
             className={s.receiptContent}
           >
-            <div className={s.receiptIcon}>
-              <Icon
-                name={stage === 0 ? 'clock' : 'check'}
-                size={24}
-                alt=""
-                inheritColor
-              />
+            <div className={s.ticketArtwork} aria-hidden="true">
+              <div className={s.ticketShadow} />
+              <div className={s.incomeTicket}>
+                <span>
+                  {stage === 0
+                    ? 'AVAILABLE RIGHT'
+                    : stage === 1
+                      ? 'BOB’S POSITION'
+                      : 'ALLOCATED INCOME'}
+                </span>
+                <strong>
+                  {stage === 2 ? '0.50' : '50%'}
+                  <small>{stage === 2 ? 'demoAAPL' : 'income share'}</small>
+                </strong>
+                <div>
+                  <span>
+                    {stage === 0
+                      ? 'Awaiting buyer'
+                      : stage === 1
+                        ? '6-month term'
+                        : 'Ready to claim'}
+                  </span>
+                  <Icon
+                    name={stage === 0 ? 'clock' : 'check'}
+                    size={15}
+                    alt=""
+                    inheritColor
+                  />
+                </div>
+              </div>
             </div>
             <h3>
               {stage === 0
