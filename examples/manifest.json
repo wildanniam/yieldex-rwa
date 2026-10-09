@@ -1,0 +1,227 @@
+{
+  "description": "Synthetic fixtures. valid means schema-valid only; semanticCases require the checks in docs/spec/data-contracts.md section 8.",
+  "cases": [
+    {
+      "file": "examples/listing-primary.valid.json",
+      "schema": "schemas/domain.schema.json",
+      "schemaRef": "#/$defs/ListingDetail",
+      "valid": true,
+      "reason": "Complete primary listing with synthetic addresses."
+    },
+    {
+      "file": "examples/quote-comparison.valid.json",
+      "schema": "schemas/quote.schema.json",
+      "schemaRef": "#/$defs/QuoteComparison",
+      "valid": true,
+      "reason": "Synthetic single-candidate quote is unranked; execution unavailable."
+    },
+    {
+      "file": "examples/prepared-purchase.valid.json",
+      "schema": "schemas/api.schema.json",
+      "schemaRef": "#/$defs/PreparedIntent",
+      "valid": true,
+      "reason": "Blocked synthetic purchase preview has no executable steps."
+    },
+    {
+      "file": "examples/listing-price-number.invalid.json",
+      "schema": "schemas/domain.schema.json",
+      "schemaRef": "#/$defs/ListingDetail",
+      "valid": false,
+      "reason": "Token amount must be decimal string."
+    },
+    {
+      "file": "examples/position-bps.invalid.json",
+      "schema": "schemas/domain.schema.json",
+      "schemaRef": "#/$defs/ListingDetail",
+      "valid": false,
+      "reason": "Basis points exceed 10000."
+    },
+    {
+      "file": "examples/uint256-overflow.invalid.json",
+      "schema": "schemas/domain.schema.json",
+      "schemaRef": "#/$defs/ListingDetail",
+      "valid": false,
+      "reason": "Exact uint256 regex rejects maximum+1."
+    },
+    {
+      "file": "examples/leading-zero.invalid.json",
+      "schema": "schemas/domain.schema.json",
+      "schemaRef": "#/$defs/ListingDetail",
+      "valid": false,
+      "reason": "Canonical integer disallows leading zero."
+    },
+    {
+      "file": "examples/quote-execution-data.invalid.json",
+      "schema": "schemas/quote.schema.json",
+      "schemaRef": "#/$defs/QuoteComparison",
+      "valid": false,
+      "reason": "No transaction payload permitted in quote DTO."
+    },
+    {
+      "file": "examples/native-token-address.invalid.json",
+      "schema": "schemas/quote.schema.json",
+      "schemaRef": "#/$defs/QuoteComparison",
+      "valid": false,
+      "reason": "Native token address must be null."
+    },
+    {
+      "file": "examples/no-route-with-amount.invalid.json",
+      "schema": "schemas/quote.schema.json",
+      "schemaRef": "#/$defs/QuoteComparison",
+      "valid": false,
+      "reason": "Failed quote cannot contain executable-looking amounts/ranking."
+    },
+    {
+      "file": "examples/arbitrary-recipient.invalid.json",
+      "schema": "schemas/api.schema.json",
+      "schemaRef": "#/$defs/PreparedIntent",
+      "valid": false,
+      "reason": "No arbitrary recipient in own purchase request."
+    },
+    {
+      "file": "examples/asset.valid.json",
+      "schema": "schemas/domain.schema.json",
+      "schemaRef": "#/$defs/Asset",
+      "valid": true,
+      "reason": "Synthetic asset configuration and chain snapshot."
+    },
+    {
+      "file": "examples/claim-balance.valid.json",
+      "schema": "schemas/domain.schema.json",
+      "schemaRef": "#/$defs/ClaimBalance",
+      "valid": true,
+      "reason": "Illustrative account-owned claim display at 1.02 multiplier; does not represent live balance."
+    },
+    {
+      "file": "examples/asset-event.valid.json",
+      "schema": "schemas/domain.schema.json",
+      "schemaRef": "#/$defs/AssetEvent",
+      "valid": true,
+      "reason": "Synthetic immutable protocol-final event; not actual issuer evidence."
+    },
+    {
+      "file": "examples/position-active.valid.json",
+      "schema": "schemas/domain.schema.json",
+      "schemaRef": "#/$defs/Position",
+      "valid": true,
+      "reason": "Started 180-day position with no resale listing."
+    },
+    {
+      "file": "examples/position-settling.valid.json",
+      "schema": "schemas/domain.schema.json",
+      "schemaRef": "#/$defs/Position",
+      "valid": true,
+      "reason": "Expired active contract position awaiting settlement."
+    },
+    {
+      "file": "examples/quote-exact-output.valid.json",
+      "schema": "schemas/quote.schema.json",
+      "schemaRef": "#/$defs/QuoteComparison",
+      "valid": true,
+      "reason": "Synthetic exact-output comparison ranks expected sell amount, not maximum."
+    },
+    {
+      "file": "examples/quote-ceiling-only.valid.json",
+      "schema": "schemas/quote.schema.json",
+      "schemaRef": "#/$defs/QuoteComparison",
+      "valid": true,
+      "reason": "Ceiling-only result remains unranked rather than inventing expected amount."
+    },
+    {
+      "file": "examples/quote-no-route.valid.json",
+      "schema": "schemas/quote.schema.json",
+      "schemaRef": "#/$defs/QuoteComparison",
+      "valid": true,
+      "reason": "No route result contains no estimate or fallback price."
+    },
+    {
+      "file": "examples/prepared-unavailable.valid.json",
+      "schema": "schemas/api.schema.json",
+      "schemaRef": "#/$defs/PreparedIntent",
+      "valid": true,
+      "reason": "Missing listing can return blocked preview without invented hashes or money."
+    },
+    {
+      "file": "examples/prepared-ready-shape.valid.json",
+      "schema": "schemas/api.schema.json",
+      "schemaRef": "#/$defs/PreparedIntent",
+      "valid": true,
+      "reason": "Schema shape only; deliberate fake selector is not a semantically executable transaction."
+    },
+    {
+      "file": "examples/quote-hypothetical-ranked.valid.json",
+      "schema": "schemas/quote.schema.json",
+      "schemaRef": "#/$defs/QuoteComparison",
+      "valid": true,
+      "reason": "Two synthetic local-chain candidates; best quoted gross output only, no bridge recommendation."
+    },
+    {
+      "file": "examples/uint256-max.valid.json",
+      "schema": "schemas/common.schema.json",
+      "schemaRef": "#/$defs/Uint256",
+      "valid": true,
+      "reason": "Maximum uint256 is accepted exactly."
+    },
+    {
+      "file": "examples/uint64-overflow.invalid.json",
+      "schema": "schemas/common.schema.json",
+      "schemaRef": "#/$defs/Uint64",
+      "valid": false,
+      "reason": "uint64 maximum+1 is rejected exactly."
+    },
+    {
+      "file": "examples/purchase-card.valid.json",
+      "schema": "schemas/api.schema.json",
+      "schemaRef": "#/$defs/AssistantCard",
+      "valid": true,
+      "reason": "Purchase card binds typed purchase summary and blocked preview."
+    },
+    {
+      "file": "examples/purchase-card-other-action.invalid.json",
+      "schema": "schemas/api.schema.json",
+      "schemaRef": "#/$defs/AssistantCard",
+      "valid": false,
+      "reason": "Purchase card must contain BUY_LISTING intent, not other generic wallet actions."
+    },
+    {
+      "file": "examples/asset-unavailable.valid.json",
+      "schema": "schemas/domain.schema.json",
+      "schemaRef": "#/$defs/Asset",
+      "valid": true,
+      "reason": "Unavailable adapter has null live values; registry ownership/status is preserved."
+    },
+    {
+      "file": "examples/asset-unavailable-zero.invalid.json",
+      "schema": "schemas/domain.schema.json",
+      "schemaRef": "#/$defs/Asset",
+      "valid": false,
+      "reason": "Unavailable live multiplier must not be invented as zero."
+    }
+  ],
+  "semanticCases": [
+    {
+      "file": "examples/key-chain-mismatch.semantic-invalid.json",
+      "schema": "schemas/domain.schema.json",
+      "schemaRef": "#/$defs/ListingDetail",
+      "schemaValid": true,
+      "semanticValid": false,
+      "reason": "Entity key components must match snapshot chain/contract/id."
+    },
+    {
+      "file": "examples/position-end-mismatch.semantic-invalid.json",
+      "schema": "schemas/domain.schema.json",
+      "schemaRef": "#/$defs/ListingDetail",
+      "schemaValid": true,
+      "semanticValid": false,
+      "reason": "Active endAt must equal startAt plus durationSeconds."
+    },
+    {
+      "file": "examples/prepared-ready-shape.valid.json",
+      "schema": "schemas/api.schema.json",
+      "schemaRef": "#/$defs/PreparedIntent",
+      "schemaValid": true,
+      "semanticValid": false,
+      "reason": "Fake selector 0x00000000 must fail allowlisted ABI/call-data validation; never execute fixture."
+    }
+  ]
+}

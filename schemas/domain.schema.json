@@ -1,0 +1,689 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rwa-income-rights.local/schemas/domain.schema.json",
+  "title": "RWA Income Rights domain v1",
+  "description": "Design contract, not deployed API. Local registry resolves schema IDs offline.",
+  "version": "1.0",
+  "$defs": {
+    "ChainSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "chainId": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/ChainId"
+        },
+        "blockNumber": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint256"
+        },
+        "blockHash": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Bytes32"
+        },
+        "blockTimestamp": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Timestamp"
+        },
+        "observedAt": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Timestamp"
+        },
+        "finality": {
+          "type": "string",
+          "enum": [
+            "FINALIZED",
+            "CONFIRMED",
+            "LATEST"
+          ]
+        },
+        "indexerStatus": {
+          "type": "string",
+          "enum": [
+            "HEALTHY",
+            "LAGGING",
+            "REBUILDING",
+            "UNAVAILABLE"
+          ]
+        }
+      },
+      "required": [
+        "chainId",
+        "blockNumber",
+        "blockHash",
+        "blockTimestamp",
+        "observedAt",
+        "finality",
+        "indexerStatus"
+      ]
+    },
+    "TokenRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "chainId": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/ChainId"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "NATIVE",
+            "ERC20"
+          ]
+        },
+        "address": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/NonzeroAddress"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "symbol": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 24
+        },
+        "decimals": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "isDemo": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "chainId",
+        "kind",
+        "address",
+        "name",
+        "symbol",
+        "decimals",
+        "isDemo"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "NATIVE"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "address": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "address": {
+                "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/NonzeroAddress"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "assetKey": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/AssetKey"
+        },
+        "assetId": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Bytes32"
+        },
+        "registryAddress": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/NonzeroAddress"
+        },
+        "token": {
+          "$ref": "https://rwa-income-rights.local/schemas/domain.schema.json#/$defs/TokenRef"
+        },
+        "adapterAddress": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/NonzeroAddress"
+        },
+        "newPositionsEnabled": {
+          "type": "boolean"
+        },
+        "safetyState": {
+          "type": "string",
+          "enum": [
+            "NORMAL",
+            "ACCOUNTING_QUARANTINED",
+            "TRANSFER_QUARANTINED"
+          ]
+        },
+        "syncStatus": {
+          "type": "string",
+          "enum": [
+            "SYNCED",
+            "DATA_STALE",
+            "ACCOUNTING_QUARANTINED",
+            "TRANSFER_QUARANTINED",
+            "ADAPTER_UNAVAILABLE"
+          ]
+        },
+        "assetHeadHash": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Bytes32"
+        },
+        "currentMultiplier": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/PositiveUint256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "multiplierScale": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/PositiveUint256"
+        },
+        "currentNonce": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "eventCount": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint64"
+        },
+        "finalizedThrough": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Timestamp"
+        },
+        "metadataStatus": {
+          "type": "string",
+          "enum": [
+            "SYNCED",
+            "AWAITING_CLASSIFICATION",
+            "SOURCE_UNAVAILABLE",
+            "CONFLICT",
+            "UNSUPPORTED_ACTION"
+          ]
+        },
+        "snapshot": {
+          "$ref": "https://rwa-income-rights.local/schemas/domain.schema.json#/$defs/ChainSnapshot"
+        }
+      },
+      "required": [
+        "assetKey",
+        "assetId",
+        "registryAddress",
+        "token",
+        "adapterAddress",
+        "newPositionsEnabled",
+        "safetyState",
+        "syncStatus",
+        "assetHeadHash",
+        "currentMultiplier",
+        "multiplierScale",
+        "currentNonce",
+        "eventCount",
+        "finalizedThrough",
+        "metadataStatus",
+        "snapshot"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "syncStatus": {
+                "const": "ADAPTER_UNAVAILABLE"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "currentMultiplier": {
+                "type": "null"
+              },
+              "currentNonce": {
+                "type": "null"
+              },
+              "metadataStatus": {
+                "enum": [
+                  "SOURCE_UNAVAILABLE",
+                  "CONFLICT"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "currentMultiplier": {
+                "type": "string"
+              },
+              "currentNonce": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Position": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "positionKey": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/EntityKey"
+        },
+        "positionId": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/PositiveUint256"
+        },
+        "marketAddress": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/NonzeroAddress"
+        },
+        "assetKey": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/AssetKey"
+        },
+        "principalOwner": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/NonzeroAddress"
+        },
+        "rightsOwner": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/NonzeroAddress"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "principalShares": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint256"
+        },
+        "principalTokenAmountAtomic": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "incomeBps": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/IncomeBps"
+        },
+        "durationSeconds": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/LeaseDurationSeconds"
+        },
+        "createdAt": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Timestamp"
+        },
+        "cancelledAt": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "currentListingId": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint256"
+        },
+        "startAt": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "endAt": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "activationEventCursor": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint64"
+        },
+        "eventCursor": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint64"
+        },
+        "storedState": {
+          "type": "string",
+          "enum": [
+            "OFFERED",
+            "ACTIVE",
+            "SETTLED",
+            "CANCELLED",
+            "RELEASED"
+          ]
+        },
+        "displayState": {
+          "type": "string",
+          "enum": [
+            "OFFERED",
+            "ACTIVE",
+            "SETTLING",
+            "SETTLED",
+            "CANCELLED",
+            "RELEASED"
+          ]
+        },
+        "activeListingKey": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/EntityKey"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "snapshot": {
+          "$ref": "https://rwa-income-rights.local/schemas/domain.schema.json#/$defs/ChainSnapshot"
+        }
+      },
+      "required": [
+        "positionKey",
+        "positionId",
+        "marketAddress",
+        "assetKey",
+        "principalOwner",
+        "rightsOwner",
+        "principalShares",
+        "principalTokenAmountAtomic",
+        "incomeBps",
+        "durationSeconds",
+        "createdAt",
+        "cancelledAt",
+        "currentListingId",
+        "startAt",
+        "endAt",
+        "activationEventCursor",
+        "eventCursor",
+        "storedState",
+        "displayState",
+        "activeListingKey",
+        "snapshot"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "storedState": {
+                "enum": [
+                  "OFFERED",
+                  "CANCELLED"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "rightsOwner": {
+                "type": "null"
+              },
+              "startAt": {
+                "type": "null"
+              },
+              "endAt": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "storedState": {
+                "enum": [
+                  "ACTIVE",
+                  "SETTLED"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "rightsOwner": {
+                "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/NonzeroAddress"
+              },
+              "startAt": {
+                "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Timestamp"
+              },
+              "endAt": {
+                "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Timestamp"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Listing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "listingKey": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/EntityKey"
+        },
+        "listingId": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/PositiveUint256"
+        },
+        "positionKey": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/EntityKey"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "PRIMARY",
+            "SECONDARY"
+          ]
+        },
+        "seller": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/NonzeroAddress"
+        },
+        "paymentToken": {
+          "$ref": "https://rwa-income-rights.local/schemas/domain.schema.json#/$defs/TokenRef"
+        },
+        "priceAtomic": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/PositiveUint256"
+        },
+        "createdAt": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Timestamp"
+        },
+        "expiresAt": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Timestamp"
+        },
+        "storedStatus": {
+          "type": "string",
+          "enum": [
+            "OPEN",
+            "FILLED",
+            "CANCELLED"
+          ]
+        },
+        "displayStatus": {
+          "type": "string",
+          "enum": [
+            "OPEN",
+            "FILLED",
+            "CANCELLED",
+            "EXPIRED",
+            "INVALID"
+          ]
+        },
+        "termsHash": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Bytes32"
+        },
+        "createdBlockNumber": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint256"
+        },
+        "snapshot": {
+          "$ref": "https://rwa-income-rights.local/schemas/domain.schema.json#/$defs/ChainSnapshot"
+        }
+      },
+      "required": [
+        "listingKey",
+        "listingId",
+        "positionKey",
+        "kind",
+        "seller",
+        "paymentToken",
+        "priceAtomic",
+        "createdAt",
+        "expiresAt",
+        "storedStatus",
+        "displayStatus",
+        "termsHash",
+        "createdBlockNumber",
+        "snapshot"
+      ]
+    },
+    "ClaimBalance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "assetKey": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/AssetKey"
+        },
+        "marketAddress": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/NonzeroAddress"
+        },
+        "account": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/NonzeroAddress"
+        },
+        "claimShares": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint256"
+        },
+        "claimTokenAmountAtomic": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "snapshot": {
+          "$ref": "https://rwa-income-rights.local/schemas/domain.schema.json#/$defs/ChainSnapshot"
+        }
+      },
+      "required": [
+        "assetKey",
+        "marketAddress",
+        "account",
+        "claimShares",
+        "claimTokenAmountAtomic",
+        "snapshot"
+      ]
+    },
+    "AssetEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "eventId": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Bytes32"
+        },
+        "assetKey": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/AssetKey"
+        },
+        "sequence": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint64"
+        },
+        "effectiveAt": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Timestamp"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "DIVIDEND",
+            "SPLIT",
+            "REVERSE_SPLIT",
+            "NO_INCOME"
+          ]
+        },
+        "multiplierBefore": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/PositiveUint256"
+        },
+        "multiplierAfter": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/PositiveUint256"
+        },
+        "issuerNonceAfter": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint256"
+        },
+        "historyIndex": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint256"
+        },
+        "sourceOccurrenceKey": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Bytes32"
+        },
+        "sourceRevision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295
+        },
+        "evidenceHash": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Bytes32"
+        },
+        "recordedTransactionHash": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Bytes32"
+        },
+        "snapshot": {
+          "$ref": "https://rwa-income-rights.local/schemas/domain.schema.json#/$defs/ChainSnapshot"
+        }
+      },
+      "required": [
+        "eventId",
+        "assetKey",
+        "sequence",
+        "effectiveAt",
+        "kind",
+        "multiplierBefore",
+        "multiplierAfter",
+        "issuerNonceAfter",
+        "historyIndex",
+        "sourceOccurrenceKey",
+        "sourceRevision",
+        "evidenceHash",
+        "recordedTransactionHash",
+        "snapshot"
+      ]
+    },
+    "ListingDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "listing": {
+          "$ref": "https://rwa-income-rights.local/schemas/domain.schema.json#/$defs/Listing"
+        },
+        "position": {
+          "$ref": "https://rwa-income-rights.local/schemas/domain.schema.json#/$defs/Position"
+        },
+        "asset": {
+          "$ref": "https://rwa-income-rights.local/schemas/domain.schema.json#/$defs/Asset"
+        }
+      },
+      "required": [
+        "listing",
+        "position",
+        "asset"
+      ]
+    }
+  },
+  "$ref": "#/$defs/ListingDetail"
+}

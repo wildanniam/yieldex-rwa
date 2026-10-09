@@ -1,0 +1,60 @@
+{
+  "sourceVerification": {
+    "implementation": "0x65c40d624af3b18c109fbf87b7deff34cdc5f19b",
+    "sourcifyReportedRuntimeMatch": "exact_match",
+    "sourcifyReportedCreationMatch": "exact_match",
+    "compiler": "0.8.9+commit.e5eed63a",
+    "lastRpcError": "HTTP Error 403: Forbidden",
+    "pinnedBlock": 26145883,
+    "rpcUsed": "https://eth.drpc.org",
+    "runtimeBytes": 15981,
+    "rpcMatchesSourcifyBytecode": true,
+    "runtimeSha256": "60d215f568f1fcd69198b15916bd2b2f50b72fa4c115b0e5aef034cf10331d49",
+    "mainSourceMatchesPinnedReferenceNormalizedNewlines": true,
+    "referenceCommit": "35859e8c755698eeeef96ef15beef5fcd6b978cc"
+  },
+  "docs": {
+    "foundry-fork": {
+      "url": "https://getfoundry.sh/forge/tests/fork-testing",
+      "bytes": 292808,
+      "sha256": "85bf24bebdce26d3e43401a96aafd0f10bea16ad5b53c5ccbc83de22c451b69c"
+    },
+    "foundry-invariant": {
+      "url": "https://getfoundry.sh/forge/invariant-testing",
+      "bytes": 389247,
+      "sha256": "a8f1871cbe95f2ed725d0e7c010ba74cf24dc5ce838e02ccfc8a61001c90934d"
+    },
+    "openapi": {
+      "url": "https://docs.xstocks.fi/_bundle/apis/@v2/openapi.json?download=",
+      "bytes": 216258,
+      "sha256": "7e761ebd09b07161e5e024ff986492d5aa1456abfd2050de536d78db06001d77"
+    }
+  },
+  "eventSchema": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "Initial",
+        "Corrected",
+        "Cancelled",
+        "Scheduled"
+      ]
+    },
+    "version": {
+      "type": "number"
+    },
+    "effectiveTimeUtc": {
+      "type": "string",
+      "nullable": true,
+      "format": "date-time"
+    },
+    "multiplierOld": {
+      "type": "string",
+      "nullable": true
+    },
+    "multiplierNew": {
+      "type": "string",
+      "nullable": true
+    }
+  }
+}

@@ -1,0 +1,62 @@
+.lab {
+  max-width: 1100px;
+  padding: 32px 24px;
+  font-size: 15px;
+}
+.lab h1 {
+  font-size: 36px;
+}
+.lab section {
+  margin: 24px 0;
+  padding: 20px;
+  border: 1px solid #bfc9c1;
+  border-radius: 8px;
+  background: white;
+}
+.lab form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: end;
+}
+.lab label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.lab input,
+.lab select,
+.lab button {
+  font: inherit;
+  padding: 9px;
+  border: 1px solid #8a9e94;
+  border-radius: 4px;
+}
+.lab button {
+  background: #e3ece5;
+  cursor: pointer;
+  margin: 4px;
+}
+.lab button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.lab :focus-visible {
+  outline: 3px solid #1d6758;
+  outline-offset: 3px;
+}
+.lab article {
+  margin: 16px 0;
+}
+.lab pre {
+  max-height: 420px;
+  overflow: auto;
+  font-size: 12px;
+}
+.lab code {
+  overflow-wrap: anywhere;
+}
+.lab [role='status'] {
+  min-height: 24px;
+  font-weight: 600;
+}

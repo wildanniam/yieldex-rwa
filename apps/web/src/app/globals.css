@@ -1,0 +1,87 @@
+:root {
+  color-scheme: light;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #182d2b;
+  background: #f4f5f1;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+main {
+  width: min(960px, 100%);
+  margin: 0 auto;
+  padding: 64px 24px;
+}
+.eyebrow {
+  color: #526660;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+h1 {
+  font-size: clamp(36px, 7vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+  margin: 28px 0 24px;
+}
+.intro {
+  font-size: 18px;
+  line-height: 1.6;
+  max-width: 660px;
+}
+.meta {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #526660;
+  margin: 24px 0 40px;
+}
+.modules {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+article {
+  border-top: 1px solid #bfc9c1;
+  padding-top: 16px;
+}
+h2 {
+  font-size: 19px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+code {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+p {
+  line-height: 1.6;
+}
+article p,
+.next p {
+  color: #526660;
+  max-width: 640px;
+}
+.next {
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid #bfc9c1;
+}
+a {
+  color: #175342;
+  text-underline-offset: 5px;
+}
+a:focus-visible {
+  outline: 2px solid #175342;
+  outline-offset: 6px;
+}
+@media (max-width: 560px) {
+  main {
+    padding: 36px 20px;
+  }
+  .modules {
+    grid-template-columns: 1fr;
+  }
+}

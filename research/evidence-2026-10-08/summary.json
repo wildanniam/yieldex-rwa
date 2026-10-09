@@ -1,0 +1,257 @@
+{
+  "observedAtUtc": "2026-10-08T06:46:19.554061+00:00",
+  "chainId": "0x1",
+  "block": {
+    "number": 26145883,
+    "hash": "0xaf43d16d79770a96dbe621e0ae711cabb98319b5fa1a260ea22080947b48fb0a",
+    "timestamp": 1791440855
+  },
+  "assets": {
+    "SPYx": {
+      "address": "0x90a2a4c76b5d8c0bc892a69ea28aa775a8f2dd48",
+      "networks": [
+        "Ton",
+        "Tron",
+        "Solana",
+        "Monad",
+        "HyperEVM",
+        "Ink",
+        "Mantle",
+        "BinanceSmartChain",
+        "Arbitrum",
+        "XLayer",
+        "Optimism",
+        "Ethereum"
+      ],
+      "reads": {
+        "bytecodeBytes": 2138,
+        "implementation": "0x65c40d624af3b18c109fbf87b7deff34cdc5f19b",
+        "decimals()": [
+          18
+        ],
+        "getCurrentMultiplier()": [
+          1005714560286254000,
+          0,
+          4
+        ],
+        "feePerPeriod()": [
+          0
+        ],
+        "periodLength()": [
+          604800
+        ],
+        "multiplierUpdatesLength()": [
+          1
+        ],
+        "newMultiplierActivationTime()": [
+          0
+        ],
+        "newMultiplier()": [
+          1005714560286254000
+        ],
+        "multiplierNonce()": [
+          4
+        ],
+        "getSharesByUnderlyingAmount(uint256)": [
+          994317910357559624
+        ],
+        "getUnderlyingAmountByShares(uint256)": [
+          1005714560286254000
+        ]
+      },
+      "apiMultiplier": {
+        "currentMultiplier": 1.005714560286254,
+        "newMultiplier": 0,
+        "activationDateTime": 0,
+        "reason": null
+      },
+      "historyCount": 4,
+      "historyReasons": [
+        "Dividend"
+      ],
+      "historyPage": {
+        "currentPage": 0,
+        "hasNextPage": false
+      },
+      "corporateCount": 4,
+      "corporatePage": {
+        "currentPage": 1,
+        "pageSize": 100,
+        "totalPages": 1,
+        "totalNodes": 4,
+        "hasNextPage": false,
+        "hasPreviousPage": false
+      },
+      "corporateStatuses": [
+        "Initial"
+      ],
+      "corporateTypes": [
+        "CashDividend"
+      ]
+    },
+    "AAPLx": {
+      "address": "0x9d275685dc284c8eb1c79f6aba7a63dc75ec890a",
+      "networks": [
+        "Ton",
+        "Tron",
+        "Solana",
+        "HyperEVM",
+        "Ink",
+        "BinanceSmartChain",
+        "Arbitrum",
+        "Monad",
+        "Mantle",
+        "XLayer",
+        "Optimism",
+        "Ethereum"
+      ],
+      "reads": {
+        "bytecodeBytes": 2138,
+        "implementation": "0x65c40d624af3b18c109fbf87b7deff34cdc5f19b",
+        "decimals()": [
+          18
+        ],
+        "getCurrentMultiplier()": [
+          1003269012539818700,
+          0,
+          5
+        ],
+        "feePerPeriod()": [
+          0
+        ],
+        "periodLength()": [
+          604800
+        ],
+        "multiplierUpdatesLength()": [
+          2
+        ],
+        "newMultiplierActivationTime()": [
+          0
+        ],
+        "newMultiplier()": [
+          1003269012539818700
+        ],
+        "multiplierNonce()": [
+          5
+        ],
+        "getSharesByUnderlyingAmount(uint256)": [
+          996741639082878624
+        ],
+        "getUnderlyingAmountByShares(uint256)": [
+          1003269012539818700
+        ]
+      },
+      "apiMultiplier": {
+        "currentMultiplier": 1.0032690125398187,
+        "newMultiplier": 0,
+        "activationDateTime": 0,
+        "reason": null
+      },
+      "historyCount": 5,
+      "historyReasons": [
+        "Dividend"
+      ],
+      "historyPage": {
+        "currentPage": 0,
+        "hasNextPage": false
+      },
+      "corporateCount": 5,
+      "corporatePage": {
+        "currentPage": 1,
+        "pageSize": 100,
+        "totalPages": 1,
+        "totalNodes": 5,
+        "hasNextPage": false,
+        "hasPreviousPage": false
+      },
+      "corporateStatuses": [
+        "Initial"
+      ],
+      "corporateTypes": [
+        "CashDividend"
+      ]
+    },
+    "MSFTx": {
+      "address": "0x5621737f42dae558b81269fcb9e9e70c19aa6b35",
+      "networks": [
+        "Tron",
+        "Ton",
+        "Solana",
+        "Monad",
+        "HyperEVM",
+        "Ink",
+        "Mantle",
+        "BinanceSmartChain",
+        "Arbitrum",
+        "XLayer",
+        "Optimism",
+        "Ethereum"
+      ],
+      "reads": {
+        "bytecodeBytes": 2138,
+        "implementation": "0x65c40d624af3b18c109fbf87b7deff34cdc5f19b",
+        "decimals()": [
+          18
+        ],
+        "getCurrentMultiplier()": [
+          1005903390478745600,
+          0,
+          5
+        ],
+        "feePerPeriod()": [
+          0
+        ],
+        "periodLength()": [
+          604800
+        ],
+        "multiplierUpdatesLength()": [
+          2
+        ],
+        "newMultiplierActivationTime()": [
+          0
+        ],
+        "newMultiplier()": [
+          1005903390478745600
+        ],
+        "multiplierNonce()": [
+          5
+        ],
+        "getSharesByUnderlyingAmount(uint256)": [
+          994131255014523845
+        ],
+        "getUnderlyingAmountByShares(uint256)": [
+          1005903390478745600
+        ]
+      },
+      "apiMultiplier": {
+        "currentMultiplier": 1.0059033904787456,
+        "newMultiplier": 0,
+        "activationDateTime": 0,
+        "reason": null
+      },
+      "historyCount": 5,
+      "historyReasons": [
+        "Dividend"
+      ],
+      "historyPage": {
+        "currentPage": 0,
+        "hasNextPage": false
+      },
+      "corporateCount": 5,
+      "corporatePage": {
+        "currentPage": 1,
+        "pageSize": 100,
+        "totalPages": 1,
+        "totalNodes": 5,
+        "hasNextPage": false,
+        "hasPreviousPage": false
+      },
+      "corporateStatuses": [
+        "Initial"
+      ],
+      "corporateTypes": [
+        "CashDividend"
+      ]
+    }
+  }
+}

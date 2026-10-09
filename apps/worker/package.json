@@ -1,0 +1,23 @@
+{
+  "name": "@rwa/worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch --env-file-if-exists=.env --import tsx src/main.ts",
+    "once": "node --env-file-if-exists=.env --import tsx src/main.ts --once",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node --env-file-if-exists=.env --import tsx dist/main.js",
+    "typecheck": "tsc --noEmit",
+    "index:once": "node --env-file-if-exists=.env --import tsx src/indexer/run.ts --once",
+    "index:watch": "node --env-file-if-exists=.env --import tsx src/indexer/run.ts --watch",
+    "finalize:once": "node --env-file-if-exists=.env --import tsx src/finalizer/run.ts",
+    "issuer:poll": "node --env-file-if-exists=.env --import tsx src/finalizer/poll.ts"
+  },
+  "dependencies": {
+    "@rwa/shared": "workspace:*",
+    "postgres": "3.4.7",
+    "tsx": "4.23.15",
+    "viem": "2.38.5"
+  }
+}

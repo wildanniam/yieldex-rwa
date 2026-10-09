@@ -1,0 +1,62 @@
+{
+  "SPYx-asset": {
+    "url": "https://api.xstocks.fi/api/v2/public/assets/SPYx",
+    "status": 200,
+    "sha256": "04d3fa25ba90faac74941c76808a0b836b658183f0c49b76c805c54cddd931ce"
+  },
+  "SPYx-multiplier": {
+    "url": "https://api.xstocks.fi/api/v2/public/assets/SPYx/multiplier?network=Ethereum",
+    "status": 200,
+    "sha256": "23a9bffc1de78a783f16898e043274b1821b22162e4f8ec7996a5d335087b3e4"
+  },
+  "SPYx-history": {
+    "url": "https://api.xstocks.fi/api/v2/public/assets/SPYx/multiplier/history?network=Ethereum&pageSize=100",
+    "status": 200,
+    "sha256": "12f142251ee6406ee245e1872c797a08e69dc00653b3beb6628c40061ba6d23f"
+  },
+  "SPYx-corporate": {
+    "url": "https://api.xstocks.fi/api/v2/public/corporate-actions/history?symbol=SPYx&pageSize=100",
+    "status": 200,
+    "sha256": "c52e3463c01f016d0db594452fd75964531f1461d276f181ec1ee11e7076afcc"
+  },
+  "AAPLx-asset": {
+    "url": "https://api.xstocks.fi/api/v2/public/assets/AAPLx",
+    "status": 200,
+    "sha256": "2b4c31e9a74d5a9195ba23c1c0a27d2c90fc1443c1004608412291c752a5c710"
+  },
+  "AAPLx-multiplier": {
+    "url": "https://api.xstocks.fi/api/v2/public/assets/AAPLx/multiplier?network=Ethereum",
+    "status": 200,
+    "sha256": "c756e3c34b212760ebc4e167af2dcb3cc94ada97a9944ebbbee789ac9065d6a0"
+  },
+  "AAPLx-history": {
+    "url": "https://api.xstocks.fi/api/v2/public/assets/AAPLx/multiplier/history?network=Ethereum&pageSize=100",
+    "status": 200,
+    "sha256": "b0a3445a54bbc7ef392b96b97723487574b680aaec4a32c8d59bfdd09d73d48a"
+  },
+  "AAPLx-corporate": {
+    "url": "https://api.xstocks.fi/api/v2/public/corporate-actions/history?symbol=AAPLx&pageSize=100",
+    "status": 200,
+    "sha256": "5354b73bd6c067768ab8cd07c8406ee1a22c1a89c432e44af4726d836c10d8cb"
+  },
+  "MSFTx-asset": {
+    "url": "https://api.xstocks.fi/api/v2/public/assets/MSFTx",
+    "status": 200,
+    "sha256": "e91f1b05a906242a69bd90734c86156776e3db7b6a5466ed8f72a606024a9136"
+  },
+  "MSFTx-multiplier": {
+    "url": "https://api.xstocks.fi/api/v2/public/assets/MSFTx/multiplier?network=Ethereum",
+    "status": 200,
+    "sha256": "6eb94b2c0456c3a1af23ce6bf78ed215539961dc5d0814a78adbd72ce4fa99b9"
+  },
+  "MSFTx-history": {
+    "url": "https://api.xstocks.fi/api/v2/public/assets/MSFTx/multiplier/history?network=Ethereum&pageSize=100",
+    "status": 200,
+    "sha256": "a592178c76e41cc11ac65d96e541cd1b3cb59adfbe1a970ee78c3753ff3b9268"
+  },
+  "MSFTx-corporate": {
+    "url": "https://api.xstocks.fi/api/v2/public/corporate-actions/history?symbol=MSFTx&pageSize=100",
+    "status": 200,
+    "sha256": "286197978c02062a485c194f4d7e198db2683a51b1be24031529fc6304ee4d42"
+  }
+}

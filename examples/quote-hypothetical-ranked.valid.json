@@ -1,0 +1,174 @@
+{
+  "request": {
+    "requestId": "00000000-0000-4000-8000-000000000001",
+    "mode": "EXACT_INPUT",
+    "sellAssetId": "ETH",
+    "buyAssetId": "USDC",
+    "amountAtomic": "1000000000000000000000",
+    "originChainId": 1,
+    "chainIds": [
+      1,
+      8453
+    ],
+    "comparisonScope": "HYPOTHETICAL_CHAINS",
+    "slippageBps": 50
+  },
+  "quotes": [
+    {
+      "quoteId": "00000000-0000-4000-8000-000000000002",
+      "mode": "EXACT_INPUT",
+      "chainId": 1,
+      "providerId": "0x",
+      "status": "AVAILABLE",
+      "sellToken": {
+        "chainId": 1,
+        "kind": "NATIVE",
+        "address": null,
+        "name": "Ether",
+        "symbol": "ETH",
+        "decimals": 18,
+        "isDemo": false
+      },
+      "buyToken": {
+        "chainId": 1,
+        "kind": "ERC20",
+        "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "name": "USD Coin",
+        "symbol": "USDC",
+        "decimals": 6,
+        "isDemo": false
+      },
+      "sellAmountAtomic": "1000000000000000000000",
+      "buyAmountAtomic": "2980000000000",
+      "minBuyAmountAtomic": "2965100000000",
+      "maxSellAmountAtomic": null,
+      "priceImpactBps": null,
+      "observedAt": 1791417600,
+      "expiresAt": 1791417630,
+      "blockNumber": null,
+      "fees": {
+        "items": [
+          {
+            "kind": "GAS",
+            "amountAtomic": "500000000000000",
+            "token": {
+              "chainId": 1,
+              "kind": "NATIVE",
+              "address": null,
+              "name": "Ether",
+              "symbol": "ETH",
+              "decimals": 18,
+              "isDemo": false
+            },
+            "treatment": "ADDITIONAL",
+            "provenance": "SYNTHETIC fixture gas estimate"
+          }
+        ],
+        "bridgeCostIncluded": false,
+        "approvalCostIncluded": false,
+        "gasCoverage": "SWAP_ONLY"
+      },
+      "sourceNames": [
+        "SYNTHETIC_DEX"
+      ],
+      "feeCompleteness": "PARTIAL",
+      "rankingBasis": "GROSS_OUTPUT",
+      "rankingAmountAtomic": "2980000000000",
+      "rankingToken": {
+        "chainId": 1,
+        "kind": "ERC20",
+        "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "name": "USD Coin",
+        "symbol": "USDC",
+        "decimals": 6,
+        "isDemo": false
+      },
+      "isHypothetical": true,
+      "reasonCode": null
+    },
+    {
+      "quoteId": "00000000-0000-4000-8000-000000000006",
+      "mode": "EXACT_INPUT",
+      "chainId": 8453,
+      "providerId": "0x",
+      "status": "AVAILABLE",
+      "sellToken": {
+        "chainId": 8453,
+        "kind": "NATIVE",
+        "address": null,
+        "name": "Ether",
+        "symbol": "ETH",
+        "decimals": 18,
+        "isDemo": false
+      },
+      "buyToken": {
+        "chainId": 8453,
+        "kind": "ERC20",
+        "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+        "name": "USD Coin",
+        "symbol": "USDC",
+        "decimals": 6,
+        "isDemo": false
+      },
+      "sellAmountAtomic": "1000000000000000000000",
+      "buyAmountAtomic": "2990000000000",
+      "minBuyAmountAtomic": "2975050000000",
+      "maxSellAmountAtomic": null,
+      "priceImpactBps": null,
+      "observedAt": 1791417600,
+      "expiresAt": 1791417630,
+      "blockNumber": null,
+      "fees": {
+        "items": [
+          {
+            "kind": "GAS",
+            "amountAtomic": "500000000000000",
+            "token": {
+              "chainId": 8453,
+              "kind": "NATIVE",
+              "address": null,
+              "name": "Ether",
+              "symbol": "ETH",
+              "decimals": 18,
+              "isDemo": false
+            },
+            "treatment": "ADDITIONAL",
+            "provenance": "SYNTHETIC fixture gas estimate"
+          }
+        ],
+        "bridgeCostIncluded": false,
+        "approvalCostIncluded": false,
+        "gasCoverage": "SWAP_ONLY"
+      },
+      "sourceNames": [
+        "SYNTHETIC_DEX"
+      ],
+      "feeCompleteness": "PARTIAL",
+      "rankingBasis": "GROSS_OUTPUT",
+      "rankingAmountAtomic": "2990000000000",
+      "rankingToken": {
+        "chainId": 8453,
+        "kind": "ERC20",
+        "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+        "name": "USD Coin",
+        "symbol": "USDC",
+        "decimals": 6,
+        "isDemo": false
+      },
+      "isHypothetical": true,
+      "reasonCode": null
+    }
+  ],
+  "recommendedQuoteId": "00000000-0000-4000-8000-000000000006",
+  "rankingBasis": "GROSS_OUTPUT",
+  "rankingStatus": "RANKED",
+  "observedAt": 1791417600,
+  "expiresAt": 1791417630,
+  "disclosures": [
+    "SYNTHETIC data; not a market quote.",
+    "Gross output ranking; gas is separate.",
+    "Recommendation only; swap execution unavailable.",
+    "Assumes funds already available on each chain; bridge costs and time excluded."
+  ],
+  "executionAvailable": false
+}

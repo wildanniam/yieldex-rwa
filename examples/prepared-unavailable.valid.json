@@ -1,0 +1,37 @@
+{
+  "intentId": "00000000-0000-4000-8000-000000000003",
+  "request": {
+    "action": "BUY_LISTING",
+    "listingKey": "eip155:11155111:0x1111111111111111111111111111111111111111:1"
+  },
+  "walletAddress": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "chainId": 11155111,
+  "marketAddress": "0x1111111111111111111111111111111111111111",
+  "createdAt": 1791417605,
+  "expiresAt": 1791417725,
+  "state": "BLOCKED",
+  "blockers": [
+    "LISTING_UNAVAILABLE"
+  ],
+  "preparedAtSnapshot": {
+    "chainId": 11155111,
+    "blockNumber": "11868384",
+    "blockHash": "0x4444444444444444444444444444444444444444444444444444444444444444",
+    "blockTimestamp": 1791417600,
+    "observedAt": 1791417605,
+    "finality": "LATEST",
+    "indexerStatus": "HEALTHY"
+  },
+  "expectedTermsHash": null,
+  "expectedAssetHeadHash": null,
+  "maxPriceAtomic": null,
+  "deadline": 1791417725,
+  "maxEvents": 32,
+  "steps": [],
+  "purchaseSummary": null,
+  "pendingEventCount": "0",
+  "simulation": "FAILED",
+  "disclosures": [
+    "Synthetic schema fixture; no deployment or executable calldata."
+  ]
+}

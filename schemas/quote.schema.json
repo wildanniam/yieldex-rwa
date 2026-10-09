@@ -1,0 +1,630 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rwa-income-rights.local/schemas/quote.schema.json",
+  "title": "RWA Income Rights quote v1",
+  "description": "Design contract, not deployed API. Local registry resolves schema IDs offline.",
+  "version": "1.0",
+  "$defs": {
+    "QuoteRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requestId": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uuid"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "EXACT_INPUT",
+            "EXACT_OUTPUT"
+          ]
+        },
+        "sellAssetId": {
+          "type": "string",
+          "enum": [
+            "ETH",
+            "USDC"
+          ]
+        },
+        "buyAssetId": {
+          "type": "string",
+          "enum": [
+            "ETH",
+            "USDC"
+          ]
+        },
+        "amountAtomic": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/PositiveUint256"
+        },
+        "originChainId": {
+          "enum": [
+            1,
+            42161,
+            8453,
+            null
+          ]
+        },
+        "chainIds": {
+          "type": "array",
+          "items": {
+            "enum": [
+              1,
+              42161,
+              8453
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 3,
+          "uniqueItems": true
+        },
+        "comparisonScope": {
+          "type": "string",
+          "enum": [
+            "ORIGIN_CHAIN",
+            "HYPOTHETICAL_CHAINS"
+          ]
+        },
+        "slippageBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 500
+        }
+      },
+      "required": [
+        "requestId",
+        "mode",
+        "sellAssetId",
+        "buyAssetId",
+        "amountAtomic",
+        "originChainId",
+        "chainIds",
+        "comparisonScope",
+        "slippageBps"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "comparisonScope": {
+                "const": "HYPOTHETICAL_CHAINS"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "chainIds": {
+                "minItems": 2
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "originChainId": {
+                "enum": [
+                  1,
+                  42161,
+                  8453
+                ]
+              },
+              "chainIds": {
+                "maxItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "FeeItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "GAS",
+            "PROVIDER",
+            "DEX",
+            "TOKEN_TAX",
+            "OTHER"
+          ]
+        },
+        "amountAtomic": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "token": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/domain.schema.json#/$defs/TokenRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "treatment": {
+          "type": "string",
+          "enum": [
+            "EMBEDDED",
+            "ADDITIONAL",
+            "UNKNOWN"
+          ]
+        },
+        "provenance": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "kind",
+        "amountAtomic",
+        "token",
+        "treatment",
+        "provenance"
+      ]
+    },
+    "Fees": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://rwa-income-rights.local/schemas/quote.schema.json#/$defs/FeeItem"
+          },
+          "minItems": 0,
+          "maxItems": 20
+        },
+        "bridgeCostIncluded": {
+          "const": false
+        },
+        "approvalCostIncluded": {
+          "const": false
+        },
+        "gasCoverage": {
+          "type": "string",
+          "enum": [
+            "SWAP_ONLY",
+            "TOTAL_KNOWN",
+            "UNKNOWN"
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "bridgeCostIncluded",
+        "approvalCostIncluded",
+        "gasCoverage"
+      ]
+    },
+    "QuoteRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "quoteId": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uuid"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "EXACT_INPUT",
+            "EXACT_OUTPUT"
+          ]
+        },
+        "chainId": {
+          "enum": [
+            1,
+            42161,
+            8453
+          ]
+        },
+        "providerId": {
+          "const": "0x"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "NO_ROUTE",
+            "UNSUPPORTED",
+            "TIMEOUT",
+            "RATE_LIMITED",
+            "PROVIDER_ERROR",
+            "INVALID_RESPONSE"
+          ]
+        },
+        "sellToken": {
+          "$ref": "https://rwa-income-rights.local/schemas/domain.schema.json#/$defs/TokenRef"
+        },
+        "buyToken": {
+          "$ref": "https://rwa-income-rights.local/schemas/domain.schema.json#/$defs/TokenRef"
+        },
+        "sellAmountAtomic": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/PositiveUint256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "buyAmountAtomic": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/PositiveUint256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "minBuyAmountAtomic": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "maxSellAmountAtomic": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/PositiveUint256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "priceImpactBps": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Bps"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "observedAt": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Timestamp"
+        },
+        "expiresAt": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Timestamp"
+        },
+        "blockNumber": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "fees": {
+          "$ref": "https://rwa-income-rights.local/schemas/quote.schema.json#/$defs/Fees"
+        },
+        "sourceNames": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "minItems": 0,
+          "maxItems": 30
+        },
+        "feeCompleteness": {
+          "type": "string",
+          "enum": [
+            "COMPLETE",
+            "PARTIAL",
+            "UNKNOWN"
+          ]
+        },
+        "rankingBasis": {
+          "type": "string",
+          "enum": [
+            "GROSS_OUTPUT",
+            "GROSS_INPUT",
+            "NET_OUTPUT",
+            "TOTAL_INPUT"
+          ]
+        },
+        "rankingAmountAtomic": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uint256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rankingToken": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/domain.schema.json#/$defs/TokenRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "isHypothetical": {
+          "type": "boolean"
+        },
+        "reasonCode": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "quoteId",
+        "mode",
+        "chainId",
+        "providerId",
+        "status",
+        "sellToken",
+        "buyToken",
+        "sellAmountAtomic",
+        "buyAmountAtomic",
+        "minBuyAmountAtomic",
+        "maxSellAmountAtomic",
+        "priceImpactBps",
+        "observedAt",
+        "expiresAt",
+        "blockNumber",
+        "fees",
+        "sourceNames",
+        "feeCompleteness",
+        "rankingBasis",
+        "rankingAmountAtomic",
+        "rankingToken",
+        "isHypothetical",
+        "reasonCode"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "EXACT_INPUT"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "maxSellAmountAtomic": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "minBuyAmountAtomic": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "AVAILABLE"
+              },
+              "mode": {
+                "const": "EXACT_INPUT"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "sellAmountAtomic": {
+                "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/PositiveUint256"
+              },
+              "buyAmountAtomic": {
+                "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/PositiveUint256"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "AVAILABLE"
+              },
+              "mode": {
+                "const": "EXACT_OUTPUT"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "buyAmountAtomic": {
+                "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/PositiveUint256"
+              }
+            },
+            "anyOf": [
+              {
+                "properties": {
+                  "sellAmountAtomic": {
+                    "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/PositiveUint256"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "maxSellAmountAtomic": {
+                    "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/PositiveUint256"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "not": {
+                  "const": "AVAILABLE"
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "sellAmountAtomic": {
+                "type": "null"
+              },
+              "buyAmountAtomic": {
+                "type": "null"
+              },
+              "minBuyAmountAtomic": {
+                "type": "null"
+              },
+              "maxSellAmountAtomic": {
+                "type": "null"
+              },
+              "rankingAmountAtomic": {
+                "type": "null"
+              },
+              "rankingToken": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "QuoteComparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "request": {
+          "$ref": "https://rwa-income-rights.local/schemas/quote.schema.json#/$defs/QuoteRequest"
+        },
+        "quotes": {
+          "type": "array",
+          "items": {
+            "$ref": "https://rwa-income-rights.local/schemas/quote.schema.json#/$defs/QuoteRow"
+          },
+          "minItems": 0,
+          "maxItems": 3
+        },
+        "recommendedQuoteId": {
+          "anyOf": [
+            {
+              "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rankingBasis": {
+          "type": "string",
+          "enum": [
+            "GROSS_OUTPUT",
+            "GROSS_INPUT",
+            "NET_OUTPUT",
+            "TOTAL_INPUT"
+          ]
+        },
+        "rankingStatus": {
+          "type": "string",
+          "enum": [
+            "RANKED",
+            "PARTIAL",
+            "UNRANKED",
+            "NO_AVAILABLE_QUOTES"
+          ]
+        },
+        "observedAt": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Timestamp"
+        },
+        "expiresAt": {
+          "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Timestamp"
+        },
+        "disclosures": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "minItems": 1,
+          "maxItems": 20
+        },
+        "executionAvailable": {
+          "const": false
+        }
+      },
+      "required": [
+        "request",
+        "quotes",
+        "recommendedQuoteId",
+        "rankingBasis",
+        "rankingStatus",
+        "observedAt",
+        "expiresAt",
+        "disclosures",
+        "executionAvailable"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "rankingStatus": {
+                "enum": [
+                  "UNRANKED",
+                  "NO_AVAILABLE_QUOTES"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "recommendedQuoteId": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "recommendedQuoteId": {
+                "$ref": "https://rwa-income-rights.local/schemas/common.schema.json#/$defs/Uuid"
+              },
+              "quotes": {
+                "minItems": 2
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "$ref": "#/$defs/QuoteComparison"
+}

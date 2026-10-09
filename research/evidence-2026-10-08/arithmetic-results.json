@@ -1,0 +1,29 @@
+{
+  "kind": "exploratory arithmetic, not Solidity/fork/integration verification",
+  "seed": 20261008,
+  "sequences": 5000,
+  "stepsPerSequence": 20,
+  "dividendTransitionsChecked": 85000,
+  "properties": [
+    "exact share conservation across allocations and claims",
+    "retained principal rounding excess below 1 share unit per dividend",
+    "buyer rounding shortfall below 2 share units per dividend",
+    "split/reverse split do not allocate dividend",
+    "unclaimed old-owner payout grows after resale"
+  ],
+  "maxPrincipalRoundingExcessShares": 0.9999915380546781,
+  "maxBuyerRoundingShortfallShares": 1.9868698809477847,
+  "exampleAfterFirst2pctDividend": {
+    "principal": "100",
+    "AliceClaim": "1",
+    "BobClaim": "1"
+  },
+  "exampleAfterResaleAndSecond2pctDividend": {
+    "principal": "100",
+    "AliceClaim": "101/50",
+    "BobClaim": "51/50",
+    "CarolClaim": "1",
+    "total": "2601/25"
+  },
+  "note": "Amounts are hypothetical. Random arithmetic does not validate contract authorization, provider classification, finality, gas, race handling, or deployed token semantics."
+}

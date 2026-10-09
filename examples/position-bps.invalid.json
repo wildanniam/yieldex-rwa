@@ -1,0 +1,99 @@
+{
+  "listing": {
+    "listingKey": "eip155:11155111:0x1111111111111111111111111111111111111111:1",
+    "listingId": "1",
+    "positionKey": "eip155:11155111:0x1111111111111111111111111111111111111111:1",
+    "kind": "PRIMARY",
+    "seller": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "paymentToken": {
+      "chainId": 11155111,
+      "kind": "ERC20",
+      "address": "0x5555555555555555555555555555555555555555",
+      "name": "Demo USD",
+      "symbol": "DemoUSD",
+      "decimals": 6,
+      "isDemo": true
+    },
+    "priceAtomic": "90000000",
+    "createdAt": 1791417000,
+    "expiresAt": 1792022400,
+    "storedStatus": "OPEN",
+    "displayStatus": "OPEN",
+    "termsHash": "0x8888888888888888888888888888888888888888888888888888888888888888",
+    "createdBlockNumber": "11868000",
+    "snapshot": {
+      "chainId": 11155111,
+      "blockNumber": "11868384",
+      "blockHash": "0x4444444444444444444444444444444444444444444444444444444444444444",
+      "blockTimestamp": 1791417600,
+      "observedAt": 1791417605,
+      "finality": "FINALIZED",
+      "indexerStatus": "HEALTHY"
+    }
+  },
+  "position": {
+    "positionKey": "eip155:11155111:0x1111111111111111111111111111111111111111:1",
+    "positionId": "1",
+    "marketAddress": "0x1111111111111111111111111111111111111111",
+    "assetKey": "eip155:11155111:0x2222222222222222222222222222222222222222:0x3333333333333333333333333333333333333333333333333333333333333333",
+    "principalOwner": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "rightsOwner": null,
+    "principalShares": "100000000000000000000",
+    "principalTokenAmountAtomic": "100000000000000000000",
+    "incomeBps": 10001,
+    "durationSeconds": 15552000,
+    "createdAt": 1791417000,
+    "cancelledAt": null,
+    "currentListingId": "1",
+    "startAt": null,
+    "endAt": null,
+    "activationEventCursor": "0",
+    "eventCursor": "0",
+    "storedState": "OFFERED",
+    "displayState": "OFFERED",
+    "activeListingKey": "eip155:11155111:0x1111111111111111111111111111111111111111:1",
+    "snapshot": {
+      "chainId": 11155111,
+      "blockNumber": "11868384",
+      "blockHash": "0x4444444444444444444444444444444444444444444444444444444444444444",
+      "blockTimestamp": 1791417600,
+      "observedAt": 1791417605,
+      "finality": "FINALIZED",
+      "indexerStatus": "HEALTHY"
+    }
+  },
+  "asset": {
+    "assetKey": "eip155:11155111:0x2222222222222222222222222222222222222222:0x3333333333333333333333333333333333333333333333333333333333333333",
+    "assetId": "0x3333333333333333333333333333333333333333333333333333333333333333",
+    "registryAddress": "0x2222222222222222222222222222222222222222",
+    "token": {
+      "chainId": 11155111,
+      "kind": "ERC20",
+      "address": "0x6666666666666666666666666666666666666666",
+      "name": "Demo SPY",
+      "symbol": "DemoSPY",
+      "decimals": 18,
+      "isDemo": true
+    },
+    "adapterAddress": "0x7777777777777777777777777777777777777777",
+    "newPositionsEnabled": true,
+    "safetyState": "NORMAL",
+    "syncStatus": "SYNCED",
+    "assetHeadHash": "0x9999999999999999999999999999999999999999999999999999999999999999",
+    "currentMultiplier": "1000000000000000000",
+    "multiplierScale": "1000000000000000000",
+    "currentNonce": "1",
+    "eventCount": "0",
+    "finalizedThrough": 1791417000,
+    "metadataStatus": "SYNCED",
+    "snapshot": {
+      "chainId": 11155111,
+      "blockNumber": "11868384",
+      "blockHash": "0x4444444444444444444444444444444444444444444444444444444444444444",
+      "blockTimestamp": 1791417600,
+      "observedAt": 1791417605,
+      "finality": "FINALIZED",
+      "indexerStatus": "HEALTHY"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+packages:
+  - apps/*
+  - packages/*
+engineStrict: true
+saveExact: true
+allowBuilds:
+  '@fission-ai/openspec': false
+  '@foundry-rs/anvil': true
+  '@foundry-rs/forge': true
+  esbuild: true
+  sharp: true
+  unrs-resolver: true

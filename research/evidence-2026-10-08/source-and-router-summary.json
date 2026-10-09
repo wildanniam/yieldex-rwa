@@ -1,0 +1,58 @@
+{
+  "sourcify-full": {
+    "url": "https://repo.sourcify.dev/contracts/full_match/1/0x65c40d624af3b18c109fbf87b7deff34cdc5f19b/metadata.json",
+    "error": "HTTP Error 404: Not Found"
+  },
+  "sourcify-partial": {
+    "url": "https://repo.sourcify.dev/contracts/partial_match/1/0x65c40d624af3b18c109fbf87b7deff34cdc5f19b/metadata.json",
+    "error": "HTTP Error 404: Not Found"
+  },
+  "sourcify-api": {
+    "url": "https://sourcify.dev/server/v2/contract/1/0x65c40d624af3b18c109fbf87b7deff34cdc5f19b?fields=abi,metadata,match,creationMatch,runtimeMatch,compilation",
+    "error": "HTTP Error 400: Bad Request"
+  },
+  "SPYx": {
+    "logs": 11,
+    "fundedCall": {
+      "holder": "0xe7e553cd128f0011777323a0b44a7b96ea1cb540",
+      "shares": 526876011547347724635,
+      "simulatedSharesTransferred": 1000000000000000,
+      "return": 1,
+      "note": "eth_call only; no state persisted, no signature or transaction"
+    }
+  },
+  "AAPLx": {
+    "logs": 0,
+    "fundedCall": null
+  },
+  "MSFTx": {
+    "logs": 0,
+    "fundedCall": null
+  },
+  "sepolia": {
+    "block": 11868384,
+    "hash": "0x476f4c71360c62e6011a8f6b159e1cc37043eb28564f816554274bf4511e8943",
+    "contracts": {
+      "factory": {
+        "address": "0x0227628f3F023bb0B980b67D528571c95c6DaC1c",
+        "bytecodeBytes": 24535
+      },
+      "quoterV2": {
+        "address": "0xEd1f6473345F45b75F8179591dd5bA1888cf2FB3",
+        "bytecodeBytes": 8273
+      },
+      "swapRouter02": {
+        "address": "0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E",
+        "bytecodeBytes": 24497
+      },
+      "positionManager": {
+        "address": "0x1238536071E1c677A632429e3655c799b22cDA52",
+        "bytecodeBytes": 24384
+      },
+      "weth": {
+        "address": "0xfff9976782d46cc05630d1f6ebab18b2324d6b14",
+        "bytecodeBytes": 3124
+      }
+    }
+  }
+}
