@@ -37,8 +37,15 @@
   position: sticky;
   top: 0;
   z-index: 60;
-  background: #010911e8;
-  border-bottom: 1px solid #ffffff0b;
+  margin-bottom: -80px;
+  background: transparent;
+  backdrop-filter: none;
+  transition:
+    background 0.25s ease,
+    backdrop-filter 0.25s ease;
+}
+.nav[data-solid='true'] {
+  background: #020c10d9;
   backdrop-filter: blur(18px);
 }
 .navInner {
@@ -110,7 +117,7 @@
 }
 .hero {
   position: relative;
-  padding: 78px 24px 66px;
+  padding: 158px 24px 66px;
   overflow: clip;
 }
 .heroCopy {
@@ -695,6 +702,9 @@
   }
 }
 @media (max-width: 900px) {
+  .nav {
+    margin-bottom: -72px;
+  }
   .navInner {
     height: 72px;
   }
@@ -727,7 +737,7 @@
     background: #1b2a21;
   }
   .hero {
-    padding-top: 65px;
+    padding-top: 137px;
   }
   .hero h1 {
     font-size: clamp(37px, 5.6vw, 56px);
@@ -800,6 +810,9 @@
   .container {
     width: calc(100% - 36px);
   }
+  .nav {
+    margin-bottom: -68px;
+  }
   .navInner {
     width: calc(100% - 36px);
     gap: 12px;
@@ -827,7 +840,7 @@
     height: 36px;
   }
   .hero {
-    padding: 50px 18px 40px;
+    padding: 118px 18px 40px;
   }
   .networkBadge {
     font-size: 9px;
@@ -1419,5 +1432,11 @@
   .receiptCard:hover .incomeTicket,
   .listingCard:hover .rightsSeal {
     transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav {
+    transition: none;
   }
 }

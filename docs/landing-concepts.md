@@ -124,3 +124,9 @@ PASS full pnpm check153 Vitest/46 Foundry/9 OpenSpec and build. Real keyboard En
 ## Orbiting chat lights — 9 October 2026
 
 User clarified that the bubble should have ongoing fairy-like lights around it. Two offset5s/7s orbits with soft shimmer/trails replace the fixed sparkle; hover increases brightness. A small pause/resume button and reduced-motion static fallback keep ongoing motion controllable. Loading pauses orbit. Session logic unchanged. Matrix: orbit position changes, pause/resume, keyboard control, mobile edge clearance, full checks. Browser observed2 moving orbits and paused computed animation state; provider success is not re-tested by this visual refinement.
+
+## Transparent navbar — 9 October 2026
+
+User requested no visible navbar boundary at the hero. Sticky navbar now overlays the hero background with no border, transparent at scrollY<=32; beyond32px or while mobile menu is open it uses an85% dark surface and18px blur. Navbar dimensions remain stable; hero offsets compensate at80/72/68px breakpoints. Existing Escape/outside-click/link behavior and destinations retained. Reduced-motion disables transition.
+
+PASS full pnpm check153/46/9/build. Production browser: top background transparent/border0/data-solid false, anchor navigation gives dark85%/blur18px, home returns scrollY0/transparent. Mobile390 open gives solid/expanded true; Escape returns false with no overflow. Console clean. Initial older tab debugger synchronization timed out; fresh production tab verified. OS reduced-motion/other engines not runtime-tested. Baselinead0c479.

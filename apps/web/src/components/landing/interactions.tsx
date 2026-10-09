@@ -98,6 +98,13 @@ export function SectionMotion() {
 
 export function LandingNav() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 32);
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, []);
   const trigger = useRef<HTMLButtonElement>(null);
   const links = useRef<HTMLElement>(null);
   useEffect(() => {
@@ -131,7 +138,7 @@ export function LandingNav() {
     };
   }, [open]);
   return (
-    <header className={s.nav}>
+    <header className={s.nav} data-solid={scrolled || open}>
       <div className={s.navInner}>
         <a href="#top" aria-label="Yieldex home" className={s.logo}>
           <Image
