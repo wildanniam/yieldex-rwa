@@ -55,6 +55,7 @@ export interface IconProps extends ImageProps {
   height?: number;
   alt?: string;
   className?: string;
+  inheritColor?: boolean;
 }
 
 function isIconName(value: string): value is IconName {
@@ -68,6 +69,7 @@ export function Icon({
   height,
   alt = name,
   className,
+  inheritColor = false,
   priority,
   sizes,
 }: IconProps) {
@@ -77,6 +79,24 @@ export function Icon({
     }
 
     return <span aria-label={alt} className={className} role="img" />;
+  }
+
+  if (inheritColor) {
+    return (
+      <span
+        role={alt ? 'img' : undefined}
+        aria-label={alt || undefined}
+        aria-hidden={alt ? undefined : true}
+        className={['inline-block', className].filter(Boolean).join(' ')}
+        style={{
+          flexShrink: 0,
+          width: width ?? size,
+          height: height ?? size,
+          backgroundColor: 'currentColor',
+          mask: `url(/icons/${name}.svg) center / contain no-repeat`,
+        }}
+      />
+    );
   }
 
   return (

@@ -1,8 +1,13 @@
 'use client';
 import * as React from 'react';
 import { Icon } from '@/components/ui/icon';
-import { cn, controlClasses, FieldLabel, FieldMessage } from './field';
-
+import {
+  cn,
+  controlClasses,
+  FieldLabel,
+  FieldMessage,
+  useField,
+} from './field';
 export interface SelectOption {
   label: string;
   value: string;
@@ -20,26 +25,30 @@ export function Select({
   error,
   options,
   className,
+  disabled,
+  'aria-describedby': describedBy,
   ...props
 }: SelectProps) {
+  const field = useField(id, helperText, error, describedBy);
   return (
-    <div className="grid gap-2">
-      {label && <FieldLabel htmlFor={id}>{label}</FieldLabel>}
+    <div className={cn('grid gap-2 min-w-0', disabled && 'opacity-40')}>
+      {label && <FieldLabel htmlFor={field.fieldId}>{label}</FieldLabel>}
       <div className="relative">
         <select
-          id={id}
+          {...props}
+          id={field.fieldId}
+          disabled={disabled}
           aria-invalid={Boolean(error)}
+          aria-describedby={field.describedBy}
           className={cn(
             controlClasses,
-            'appearance-none pr-10',
-            error && 'border-danger',
+            'appearance-none pr-12 disabled:opacity-100',
             className,
           )}
-          {...props}
         >
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
+          {options.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
             </option>
           ))}
         </select>
@@ -47,10 +56,14 @@ export function Select({
           name="chevron-down"
           size={20}
           alt=""
-          className="pointer-events-none absolute right-3 top-3"
+          className="pointer-events-none absolute right-4 top-[14px]"
         />
       </div>
-      <FieldMessage helperText={helperText} error={error} />
+      <FieldMessage
+        id={field.messageId}
+        helperText={helperText}
+        error={error}
+      />
     </div>
   );
 }
