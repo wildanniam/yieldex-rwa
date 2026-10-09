@@ -39,29 +39,35 @@
   background: #ffffff;
 }
 .launcher {
-  color: #1e293b;
-  color-scheme: light;
   position: fixed;
   right: 24px;
   bottom: 24px;
   z-index: 90;
   max-width: min(360px, calc(100vw - 48px));
-  padding: 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  background: white;
-  box-shadow: 0 4px 20px #0001;
+  color: var(--text-1);
   font-size: 13px;
 }
-.launcher button {
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: none;
-  background: #175342;
-  color: white;
-  cursor: pointer;
+.launcher p {
+  margin-top: 10px;
+  padding: 16px;
+  background: var(--card);
+  border: 1px solid var(--input-border);
+  border-radius: 16px;
+  line-height: 1.5;
 }
-.launcher button:disabled {
-  opacity: 0.65;
-  cursor: wait;
+.launcher[role='alert'] {
+  background: var(--card);
+  padding: 16px;
+  border: 1px solid var(--input-border);
+  border-radius: 16px;
+}
+.launcher[role='alert'] button {
+  color: var(--green-1);
+  text-decoration: underline;
+}
+@media (max-width: 640px) {
+  .launcher {
+    right: 16px;
+    bottom: 16px;
+  }
 }

@@ -49,3 +49,5 @@ Keyboard-visible focus on text inputs, selects, and textareas SHALL use the exis
 - **WHEN** its focus-visible state is rendered
 - **THEN** its border and visible focus indicator use the existing `green-2` token
 - **AND** the focus state remains visually distinguishable from its unfocused state
+
+The developer shell applies to `/workspace`, `/lab`, and `/design-system`. The public root landing follows its own Figma navigation/content width; it retains the same shared color/radius/button primitives.
