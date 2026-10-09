@@ -138,9 +138,6 @@ export function AmountInput({
           props.disabled && 'opacity-40',
         )}
       >
-        <span className="w-fit rounded-full bg-yellow px-2 py-1 font-medium text-[#1a1405]">
-          {simulationLabel}
-        </span>
         {simulatedUsd && <span>≈ {simulatedUsd} USD · Illustrative</span>}
         {balanceText && <span>{balanceText}</span>}
       </div>
