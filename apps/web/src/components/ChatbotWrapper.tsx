@@ -7,7 +7,6 @@ import {
   useRef,
   type ReactNode,
 } from 'react';
-import { Button } from './ui/button';
 import { CopilotKit, CopilotPopup } from '@copilotkit/react-core/v2';
 import type { ReactToolCallRenderer } from '@copilotkit/react-core/v2';
 import '@copilotkit/react-core/v2/styles.css';
@@ -110,6 +109,7 @@ export function useAssistant() {
 export function ChatbotWrapper({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<ChatSession | null>(null);
   const [busy, setBusy] = useState(false);
+  const [sparkMotion, setSparkMotion] = useState(true);
   const [error, setError] = useState('');
   const [open, setOpen] = useState(true);
   const pending = useRef(false);
@@ -160,14 +160,66 @@ export function ChatbotWrapper({ children }: { children: ReactNode }) {
         />
       ) : (
         <aside className={styles.launcher}>
-          <Button
-            variant="accent"
-            leadingIcon="sparkles"
-            isLoading={busy}
+          <button
+            type="button"
+            className={styles.chatBubble}
+            data-motion={sparkMotion && !busy ? 'on' : 'off'}
+            aria-label={busy ? 'Membuka chat…' : 'Tanya Yieldex Assistant'}
+            aria-busy={busy || undefined}
+            disabled={busy}
             onClick={() => void start()}
           >
-            {busy ? 'Membuka chat…' : 'Tanya Yieldex Assistant'}
-          </Button>
+            <span className={styles.bubbleHint}>
+              {busy ? 'Membuka chat…' : 'Tanya Yieldex'}
+            </span>
+            <svg
+              className={styles.bubbleFace}
+              viewBox="0 0 40 40"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M9 8h22a5 5 0 0 1 5 5v13a5 5 0 0 1-5 5H19l-8 5v-5H9a5 5 0 0 1-5-5V13a5 5 0 0 1 5-5Z"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinejoin="round"
+              />
+              <g className={styles.bubbleEyes}>
+                <path
+                  d="M14 17v4m12-4v4"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                />
+              </g>
+              <path
+                d="M17 25q3 2 6 0"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+            <span className={styles.fairyOrbit} aria-hidden="true">
+              <span>✦</span>
+            </span>
+            <span
+              className={`${styles.fairyOrbit} ${styles.fairySecond}`}
+              aria-hidden="true"
+            >
+              <span>✧</span>
+            </span>
+          </button>
+          <button
+            type="button"
+            className={styles.motionToggle}
+            onClick={() => setSparkMotion((value) => !value)}
+            aria-label={
+              sparkMotion ? 'Jeda animasi bubble' : 'Aktifkan animasi bubble'
+            }
+            aria-pressed={!sparkMotion}
+          >
+            {sparkMotion ? 'Ⅱ' : '▷'}
+          </button>
           {error && <p role="alert">{error}</p>}
         </aside>
       )}
