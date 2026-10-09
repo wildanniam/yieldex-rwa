@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Icon, type IconName } from '@/components/ui/icon';
+import styles from './button.module.css';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -22,14 +23,10 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
-  primary:
-    'bg-primary-gradient text-primary-label enabled:hover:bg-green-1 enabled:hover:bg-none enabled:active:bg-green-3 enabled:active:bg-none',
-  accent:
-    'bg-accent-gradient text-white enabled:hover:bg-purple-1 enabled:hover:bg-none enabled:active:bg-purple-3 enabled:active:bg-none',
-  outline:
-    'border border-[#505555] bg-transparent text-text-1 enabled:hover:text-green-1 enabled:active:text-green-3',
-  ghost:
-    'border border-transparent bg-transparent text-text-1 enabled:hover:text-green-1 enabled:active:text-green-3',
+  primary: 'bg-primary-gradient text-primary-label',
+  accent: 'bg-accent-gradient text-white',
+  outline: 'border border-[#505555] bg-transparent text-text-1',
+  ghost: 'border border-transparent bg-transparent text-text-1',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -48,7 +45,9 @@ export function buttonVariants({
   className?: string;
 } = {}) {
   return cn(
-    'inline-flex shrink-0 items-center justify-center rounded-full font-medium transition-colors duration-150 motion-reduce:transition-none cursor-pointer select-none whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-text focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:cursor-not-allowed disabled:opacity-40 data-[loading=true]:opacity-100 data-[loading=true]:cursor-wait',
+    'inline-flex shrink-0 items-center justify-center rounded-full font-medium cursor-pointer select-none whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-text focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:cursor-not-allowed disabled:opacity-40 data-[loading=true]:opacity-100 data-[loading=true]:cursor-wait',
+    styles.root,
+    styles[variant],
     variantStyles[variant],
     sizeStyles[size],
     className,
@@ -109,7 +108,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         <span>{children}</span>
         {!isLoading && trailingIcon && (
-          <Icon alt="" inheritColor name={trailingIcon} size={20} />
+          <span data-button-icon="trailing">
+            <Icon alt="" inheritColor name={trailingIcon} size={20} />
+          </span>
         )}
       </button>
     );

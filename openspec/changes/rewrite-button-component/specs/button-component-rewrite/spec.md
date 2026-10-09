@@ -41,9 +41,9 @@ The button SHALL use the shared `Icon` component from `@/components/ui/icon` for
 - **THEN** the shared `Icon` renders at 20px with the configured 8px gap
 
 ### Requirement: BWR-006 Figma State Fidelity
-Enabled hover and pressed SHALL replace action gradients with their solid green/purple 1 and 3 colors. Loading SHALL keep full opacity with the exported 20px Figma loader and retain native disabled plus aria-busy behavior. Optional icons SHALL inherit the label color without changing SVG geometry.
+Enabled hover and pressed SHALL preserve action gradients, using bounded surface light, shadow and transform feedback shared by native buttons and styled links. Disabled and loading controls SHALL NOT lift or compress; reduced-motion SHALL remove movement and transitions. Loading SHALL keep full opacity with the exported 20px Figma loader and retain native disabled plus aria-busy behavior. Optional icons SHALL inherit the label color without changing SVG geometry.
 
 #### Scenario: Pointer and loading
 - **WHEN** a primary button is hovered or pressed
-- **THEN** no global gradient rule masks its solid state
+- **THEN** the gradient remains visible, hover lifts at most2px, and press compresses to0.975 without changing layout dimensions
 - **AND** a loading button rejects activation while retaining full visual emphasis

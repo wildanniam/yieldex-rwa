@@ -6,13 +6,8 @@ import { motion, useReducedMotion, useSpring } from 'motion/react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { useAssistant } from '@/components/ChatbotWrapper';
-import {
-  SCENARIO_CENTS,
-  PURCHASE_CENTS,
-  incomeScenario,
-  fixedHundredths,
-} from './income-math';
 import s from './landing.module.css';
+import { AssetMark } from './asset-mark';
 
 export function LinkAction({
   children,
@@ -33,11 +28,13 @@ export function LinkAction({
       })}
     >
       {children}
-      <Icon
-        name={outline ? 'arrow-right' : 'arrow-up-right'}
-        alt=""
-        inheritColor
-      />
+      <span data-button-icon="trailing">
+        <Icon
+          name={outline ? 'arrow-right' : 'arrow-up-right'}
+          alt=""
+          inheritColor
+        />
+      </span>
     </Link>
   );
 }
@@ -101,6 +98,13 @@ export function SectionMotion() {
 
 export function LandingNav() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 32);
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, []);
   const trigger = useRef<HTMLButtonElement>(null);
   const links = useRef<HTMLElement>(null);
   useEffect(() => {
@@ -134,7 +138,7 @@ export function LandingNav() {
     };
   }, [open]);
   return (
-    <header className={s.nav}>
+    <header className={s.nav} data-solid={scrolled || open}>
       <div className={s.navInner}>
         <a href="#top" aria-label="Yieldex home" className={s.logo}>
           <Image
@@ -166,7 +170,7 @@ export function LandingNav() {
             data-action="primary"
             className={buttonVariants({ size: 'sm' })}
           >
-            Launch demo <Icon name="arrow-up-right" alt="" inheritColor />
+            Launch app <Icon name="arrow-up-right" alt="" inheritColor />
           </Link>
           <button
             ref={trigger}
@@ -210,14 +214,21 @@ export function ProductPreview() {
         </span>
         <span>Interactive example · No transaction</span>
       </div>
-      <div className={s.previewScene}>
+      <div className={s.previewScene} data-stage={stage}>
         <div className={s.backingCard}>
           <div className={s.cardKicker}>
             <Icon name="vault" alt="" inheritColor />
             <span>ALICE’S BACKING</span>
           </div>
-          <div className={s.assetMonogram}>
-            A<span>DEMO</span>
+          <div className={s.vaultArtwork} aria-hidden="true">
+            <div className={s.vaultBase} />
+            <div className={s.vaultGlass} />
+            <div className={s.vaultCoin}>
+              <AssetMark symbol="demoAAPL" />
+            </div>
+            <span className={s.vaultLock}>
+              <Icon name="lock" alt="" inheritColor size={13} /> BACKING SECURED
+            </span>
           </div>
           <h3>
             100 <span>demoAAPL</span>
@@ -262,6 +273,10 @@ export function ProductPreview() {
               );
               rotateY.set(((event.clientX - rect.left) / rect.width - 0.5) * 8);
             }}
+            onPointerCancel={() => {
+              rotateX.set(0);
+              rotateY.set(0);
+            }}
             onPointerLeave={() => {
               rotateX.set(0);
               rotateY.set(0);
@@ -269,7 +284,9 @@ export function ProductPreview() {
           >
             <div className={s.listingHeader}>
               <div>
-                <span className={s.assetDot}>A</span>
+                <span className={s.assetDot}>
+                  <AssetMark symbol="demoAAPL" />
+                </span>
                 <div>
                   <strong>demoAAPL</strong>
                   <small>Income rights</small>
@@ -278,6 +295,12 @@ export function ProductPreview() {
               <span className={s.exampleBadge}>EXAMPLE</span>
             </div>
             <div className={s.price}>
+              <div className={s.rightsSeal} aria-hidden="true">
+                <span>
+                  50<small>%</small>
+                </span>
+                <i>INCOME ONLY</i>
+              </div>
               <span>Fixed upfront price</span>
               <p>
                 90<span>DemoUSD</span>
@@ -336,13 +359,36 @@ export function ProductPreview() {
             animate={{ opacity: 1, y: 0 }}
             className={s.receiptContent}
           >
-            <div className={s.receiptIcon}>
-              <Icon
-                name={stage === 0 ? 'clock' : 'check'}
-                size={24}
-                alt=""
-                inheritColor
-              />
+            <div className={s.ticketArtwork} aria-hidden="true">
+              <div className={s.ticketShadow} />
+              <div className={s.incomeTicket}>
+                <span>
+                  {stage === 0
+                    ? 'AVAILABLE RIGHT'
+                    : stage === 1
+                      ? 'BOB’S POSITION'
+                      : 'ALLOCATED INCOME'}
+                </span>
+                <strong>
+                  {stage === 2 ? '0.50' : '50%'}
+                  <small>{stage === 2 ? 'demoAAPL' : 'income share'}</small>
+                </strong>
+                <div>
+                  <span>
+                    {stage === 0
+                      ? 'Awaiting buyer'
+                      : stage === 1
+                        ? '6-month term'
+                        : 'Ready to claim'}
+                  </span>
+                  <Icon
+                    name={stage === 0 ? 'clock' : 'check'}
+                    size={15}
+                    alt=""
+                    inheritColor
+                  />
+                </div>
+              </div>
             </div>
             <h3>
               {stage === 0
@@ -399,110 +445,5 @@ export function ProductPreview() {
         </p>
       </noscript>
     </section>
-  );
-}
-
-export function IncomeCalculator() {
-  const [scenario, setScenario] = useState(1);
-  const [share, setShare] = useState(50);
-  const reduced = useReducedMotion();
-  const income = SCENARIO_CENTS[scenario]!;
-  const values = incomeScenario(income, BigInt(share) * 100n);
-  return (
-    <div className={s.calculator}>
-      <div className={s.calculatorTitle}>
-        <span>YOUR SCENARIO</span>
-        <Icon name="coins" alt="" inheritColor />
-      </div>
-      <p className={s.controlLabel}>Total income value over the term</p>
-      <div className={s.scenarioChoices} aria-label="Illustrative total income">
-        {SCENARIO_CENTS.map((cents, index) => (
-          <button
-            key={String(cents)}
-            onClick={() => setScenario(index)}
-            aria-pressed={scenario === index}
-          >
-            {scenario === index && (
-              <motion.span
-                layoutId="scenario-indicator"
-                transition={{ duration: reduced ? 0 : 0.22 }}
-              />
-            )}
-            <span>{fixedHundredths(cents).replace('.00', '')}</span>
-          </button>
-        ))}
-      </div>
-      <p className={s.valueUnit}>Hypothetical DemoUSD-equivalent value</p>
-      <label className={s.shareLabel} htmlFor="landing-income-share">
-        Income share bought{' '}
-        <output htmlFor="landing-income-share">{share}%</output>
-      </label>
-      <input
-        id="landing-income-share"
-        className={s.shareRange}
-        type="range"
-        min={10}
-        max={90}
-        step={10}
-        value={share}
-        onChange={(e) => setShare(Number(e.target.value))}
-        style={
-          {
-            '--range-progress': `${((share - 10) / 80) * 100}%`,
-          } as React.CSSProperties
-        }
-      />
-      <div className={s.rangeLabels}>
-        <span>10%</span>
-        <span>90%</span>
-      </div>
-      <div className={s.calculatorResult} aria-live="polite" aria-atomic="true">
-        <div className={s.calculatorRow}>
-          <span>Upfront price paid</span>
-          <strong>
-            {fixedHundredths(PURCHASE_CENTS)} <small>DemoUSD</small>
-          </strong>
-        </div>
-        <div className={s.calculatorRow}>
-          <span>Buyer’s income value</span>
-          <strong>
-            {fixedHundredths(values.buyerCents)} <small>equivalent</small>
-          </strong>
-        </div>
-        <div className={s.netResult} data-positive={values.netCents >= 0n}>
-          <span>
-            Illustrative net result<small>Before fees and price changes</small>
-          </span>
-          <div>
-            <motion.strong
-              key={`${scenario}-${share}`}
-              initial={reduced === false ? { opacity: 0.45, y: 7 } : false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: reduced === false ? 0.22 : 0 }}
-            >
-              {values.netCents > 0n ? '+' : ''}
-              {fixedHundredths(values.netCents)}
-            </motion.strong>
-            <span>
-              {values.returnBps > 0n ? '+' : ''}
-              {fixedHundredths(values.returnBps)}%
-            </span>
-          </div>
-        </div>
-      </div>
-      <p className={s.calculatorNote}>
-        <Icon name="info" alt="" inheritColor size={16} />
-        <span>
-          This is a comparison, not a forecast. Actual claims are paid in asset
-          tokens. Network fees and conversion costs are excluded.
-        </span>
-      </p>
-      <noscript>
-        <p className={s.finePrint}>
-          Enable JavaScript to change scenarios. This static example uses 100
-          DemoUSD-equivalent income and a 50% share.
-        </p>
-      </noscript>
-    </div>
   );
 }

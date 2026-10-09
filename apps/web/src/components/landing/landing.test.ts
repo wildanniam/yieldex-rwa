@@ -58,4 +58,23 @@ describe('landing server-rendered content', () => {
       'completed payouts cannot automatically be clawed back.',
     );
   });
+  it('keeps the asset collection and risk guide useful before JavaScript', () => {
+    const html = renderToStaticMarkup(createElement(YieldexLanding));
+    expect(html).toContain('aria-label="Explore assets"');
+    expect(html).toContain('BUY THE RIGHTS WITH');
+    expect(html).toContain('Apple');
+    expect(html).toContain('Microsoft');
+    expect(html).not.toContain('Launch demo');
+    expect(html).toContain('Launch app');
+    expect(html).toContain('CLAIM INCOME IN');
+    expect(html).toContain(
+      'href="https://sepolia.etherscan.io/address/' + deployment.registry + '"',
+    );
+    for (const asset of deployment.assets)
+      expect(html).toContain(`aria-label="Inspect ${asset.symbol} contract"`);
+    expect(html.match(/<details\b/g)).toHaveLength(4);
+    expect(html).toContain('The upfront price is not refunded at expiry.');
+    expect(html).toContain('constrained team finalizer');
+    expect(html).toContain('No real shares or real-world backing.');
+  });
 });

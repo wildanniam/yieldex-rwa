@@ -142,36 +142,33 @@
   font-size: 11px;
   color: var(--text-2);
 }
-/* Visual specimens only. Production interaction is owned by Button utilities. */
-.sample button[data-state='hover'][data-variant='primary'] {
-  background-image: none;
-  background-color: var(--green-1);
+/* Static previews mirror the native states in ui/button.module.css. */
+.sample button[data-state='hover'] {
+  transform: translateY(-2px);
+  box-shadow:
+    var(--button-rest),
+    0 5px 14px var(--button-shadow);
 }
-.sample button[data-state='pressed'][data-variant='primary'] {
-  background-image: none;
-  background-color: var(--green-3);
-}
-.sample button[data-state='hover'][data-variant='accent'] {
-  background-image: none;
-  background-color: var(--purple-1);
-}
-.sample button[data-state='pressed'][data-variant='accent'] {
-  background-image: none;
-  background-color: var(--purple-3);
+.sample button[data-state='hover']::before {
+  opacity: 1;
 }
 .sample
   button[data-state='hover']:is(
     [data-variant='outline'],
     [data-variant='ghost']
   ) {
+  background-color: #96d8a212;
   color: var(--green-1);
 }
-.sample
-  button[data-state='pressed']:is(
-    [data-variant='outline'],
-    [data-variant='ghost']
-  ) {
-  color: var(--green-3);
+.sample button[data-state='hover'][data-variant='outline'] {
+  border-color: #a8dda780;
+}
+.sample button[data-state='pressed'] {
+  transform: scale(0.975);
+  box-shadow: inset 0 2px 4px #00000020;
+}
+.sample button[data-state='pressed']::before {
+  opacity: 0.25;
 }
 .sample button[data-state='focus'] {
   box-shadow:

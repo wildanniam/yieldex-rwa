@@ -1,0 +1,754 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 20px;
+}
+.card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #abc2b52b;
+  border-radius: 26px;
+  background: #060e11;
+}
+.copy {
+  position: relative;
+  z-index: 2;
+}
+.kicker {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: #9cab9f;
+  display: block;
+  margin-bottom: 15px;
+}
+.card h3 {
+  font-size: clamp(25px, 2.5vw, 34px);
+  font-weight: 450;
+  letter-spacing: -0.04em;
+  line-height: 1.16;
+  margin: 0;
+}
+.card h3 em {
+  font-style: normal;
+  color: #a9cdb1;
+}
+.card p {
+  color: #a2ada7;
+  font-size: 12px;
+  line-height: 1.8;
+  max-width: 370px;
+  margin-top: 14px;
+}
+.principal {
+  grid-column: span 7;
+  background:
+    radial-gradient(ellipse at 40% 70%, #223b284d, transparent 65%), #060e11;
+  padding: 32px 34px 18px;
+}
+.principal .copy {
+  max-width: 380px;
+}
+.backingScene {
+  position: relative;
+  margin: -6px -34px 0;
+  height: 284px;
+}
+.vaultArt {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.backingLabel,
+.incomeLabel {
+  position: absolute;
+  z-index: 1;
+}
+.backingLabel {
+  left: 16%;
+  bottom: 5px;
+}
+.incomeLabel {
+  right: 8%;
+  top: 29%;
+  padding: 12px 14px;
+  border: 1px solid #a6d9b240;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1e3025e6, #111a16d9);
+  box-shadow: 0 10px 30px #0004;
+}
+.backingLabel > span,
+.incomeLabel > span {
+  color: #9bbca4;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  display: block;
+  margin-bottom: 4px;
+}
+.backingLabel strong,
+.incomeLabel strong {
+  color: #e0eee2;
+  font-size: 21px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+.backingLabel small,
+.incomeLabel small {
+  color: #a6b8ac;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.assetStack {
+  transform-origin: 245px 190px;
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.incomeTokens {
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  font-size: 9px;
+  color: #8da696;
+  position: relative;
+  z-index: 2;
+}
+.cardFooter a {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #9ab9a344;
+  border-radius: 50%;
+  color: #d5e6d9;
+}
+.offer {
+  grid-column: span 5;
+  padding: 32px 32px 22px;
+  background:
+    radial-gradient(ellipse at 55% 75%, #26332b66, transparent 62%), #080e10;
+}
+.offerScene {
+  position: relative;
+  height: 268px;
+  margin: 24px auto 14px;
+  max-width: 340px;
+  perspective: 800px;
+}
+.ticket,
+.ticketBack {
+  position: absolute;
+  left: 50%;
+  top: 2px;
+  width: 242px;
+  border-radius: 15px;
+}
+.ticketBack {
+  height: 226px;
+  transform: translateX(-50%) rotate(8deg) translate(16px, 8px);
+  background: linear-gradient(150deg, #1b2922, #101815);
+  border: 1px solid #81988a40;
+}
+.ticket {
+  padding: 20px;
+  background: linear-gradient(140deg, #26392c, #111d17 70%);
+  border: 1px solid #acc7ad60;
+  box-shadow:
+    0 22px 45px #0007,
+    inset 0 1px #d2f6d414;
+  transform: translateX(-50%) rotate(-7deg);
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.ticketHeading {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #dfebe1;
+  font-size: 12px;
+}
+.assetMark {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid #9fceae77;
+  background: #486150;
+  color: #dcf3de;
+  font-size: 16px;
+}
+.ticketHeading > span:nth-child(2) {
+  flex: 1;
+}
+.ticketHeading small {
+  display: block;
+  letter-spacing: 0.13em;
+  font-size: 6px;
+  margin-top: 4px;
+  color: #91a699;
+}
+.ticketHeading > span:last-child {
+  color: #9bbb9f;
+}
+.ticketTerms {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 20px 0 17px;
+}
+.ticketTerms small {
+  display: block;
+  color: #9aae9e;
+  font-size: 8px;
+  margin-bottom: 4px;
+}
+.ticketTerms strong {
+  font-size: 29px;
+  letter-spacing: -0.03em;
+  font-weight: 450;
+}
+.ticketTerms strong span {
+  font-size: 10px;
+  margin-left: 3px;
+  letter-spacing: 0;
+}
+.ticketPerforation {
+  height: 1px;
+  margin: 0 -20px 14px;
+  border-top: 1px dashed #94b19b55;
+  position: relative;
+}
+.ticketPerforation::before,
+.ticketPerforation::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: -6px;
+  background: #0a1310;
+  border-radius: 50%;
+  border: 1px solid #8eaf9455;
+}
+.ticketPerforation::before {
+  left: -6px;
+}
+.ticketPerforation::after {
+  right: -6px;
+}
+.ticketPrice {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.ticketPrice > span {
+  max-width: 54px;
+  color: #9cb2a3;
+  font-size: 8px;
+  line-height: 1.4;
+}
+.ticketPrice strong {
+  font-size: 22px;
+  font-weight: 500;
+}
+.ticketPrice small {
+  font-size: 9px;
+  font-weight: 400;
+}
+.barcode {
+  height: 15px;
+  width: 90px;
+  opacity: 0.3;
+  margin-top: 15px;
+  background: repeating-linear-gradient(
+    90deg,
+    #b7d4bc 0 1px,
+    transparent 1px 3px,
+    #b7d4bc 3px 5px,
+    transparent 5px 9px
+  );
+}
+.ticketSerial {
+  position: absolute;
+  right: 20px;
+  bottom: 22px;
+  color: #77917f;
+  font-size: 5px;
+  letter-spacing: 0.05em;
+}
+.offerSeal {
+  position: absolute;
+  right: -4px;
+  bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  background: #172920ed;
+  border: 1px solid #88c09866;
+  border-radius: 30px;
+  color: #c2e6cb;
+  box-shadow: 0 8px 24px #0006;
+  font-size: 9px;
+  transform: rotate(5deg);
+}
+.textLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: #b1dcb9;
+  position: relative;
+  z-index: 2;
+}
+.resale {
+  grid-column: span 5;
+  padding: 0 32px 32px;
+  background:
+    radial-gradient(ellipse at 40% 28%, #2c423322, transparent 65%), #060d10;
+}
+.resaleScene {
+  position: relative;
+  height: 272px;
+  max-width: 400px;
+  margin: 0 auto 16px;
+}
+.transferRail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 97px;
+  display: flex;
+  align-items: center;
+}
+.transferRail > span {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #748a7b55;
+  border-radius: 50%;
+  color: #a3b8a9;
+  background: radial-gradient(circle at 30% 20%, #263d2e, #0b1510 90%);
+  box-shadow: inset 0 1px 2px #c2dec322;
+}
+.transferRail > span:last-child {
+  border-color: #b3b1dd44;
+  color: #c1b6df;
+  background: radial-gradient(circle at 30% 20%, #302c42, #111019 90%);
+}
+.transferRail > i {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #9dc4a566, #aca0e077);
+}
+.rightPass {
+  position: absolute;
+  width: 206px;
+  top: 46px;
+  left: 50%;
+  padding: 18px;
+  border: 1px solid #b7d0bd55;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #26382d, #101c18);
+  box-shadow: 0 24px 40px #0008;
+  transform: translateX(-50%) rotate(-7deg);
+  transition: transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.rightPass > div:first-child {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 7px;
+  letter-spacing: 0.12em;
+  color: #b8d4bd;
+  margin-bottom: 16px;
+}
+.rightPass > strong {
+  font-weight: 450;
+  font-size: 15px;
+  display: block;
+}
+.rightPass > small {
+  color: #9cad9f;
+  display: block;
+  font-size: 9px;
+  margin-top: 6px;
+}
+.passFooter {
+  border-top: 1px solid #91a89833;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  margin-top: 16px;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: #aecaaf;
+}
+.expiryRail {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 34px;
+  gap: 8px;
+  font-size: 8px;
+  color: #8ba192;
+}
+.expiryRail > i {
+  height: 1px;
+  background: #667a6a66;
+  flex: 1;
+}
+.expiryRail > span:last-child {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #c1b7d6;
+}
+.keptClaim {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: #92ad9b;
+  font-size: 9px;
+}
+.assistant {
+  grid-column: span 7;
+  background:
+    radial-gradient(ellipse at 45% 28%, #5441762e, transparent 64%), #0b0c12;
+  padding: 0 34px 24px;
+  border-color: #b3a7df30;
+}
+.assistantScene {
+  position: relative;
+  height: 270px;
+  margin: 0 -8px 18px;
+}
+.orbit {
+  position: absolute;
+  left: 50%;
+  top: 35px;
+  width: 270px;
+  height: 185px;
+  transform: translateX(-50%) rotate(-16deg);
+  border: 1px solid #ac9bd41c;
+  border-radius: 50%;
+}
+.orbit::before,
+.orbit::after {
+  content: '';
+  position: absolute;
+  inset: 16px -30px;
+  border: 1px solid #ac9bd41a;
+  border-radius: 50%;
+  transform: rotate(34deg);
+}
+.orbit::after {
+  inset: -24px 30px;
+  transform: rotate(-20deg);
+}
+.aiCore {
+  position: absolute;
+  top: 81px;
+  left: calc(50% - 48px);
+  width: 96px;
+  height: 96px;
+  padding: 22px;
+  border-radius: 24px;
+  background: linear-gradient(140deg, #84719a55, #30253977);
+  box-shadow:
+    inset 0 1px #e4d8ff44,
+    0 18px 55px #000a,
+    0 0 60px #9370cb15;
+  border: 1px solid #c7b6e740;
+  transform: rotate(-12deg);
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.aiCore svg {
+  width: 100%;
+  height: 100%;
+}
+.insight {
+  position: absolute;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid #b4a9d33d;
+  border-radius: 12px;
+  background: linear-gradient(120deg, #23202de8, #10131bef);
+  box-shadow: 0 12px 26px #0006;
+  color: #c1b4e6;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.insight > span:last-child {
+  font-size: 8px;
+  color: #9893ab;
+}
+.insight strong {
+  display: block;
+  font-size: 10px;
+  font-weight: 450;
+  color: #ddd6ed;
+  margin-top: 5px;
+}
+.insightA {
+  top: 24px;
+  left: 8%;
+  transform: rotate(-7deg);
+}
+.insightB {
+  right: 0;
+  top: 72px;
+  transform: rotate(6deg);
+}
+.insightC {
+  bottom: 35px;
+  left: 16%;
+  transform: rotate(-3deg);
+}
+.aiSceneCaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #8e879f;
+  font-size: 8px;
+}
+.aiBottom {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative;
+  z-index: 2;
+}
+.aiBottom .copy {
+  max-width: 320px;
+}
+.aiBottom button {
+  flex-shrink: 0;
+}
+.assistant h3 em {
+  color: #b5a8d8;
+}
+.aiNote {
+  display: block;
+  color: #8e899c;
+  font-size: 9px;
+  margin-top: 20px;
+}
+.proof {
+  grid-column: span 12;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 24px 28px;
+  border: 1px solid #99b6a326;
+  border-radius: 20px;
+  background: #080f11;
+}
+.proof strong {
+  font-size: 15px;
+  font-weight: 450;
+}
+.proof p {
+  font-size: 11px;
+  color: #92a39a;
+  margin: 6px 0 0;
+}
+.proof a {
+  margin-left: auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 18px;
+  row-gap: 6px;
+  color: #b5d4bd;
+}
+.proof a > span:first-child {
+  font-size: 7px;
+  letter-spacing: 0.1em;
+}
+.proof code {
+  font-size: 14px;
+  grid-row: 2;
+}
+.proof a > span:last-child {
+  grid-column: 2;
+  grid-row: 1 / 3;
+}
+.proofTrack {
+  display: flex;
+  align-items: center;
+}
+.proofTrack span {
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, #44634b, #101d15);
+  border: 1px solid #a3c4aa77;
+  transform: rotate(45deg);
+}
+.proofTrack i {
+  width: 13px;
+  height: 1px;
+  background: #8aac9266;
+}
+.grid :is(a, button):focus-visible {
+  outline: 2px solid #b6e6be;
+  outline-offset: 5px;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .principal:hover .assetStack,
+  .principal:focus-within .assetStack {
+    transform: translateY(-5px);
+  }
+  .principal:hover .incomeTokens,
+  .principal:focus-within .incomeTokens {
+    transform: translate(10px, -8px);
+  }
+  .offer:hover .ticket,
+  .offer:focus-within .ticket {
+    transform: translateX(-50%) rotate(-2deg) translateY(-5px);
+  }
+  .resale:hover .rightPass {
+    transform: translateX(-42%) rotate(3deg);
+  }
+  .assistant:hover .aiCore,
+  .assistant:focus-within .aiCore {
+    transform: rotate(0deg) scale(1.04);
+  }
+  .assistant:hover .insightA,
+  .assistant:focus-within .insightA {
+    transform: rotate(-3deg) translate(-3px, -4px);
+  }
+  .assistant:hover .insightB,
+  .assistant:focus-within .insightB {
+    transform: rotate(2deg) translate(4px, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .grid * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+@media (max-width: 1000px) {
+  .principal,
+  .offer,
+  .resale,
+  .assistant {
+    grid-column: span 6;
+    padding-inline: 24px;
+  }
+  .backingScene {
+    margin-inline: -24px;
+    height: 265px;
+  }
+  .incomeLabel {
+    right: 4%;
+    top: 20%;
+    padding: 9px;
+  }
+  .aiBottom {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .insight {
+    padding: 10px;
+    gap: 6px;
+  }
+  .insightA {
+    left: 0;
+  }
+  .insightB {
+    right: -5px;
+    top: 88px;
+  }
+  .insightC {
+    left: 6%;
+  }
+  .proofTrack {
+    display: none;
+  }
+}
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .principal,
+  .offer,
+  .resale,
+  .assistant,
+  .proof {
+    grid-column: 1;
+  }
+  .principal,
+  .offer {
+    padding-top: 26px;
+  }
+  .card h3 {
+    font-size: 28px;
+  }
+  .copy p {
+    font-size: 12px;
+  }
+  .backingScene {
+    height: 240px;
+    margin-top: 4px;
+  }
+  .backingLabel {
+    left: 12%;
+    bottom: 10px;
+  }
+  .backingLabel strong,
+  .incomeLabel strong {
+    font-size: 18px;
+  }
+  .incomeLabel {
+    top: 14%;
+    right: 5%;
+  }
+  .offerScene {
+    margin-block: 18px 8px;
+  }
+  .offerSeal {
+    right: -8px;
+  }
+  .assistantScene {
+    margin-inline: -6px;
+  }
+  .insightB {
+    top: 75px;
+  }
+  .proof {
+    padding: 22px;
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+  .proof a {
+    margin-left: 0;
+  }
+  .proof p {
+    line-height: 1.7;
+  }
+  .aiBottom {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
