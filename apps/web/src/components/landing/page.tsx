@@ -1,8 +1,8 @@
+import { FlowStory, IncomeCalculator } from './interactive-scenes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Icon } from '@/components/ui/icon';
 import {
-  IncomeCalculator,
   LandingNav,
   LinkAction,
   ProductPreview,
@@ -186,80 +186,26 @@ export function YieldexLanding() {
               <br />A claim you control.
             </p>
           </div>
-          <ol className={s.process}>
-            <li>
-              <span className={s.stepNumber}>01</span>
-              <h3>Lock & list</h3>
-              <p>
-                Alice backs an offer with 100 demoAAPL. She sets 50% of the
-                income, a six-month term and a 90 DemoUSD price.
-              </p>
-              <span className={s.stepDetail}>
-                <Icon name="vault" alt="" inheritColor /> Principal stays with
-                Alice
-              </span>
-            </li>
-            <li>
-              <span className={s.stepNumber}>02</span>
-              <h3>Buy the income rights</h3>
-              <p>
-                Bob pays the fixed price upfront. The six-month term starts at
-                purchase. He receives the income rights, not the backing.
-              </p>
-              <span className={s.stepDetail}>
-                <Icon name="receipt" alt="" inheritColor /> Fixed price. Defined
-                period.
-              </span>
-            </li>
-            <li>
-              <span className={s.stepNumber}>03</span>
-              <h3>Claim your share</h3>
-              <p>
-                If 1 demoAAPL of income is allocated, Alice and Bob can each
-                claim 0.50 demoAAPL. No income means nothing to claim.
-              </p>
-              <span className={s.stepDetail}>
-                <Icon name="coins" alt="" inheritColor /> Income paid in asset
-                tokens
-              </span>
-            </li>
-          </ol>
-          <div className={s.flowNote}>
-            <Icon name="info" alt="" inheritColor />
-            <p>
-              After the term, future income belongs to Alice. Existing claims
-              remain claimable. Backing release waits until event accounting is
-              safe.
-            </p>
-            <span>Illustrative lifecycle</span>
-          </div>
+          <FlowStory />
         </section>
         <section
           id="calculator"
-          className={`${s.container} ${s.section} ${s.mathSection}`}
+          className={`${s.container} ${s.section}`}
           aria-labelledby="math-title"
         >
-          <div className={s.mathCopy}>
-            <span className={s.sectionIndex}>03 / THE NUMBERS</span>
-            <h2 id="math-title">
-              See the upside.
-              <br />
-              <span>See the downside.</span>
-            </h2>
-            <p>
-              A fixed purchase price doesn’t mean fixed income. Change the
-              scenario to see what that means for a buyer.
-            </p>
-            <div className={s.mathPrinciple}>
-              <span>90</span>
-              <div>
-                DemoUSD paid upfront<small>Not refunded at expiry</small>
-              </div>
+          <div data-landing-reveal className={s.sectionHeading}>
+            <div>
+              <span className={s.sectionIndex}>03 / THE NUMBERS</span>
+              <h2 id="math-title">
+                The price is fixed.
+                <br />
+                <span>The income isn’t.</span>
+              </h2>
             </div>
-            <p className={s.finePrint}>
-              These are hypothetical terminal values, not asset price quotes.
-              Actual income is paid in the underlying token and can be lower or
-              zero.
+            <p>
+              Move the share. Change the income.
+              <br />
+              See what each person keeps.
             </p>
           </div>
           <IncomeCalculator />

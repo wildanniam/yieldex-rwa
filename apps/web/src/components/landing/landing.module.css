@@ -666,312 +666,10 @@
   color: var(--text-2);
   padding-bottom: 4px;
 }
-.process {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 42px;
-  padding: 0;
-  list-style: none;
-  counter-reset: steps;
-  margin: 50px 0 0;
-}
-.process li {
-  position: relative;
-  min-width: 0;
-}
-.process li::before {
-  content: '';
-  position: absolute;
-  top: 23px;
-  left: 64px;
-  right: -24px;
-  height: 1px;
-  background: linear-gradient(90deg, #668870, #283a30);
-}
-.process li:last-child::before {
-  right: 0;
-  background: linear-gradient(90deg, #668870, transparent);
-}
-.stepNumber {
-  font-size: 30px;
-  font-weight: 350;
-  letter-spacing: -0.06em;
-  color: #7da186;
-}
-.process h3 {
-  font-size: 21px;
-  line-height: 1.3;
-  font-weight: 450;
-  margin-top: 24px;
-  letter-spacing: -0.025em;
-}
-.process p {
-  font-size: 13px;
-  line-height: 1.85;
-  color: var(--text-2);
-  margin-top: 12px;
-}
-.stepDetail {
-  display: inline-flex;
-  gap: 7px;
-  align-items: center;
-  font-size: 10px;
-  color: #b8cdbd;
-  margin-top: 22px;
-}
-.stepDetail > span {
-  color: var(--green-text);
-}
-.flowNote {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-block: 1px solid var(--soft-line);
-  padding: 18px 0;
-  margin-top: 38px;
-}
-.flowNote > span:first-child {
-  color: #90af98;
-}
-.flowNote p {
-  font-size: 11px;
-  color: #9faea3;
-  line-height: 1.75;
-  max-width: 770px;
-}
-.flowNote > span:last-child {
-  margin-left: auto;
-  font-size: 9px;
-  color: #869d8d;
-  white-space: nowrap;
-}
-.mathSection {
-  display: grid;
-  grid-template-columns: 1fr 1.05fr;
-  gap: 100px;
-  align-items: center;
-}
-.mathCopy > p:not(.finePrint) {
-  font-size: 14px;
-  line-height: 1.9;
-  color: var(--text-2);
-  margin-top: 20px;
-  max-width: 370px;
-}
-.mathPrinciple {
-  display: flex;
-  gap: 18px;
-  align-items: center;
-  margin-top: 36px;
-  padding-block: 20px;
-  border-block: 1px solid var(--line);
-  max-width: 370px;
-}
-.mathPrinciple > span {
-  font-size: 58px;
-  line-height: 1;
-  letter-spacing: -0.065em;
-  color: var(--mint);
-  font-weight: 400;
-}
-.mathPrinciple > div {
-  font-size: 12px;
-  color: #c0cdc4;
-}
-.mathPrinciple small {
-  display: block;
-  font-size: 10px;
-  color: #98a79c;
-  margin-top: 6px;
-}
 .finePrint {
   font-size: 11px;
   line-height: 1.85;
   color: #91a297;
-}
-.mathCopy .finePrint {
-  margin-top: 20px;
-  max-width: 360px;
-}
-.calculator {
-  padding: 30px;
-  border: 1px solid #455d4b;
-  border-radius: 24px;
-  background: linear-gradient(130deg, #15231a, #0a1310 70%);
-  box-shadow: 0 16px 60px #0003;
-}
-.calculatorTitle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 9px;
-  letter-spacing: 0.13em;
-  color: #b7d3be;
-}
-.calculator .controlLabel {
-  font-size: 12px;
-  color: #bdcdc2;
-  margin-top: 29px;
-}
-.scenarioChoices {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 5px;
-  border-radius: 12px;
-  padding: 5px;
-  border: 1px solid #394e3e;
-  background: #09120d;
-  margin-top: 12px;
-}
-.scenarioChoices button {
-  position: relative;
-  isolation: isolate;
-  padding: 11px;
-  color: #9db6a4;
-  font-size: 17px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: color 0.2s;
-  border-radius: 8px;
-}
-.scenarioChoices button[aria-pressed='true'] {
-  color: var(--primary-label);
-}
-.scenarioChoices button > span:first-child:not(:last-child) {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: 8px;
-  background: var(--mint);
-}
-.calculator .valueUnit {
-  font-size: 9px;
-  color: #90a396;
-  margin-top: 8px;
-}
-.shareLabel {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 12px;
-  color: #bbcdc1;
-  margin-top: 26px;
-}
-.shareLabel output {
-  color: var(--mint);
-  font-size: 16px;
-  font-variant-numeric: tabular-nums;
-}
-.shareRange {
-  appearance: none;
-  display: block;
-  width: 100%;
-  height: 6px;
-  border-radius: 4px;
-  margin-top: 18px;
-  background: linear-gradient(
-    to right,
-    var(--mint) var(--range-progress),
-    #34473b var(--range-progress)
-  );
-  cursor: pointer;
-}
-.shareRange::-webkit-slider-thumb {
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #dcf0dd;
-  border: 4px solid #8cb693;
-  box-shadow: 0 0 0 3px #0003;
-}
-.shareRange::-moz-range-thumb {
-  box-sizing: border-box;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #dcf0dd;
-  border: 4px solid #8cb693;
-}
-.rangeLabels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 9px;
-  color: #96aa9c;
-  margin-top: 11px;
-}
-.calculatorResult {
-  margin-top: 23px;
-  border-top: 1px solid #354a3b;
-  padding-top: 18px;
-  font-variant-numeric: tabular-nums;
-}
-.calculatorRow {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-  font-size: 11px;
-  margin-bottom: 13px;
-}
-.calculatorRow > span {
-  color: #a2b8aa;
-}
-.calculatorRow strong {
-  font-size: 13px;
-  font-weight: 450;
-}
-.calculatorRow small {
-  font-size: 9px;
-  color: #9ab3a2;
-  font-weight: 400;
-}
-.netResult {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  border-top: 1px solid #354a3b;
-  margin-top: 18px;
-  padding-top: 18px;
-}
-.netResult > span {
-  font-size: 11px;
-  color: #c4d5c9;
-}
-.netResult small {
-  display: block;
-  font-size: 9px;
-  color: #97ab9d;
-  margin-top: 5px;
-}
-.netResult > div {
-  text-align: right;
-  color: #f09991;
-}
-.netResult[data-positive='true'] > div {
-  color: var(--mint);
-}
-.netResult strong {
-  display: block;
-  font-size: 31px;
-  font-weight: 450;
-  letter-spacing: -0.04em;
-}
-.netResult > div > span {
-  font-size: 10px;
-}
-.calculatorNote {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  margin-top: 21px !important;
-  font-size: 9px;
-  color: #92a79b;
-  line-height: 1.8;
-}
-.calculatorNote > span:first-child {
-  margin-top: 2px;
 }
 .assetGrid {
   display: grid;
@@ -1243,9 +941,6 @@
   .ethSmallRight {
     display: none;
   }
-  .mathSection {
-    gap: 60px;
-  }
 }
 @media (max-width: 900px) {
   .navInner {
@@ -1347,28 +1042,6 @@
   .sectionHeading > p {
     max-width: 245px;
     font-size: 12px;
-  }
-  .process {
-    gap: 26px;
-  }
-  .process h3 {
-    font-size: 18px;
-  }
-  .process p {
-    font-size: 12px;
-  }
-  .stepDetail {
-    font-size: 9px;
-  }
-  .flowNote > span:last-child {
-    display: none;
-  }
-  .mathSection {
-    gap: 32px;
-    grid-template-columns: 0.9fr 1.1fr;
-  }
-  .calculator {
-    padding: 23px;
   }
   .assetCard {
     padding: 20px;
@@ -1575,78 +1248,6 @@
   .landing h2 {
     font-size: 33px;
   }
-  .process {
-    grid-template-columns: 1fr;
-    gap: 27px;
-    margin-top: 28px;
-  }
-  .process li {
-    display: grid;
-    grid-template-columns: 39px 1fr;
-    column-gap: 17px;
-  }
-  .process li::before {
-    top: 54px;
-    bottom: -19px;
-    left: 15px;
-    right: auto;
-    height: auto;
-    width: 1px;
-    background: #344d3d;
-  }
-  .process li:last-child::before {
-    display: none;
-  }
-  .stepNumber {
-    font-size: 26px;
-    grid-row: span 3;
-    line-height: 1.3;
-  }
-  .process h3 {
-    font-size: 20px;
-    margin-top: 2px;
-  }
-  .process p {
-    margin-top: 11px;
-  }
-  .stepDetail {
-    margin-top: 14px;
-    font-size: 10px;
-  }
-  .flowNote {
-    margin-top: 28px;
-    align-items: flex-start;
-  }
-  .flowNote p {
-    font-size: 10px;
-  }
-  .mathSection {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 28px;
-  }
-  .mathCopy > p:not(.finePrint) {
-    font-size: 12px;
-    margin-top: 16px;
-  }
-  .mathPrinciple {
-    margin-top: 22px;
-    max-width: none;
-    padding-block: 16px;
-  }
-  .mathPrinciple > span {
-    font-size: 48px;
-  }
-  .mathCopy .finePrint {
-    max-width: none;
-    font-size: 10px;
-    margin-top: 15px;
-  }
-  .calculator {
-    padding: 24px;
-    border-radius: 20px;
-  }
   .assetGrid {
     grid-template-columns: 1fr;
     gap: 13px;
@@ -1744,9 +1345,6 @@
   }
   .previewSteps button {
     font-size: 8px;
-  }
-  .calculator {
-    padding: 20px;
   }
 }
 /* Signature orbital field; artwork transforms live on separate nested layers. */
@@ -1886,9 +1484,6 @@
   transition:
     transform 0.25s,
     color 0.25s;
-}
-.netResult strong {
-  display: block;
 }
 @media (hover: hover) and (pointer: fine) {
   .landing a[data-action='primary']:hover {

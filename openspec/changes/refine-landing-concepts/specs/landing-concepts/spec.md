@@ -14,3 +14,17 @@ Artwork SHALL preserve meaningful text in HTML, remain readable at320px width, a
 #### Scenario: Static or reduced-motion visit
 - **WHEN** motion is unavailable or reduced
 - **THEN** scenes and real navigation links SHALL remain understandable without relying on movement or a canvas.
+
+### Requirement: LC-003 Interactive lifecycle explanation
+The flow SHALL offer three manually selected stages: backing and offer, upfront purchase with term activation, and separate income claims. Backing SHALL remain visually in the vault. Illustrative allocations SHALL NOT appear as automatic payments. Stage controls SHALL support keyboard activation without autoplay.
+
+#### Scenario: Visiting each lifecycle stage
+- **WHEN** the visitor selects a stage, including rapid or reverse selection
+- **THEN** the scene and explanation SHALL agree on the selected stage and retain the same backing.
+
+### Requirement: LC-004 Exact illustrative split
+The simulator SHALL reuse the existing BigInt calculation for income values 200, 100 and zero, with share controls from 10 to 90 percent. It SHALL show buyer and retained seller allocations, the unchanged 90 DemoUSD upfront cost, and buyer net gain, loss or break-even. Values SHALL be labeled hypothetical equivalents, not forecasts or token claims.
+
+#### Scenario: Zero income
+- **WHEN** the visitor chooses zero income at any available share
+- **THEN** both allocations SHALL be zero, the visual income ring SHALL be empty, and buyer net result SHALL be minus 90 and minus 100 percent.

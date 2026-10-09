@@ -47,3 +47,7 @@ Verification matrix for this revision: desktop idle/pointer/leave; pause/resume 
 ## Concept-led benefits revision
 
 The user's Fradium reference replaces the prior repeated icon/text feature design at `#why-yieldex` only. `concept-cards.tsx` and its CSS module own original glass-vault/income-stream, layered offer ticket, resale pass and AI explanation scenes. Their visuals explain actual Yieldex concepts; Fradium branding, security claims and source assets are not copied. Labels remain HTML, all data is illustrative, and the compact chain row links to the deployment manifest. Use hover/focus only for short object motion with reduced-motion fallback. Other landing sections and canonical assistant behavior remain intact.
+
+## Lifecycle and allocation continuation
+
+Maintain the approved concept-led approach: a visual subject must explain what moves, what stays, and what the user can control. Sections3/4 use a stable glass vault with selectable Alice/Bob lifecycle states, then an income-allocation ring with exact buyer/seller values and an anchored upfront cost. `interactive-scenes.tsx` owns these client controls; `income-math.ts` remains the sole calculator arithmetic source. Finite directional traces show payment/allocation; ring transitions show share changes. Never animate an illustrative claim as a completed payment, imply guaranteed yield, or change the price when the scenario changes. Native controls, HTML labels, static SSR and CSS reduced-motion handling remain required.

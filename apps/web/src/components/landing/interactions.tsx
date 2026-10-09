@@ -6,12 +6,6 @@ import { motion, useReducedMotion, useSpring } from 'motion/react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { useAssistant } from '@/components/ChatbotWrapper';
-import {
-  SCENARIO_CENTS,
-  PURCHASE_CENTS,
-  incomeScenario,
-  fixedHundredths,
-} from './income-math';
 import s from './landing.module.css';
 
 export function LinkAction({
@@ -399,110 +393,5 @@ export function ProductPreview() {
         </p>
       </noscript>
     </section>
-  );
-}
-
-export function IncomeCalculator() {
-  const [scenario, setScenario] = useState(1);
-  const [share, setShare] = useState(50);
-  const reduced = useReducedMotion();
-  const income = SCENARIO_CENTS[scenario]!;
-  const values = incomeScenario(income, BigInt(share) * 100n);
-  return (
-    <div className={s.calculator}>
-      <div className={s.calculatorTitle}>
-        <span>YOUR SCENARIO</span>
-        <Icon name="coins" alt="" inheritColor />
-      </div>
-      <p className={s.controlLabel}>Total income value over the term</p>
-      <div className={s.scenarioChoices} aria-label="Illustrative total income">
-        {SCENARIO_CENTS.map((cents, index) => (
-          <button
-            key={String(cents)}
-            onClick={() => setScenario(index)}
-            aria-pressed={scenario === index}
-          >
-            {scenario === index && (
-              <motion.span
-                layoutId="scenario-indicator"
-                transition={{ duration: reduced ? 0 : 0.22 }}
-              />
-            )}
-            <span>{fixedHundredths(cents).replace('.00', '')}</span>
-          </button>
-        ))}
-      </div>
-      <p className={s.valueUnit}>Hypothetical DemoUSD-equivalent value</p>
-      <label className={s.shareLabel} htmlFor="landing-income-share">
-        Income share bought{' '}
-        <output htmlFor="landing-income-share">{share}%</output>
-      </label>
-      <input
-        id="landing-income-share"
-        className={s.shareRange}
-        type="range"
-        min={10}
-        max={90}
-        step={10}
-        value={share}
-        onChange={(e) => setShare(Number(e.target.value))}
-        style={
-          {
-            '--range-progress': `${((share - 10) / 80) * 100}%`,
-          } as React.CSSProperties
-        }
-      />
-      <div className={s.rangeLabels}>
-        <span>10%</span>
-        <span>90%</span>
-      </div>
-      <div className={s.calculatorResult} aria-live="polite" aria-atomic="true">
-        <div className={s.calculatorRow}>
-          <span>Upfront price paid</span>
-          <strong>
-            {fixedHundredths(PURCHASE_CENTS)} <small>DemoUSD</small>
-          </strong>
-        </div>
-        <div className={s.calculatorRow}>
-          <span>Buyer’s income value</span>
-          <strong>
-            {fixedHundredths(values.buyerCents)} <small>equivalent</small>
-          </strong>
-        </div>
-        <div className={s.netResult} data-positive={values.netCents >= 0n}>
-          <span>
-            Illustrative net result<small>Before fees and price changes</small>
-          </span>
-          <div>
-            <motion.strong
-              key={`${scenario}-${share}`}
-              initial={reduced === false ? { opacity: 0.45, y: 7 } : false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: reduced === false ? 0.22 : 0 }}
-            >
-              {values.netCents > 0n ? '+' : ''}
-              {fixedHundredths(values.netCents)}
-            </motion.strong>
-            <span>
-              {values.returnBps > 0n ? '+' : ''}
-              {fixedHundredths(values.returnBps)}%
-            </span>
-          </div>
-        </div>
-      </div>
-      <p className={s.calculatorNote}>
-        <Icon name="info" alt="" inheritColor size={16} />
-        <span>
-          This is a comparison, not a forecast. Actual claims are paid in asset
-          tokens. Network fees and conversion costs are excluded.
-        </span>
-      </p>
-      <noscript>
-        <p className={s.finePrint}>
-          Enable JavaScript to change scenarios. This static example uses 100
-          DemoUSD-equivalent income and a 50% share.
-        </p>
-      </noscript>
-    </div>
   );
 }

@@ -13,3 +13,8 @@ Only real links/buttons are focusable. Static illustrations do not pretend to cr
 
 ## Verification matrix
 Before63ffaed; after final revision recorded in PR. Test desktop1440/tablet768/mobile390/320, visual overlap and horizontal overflow; links to calculator/lab, assistant fallback, explorer manifest; keyboard and touch navigation; static SSR and reduced-motion CSS; adjacent hero/product-preview/calculator; production console/resource requests. Live wallet/AI success and full cross-browser/AT audit remain outside this visual change.
+
+## Flow and numbers continuation
+User approved the section2 approach and requested the next two sections. A stable Alice/vault/Bob scene lets visitors manually inspect offer, purchase and allocated-income states. Short directional light traces show payment and allocation; labels always state claimability, not automatic payouts. Backing remains fixed. The calculator uses a mint/neutral allocation ring with exact HTML amounts and the existing BigInt incomeScenario function. Native buttons/range input work by keyboard; zero income empties both arcs. No autoplay, looping animation or new dependency. CSS transitions are removed under reduced motion, with identical server/client initial markup.
+
+Additional verification: rapid/reverse stage selection, each of three income scenarios at shares10/50/90, break-even, fixed90 cost, buyer+seller conservation, keyboard range and refresh defaults; responsive diagram labels; dev hydration and production errors.
