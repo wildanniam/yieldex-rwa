@@ -91,3 +91,7 @@ Type generation tidak mengubah JSON string integer menjadi JS number. Runtime va
 - [Ajv JSON Schema](https://ajv.js.org/json-schema.html): Draft 2020-12 dan runtime validation.
 
 Versi dependency aktual dipin dalam package.json dan pnpm-lock.yaml. TypeScript 5.9 dipilih dalam rentang kompatibilitas typescript-eslint. ESLint 9.39.4 dipertahankan karena plugin React/import/a11y yang dipakai eslint-config-next belum menerima ESLint 10 dalam peer range; registry menandai ESLint 9 deprecated. Ini batas dev tooling yang dicatat, bukan alasan memaksakan peer override. Evaluasi migrasi lint setelah plugin kompatibel; production Next/React memakai versi yang dipin dan diuji. Tidak otomatis menaikkan semua tools ke major terbaru.
+
+## Hosted staging
+
+Runbook rollout: [hosted rollout](hosted-rollout.md). Remote PostgreSQL memerlukan `DATABASE_SSL_CA` berisi PEM CA resmi; web dan worker memverifikasi sertifikat. `DEPLOYMENT_MANIFEST_JSON` pada web menggantikan kebutuhan file lokal di Vercel, tetap melalui validator manifest yang sama. Worker memakai file manifest release. Tidak ada key signer pada web/Vercel.

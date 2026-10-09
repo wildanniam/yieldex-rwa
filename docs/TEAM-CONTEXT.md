@@ -6,7 +6,7 @@ Sumber asli, urutan bagian, dan SHA-256 tercantum di bawah. Link relatif di bagi
 File ini menyertakan kontrak data dan fixtures; beberapa fixture sengaja invalid untuk pengujian. Jangan menganggap fixture sebagai transaksi/provider data nyata.
 UI visual mengikuti Afer; chatbot Rafi; core/backend/contracts/quote Wildan/Codex. Lihat execution plan untuk scope dan gate. Jangan menambah swap execution/NFT/training ML di luar scope.
 
-Bundle source digest: `0d730bdb3cab1f6bc7da3523822d77bcde45efe09ba5da3239a2b176943e0882`
+Bundle source digest: `f8da58e2e348acc15734194945238ef874060e5cccf3b888374e1456bea869c6`
 
 ## Source Manifest
 
@@ -21,7 +21,7 @@ Bundle source digest: `0d730bdb3cab1f6bc7da3523822d77bcde45efe09ba5da3239a2b1769
 | `openspec/changes/build-rwa-income-rights/proposal.md` | `33ba944e0e5494948d5a4e73ceedccd29f31912e476e1cc26f1c541a6acd65d8` |
 | `openspec/changes/build-rwa-income-rights/design.md` | `7449d76bd4b9530a725e7393da0c9659ea443761deadf5d5dcd8fb23c8d759c7` |
 | `docs/repository-import.md` | `6beb2752dc2c2bb83fc73cb75cc5f1ccdac4af517f9c426bcb96d7d7c8d724e3` |
-| `docs/development.md` | `ef4508ff6b101677a21811a377722a28c7bcf02ef0b833fe1bf718b13816a315` |
+| `docs/development.md` | `61ad66ba7bb5cba59caf336513f2ead7dd289c3513645ddf5ce9cc4eca40c743` |
 | `docs/local-core.md` | `68c7570cb7b2dfd0433ec255f0c9cede6ec5c058a53d6718ed976f7ef992bfc8` |
 | `docs/core-verification.md` | `0bd90aa2e9414765fd8ec3a1f59b8bf1f7cdbc0a3823a38e6b582f973a79f30a` |
 | `docs/presepolia-remediation.md` | `61c562667f87498c4b39e548165358cb2bedc10026ae84da882188c7b37b0509` |
@@ -1097,6 +1097,10 @@ Type generation tidak mengubah JSON string integer menjadi JS number. Runtime va
 - [Ajv JSON Schema](https://ajv.js.org/json-schema.html): Draft 2020-12 dan runtime validation.
 
 Versi dependency aktual dipin dalam package.json dan pnpm-lock.yaml. TypeScript 5.9 dipilih dalam rentang kompatibilitas typescript-eslint. ESLint 9.39.4 dipertahankan karena plugin React/import/a11y yang dipakai eslint-config-next belum menerima ESLint 10 dalam peer range; registry menandai ESLint 9 deprecated. Ini batas dev tooling yang dicatat, bukan alasan memaksakan peer override. Evaluasi migrasi lint setelah plugin kompatibel; production Next/React memakai versi yang dipin dan diuji. Tidak otomatis menaikkan semua tools ke major terbaru.
+
+## Hosted staging
+
+Runbook rollout: [hosted rollout](hosted-rollout.md). Remote PostgreSQL memerlukan `DATABASE_SSL_CA` berisi PEM CA resmi; web dan worker memverifikasi sertifikat. `DEPLOYMENT_MANIFEST_JSON` pada web menggantikan kebutuhan file lokal di Vercel, tetap melalui validator manifest yang sama. Worker memakai file manifest release. Tidak ada key signer pada web/Vercel.
 
 ---
 

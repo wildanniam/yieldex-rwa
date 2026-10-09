@@ -1,0 +1,11 @@
+.git
+.local
+**/.env
+**/.env.local
+**/.env.*.local
+**/node_modules
+**/.next
+packages/contracts
+research
+test-results
+output
