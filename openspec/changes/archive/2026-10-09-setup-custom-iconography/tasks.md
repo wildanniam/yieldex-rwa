@@ -1,0 +1,6 @@
+- [x] 1. Scan the approved SVG assets under `apps/web/public/icons/` and record the exact basename inventory without inventing filenames.
+- [x] 2. Implement the inventory-derived `IconName` type and `Icon` component at `components/ui/icon.tsx` using `next/image`, default size 20, custom dimensions, alt fallback, and Tailwind class composition.
+- [x] 3. Add the required web re-export only if the existing Next.js alias cannot consume the root component; preserve one component implementation and one icon-name source.
+- [x] 4. Implement development warning and neutral fallback behavior for untyped invalid runtime names without issuing a request for a missing SVG.
+- [x] 5. Add focused tests for the discovered icon inventory, source path, square/rectangular dimensions, alt/className behavior, invalid runtime values, and absence of external icon imports.
+- [x] 6. Run the relevant web typecheck, lint, tests, build, and strict OpenSpec validation; leave the capability unimplemented if the SVG inventory remains empty.
