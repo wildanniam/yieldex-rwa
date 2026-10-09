@@ -1,5 +1,7 @@
 # Core implementation — bukti dan batas acceptance
 
+Latest hosted deployment status: [hosted rollout](hosted-rollout.md). Earlier local checkpoints below remain historical evidence.
+
 > Riwayat verifikasi dari repo eksperimen `wildanniam/eth-jkt` sebelum import. Nomor issue/PR dan hash lama di bawah mengacu ke repo sumber yang private, bukan Yieldex. Hasil ulang pada repo aktif dan batas import ada di [catatan import](repository-import.md).
 
 Checkpoint **9 Oktober 2026**, issue [#3](https://github.com/wildanniam/eth-jkt/issues/3), branch `feat/verified-rwa-core`. Scope core lokal sudah mempunyai implementasi dan bukti perilaku. Seluruh produk belum selesai: UI final Afer, runtime chatbot Rafi dan Sepolia tetap gate terpisah. Revision dan hasil regression terakhir dicatat di bagian akhir; bukti eksplorasi browser awal berasal dari worktree implementation sebelum commit.

@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
-import postgres from 'postgres';
+import type postgres from 'postgres';
+import { createDatabase } from '../database';
 import { createPublicClient, http } from 'viem';
 import { validateDeploymentManifest } from '@rwa/shared/config';
 import { ChainReader } from '@rwa/shared/chain';
@@ -19,12 +20,13 @@ export function marketContext() {
       DATABASE_URL,
       MARKETPLACE_RPC_URL,
       DEPLOYMENT_MANIFEST,
+      DEPLOYMENT_MANIFEST_JSON,
       CURSOR_SECRET,
     } = process.env;
     if (
       !DATABASE_URL ||
       !MARKETPLACE_RPC_URL ||
-      !DEPLOYMENT_MANIFEST ||
+      (!DEPLOYMENT_MANIFEST && !DEPLOYMENT_MANIFEST_JSON) ||
       !CURSOR_SECRET
     )
       throw new ApiFailure(
@@ -36,17 +38,15 @@ export function marketContext() {
       transport: http(MARKETPLACE_RPC_URL, { retryCount: 0, timeout: 8000 }),
     });
     const manifest = validateDeploymentManifest(
-      JSON.parse(await readFile(DEPLOYMENT_MANIFEST, 'utf8')),
+      JSON.parse(
+        DEPLOYMENT_MANIFEST_JSON ||
+          (await readFile(DEPLOYMENT_MANIFEST!, 'utf8')),
+      ),
       await client.getChainId(),
     );
     const reader = new ChainReader(client, manifest);
     await reader.verify();
-    const db = postgres(DATABASE_URL, {
-      max: 4,
-      prepare: false,
-      connect_timeout: 8,
-      onnotice: () => undefined,
-    });
+    const db = createDatabase(DATABASE_URL);
     return {
       reader,
       db,

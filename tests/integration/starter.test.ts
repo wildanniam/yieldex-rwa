@@ -60,8 +60,8 @@ it('web and worker expose the same interface version, without claiming product r
     expect(web.headers.get('cache-control')).toBe('no-store');
     expect(await web.json()).toMatchObject({
       interfaceVersion: INTERFACE_VERSION,
-      stage: 'FOUNDATION_ONLY',
-      integrations: 'NOT_IMPLEMENTED',
+      stage: 'CORE_BASELINE',
+      integrations: 'NOT_PROBED',
     });
     const worker = await fetch(`${base}/health`);
     expect(worker.status).toBe(200);

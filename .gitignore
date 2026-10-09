@@ -31,3 +31,8 @@ supabase/.branches/
 .local/
 .agents/
 .codex/
+
+# Vercel local project credentials and build metadata
+.vercel/
+.vercel
+.env*

@@ -25,6 +25,8 @@ export default [
   },
   {
     ignores: [
+      '.local/**',
+      '.vercel/**',
       '**/node_modules/**',
       '**/dist/**',
       '**/.next/**',

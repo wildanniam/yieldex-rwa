@@ -41,6 +41,11 @@ Detailed financial matrix: [verification.md](verification.md). Semua gate dimula
 
 Docker belum terhubung pada pemeriksaan terakhir; Supabase lokal belum berjalan. AI_MODEL kosong dan inference/runtime belum diuji. 0x price read berhasil sekali, tetapi pricing FAQ membatasi quote berkelanjutan tanpa transaksi; produk tetap tanpa swap, provider qualification wajib. Sepolia wallet memiliki 0.4 test ETH menurut screenshot; signer/deploy belum disiapkan. Afer/Rafi progress belum diverifikasi. Ini bukan alasan menurunkan acceptance atau mengarang data sukses.
 
-## Checkpoint 9 Oktober 2026
+## Checkpoint lokal 9 Oktober 2026 — sebelum hosted rollout
 
 Core lokal, native auth admission, private history, 9 intent actions, reviewed-source outbox/reconciler, live read-only quote dan functional browser lifecycle sudah diuji. Lihat core-verification.md untuk batas tiap bukti. Docker/Supabase lokal sekarang berjalan. Gate Afer/Rafi dan Sepolia tetap terbuka; tidak ada deployment publik atau merge yang diklaim.
+
+
+## Hosted rollout — 9 Oktober 2026
+
+Kontrak Sepolia, Supabase hosted, Vercel dan worker Hostinger sudah aktif. [Bukti hosted rollout](../hosted-rollout.md) menjadi sumber status aktual; checkpoint lokal di atas adalah riwayat. Runtime web/worker `f73935c` dan source kontrak `f82cb0d` dibedakan. G7a / task 7.8 PASS: lifecycle 23 transaksi, saldo tepat, receipt canonical/finalized dan hasil persisted Supabase/API sudah terbukti; snapshot akhir 11875185 FINALIZED/HEALTHY. Integrasi visual Afer, chatbot Rafi, G7b dan merge tetap terpisah; tidak ada perubahan scope ekonomi atau interface v1.

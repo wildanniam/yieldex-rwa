@@ -6,13 +6,13 @@ Sumber asli, urutan bagian, dan SHA-256 tercantum di bawah. Link relatif di bagi
 File ini menyertakan kontrak data dan fixtures; beberapa fixture sengaja invalid untuk pengujian. Jangan menganggap fixture sebagai transaksi/provider data nyata.
 UI visual mengikuti Afer; chatbot Rafi; core/backend/contracts/quote Wildan/Codex. Lihat execution plan untuk scope dan gate. Jangan menambah swap execution/NFT/training ML di luar scope.
 
-Bundle source digest: `0d730bdb3cab1f6bc7da3523822d77bcde45efe09ba5da3239a2b176943e0882`
+Bundle source digest: `5df9e35ce6583ba3ae6a365fa8079b192859e76cdf1d777b2d4596dfebc38ede`
 
 ## Source Manifest
 
 | Source | SHA-256 |
 | --- | --- |
-| `README.md` | `7296260836cf7b533220e8a7b095ec771bc9eecf7e02b6b9c10785ac7e3cdf65` |
+| `README.md` | `5eb7ccd428c61cb1b851be2d79d1a3aa66712b2b7356b284f042e4b3d183ae97` |
 | `CONTRIBUTING.md` | `67e4c0d37a93a1bcf89b0c7b6aad938df00e6d5ec0127f3669ef231220866ca2` |
 | `AGENTS.md` | `8518e0cd8d3bf136bccd4e275cdb6b4b7c3b4ce52d92c618c252a63620a9efd9` |
 | `docs/product.md` | `9bfe11d7a5b540559447d113263a3f6a5c1c57a853a2ba726726fd0723328342` |
@@ -21,9 +21,9 @@ Bundle source digest: `0d730bdb3cab1f6bc7da3523822d77bcde45efe09ba5da3239a2b1769
 | `openspec/changes/build-rwa-income-rights/proposal.md` | `33ba944e0e5494948d5a4e73ceedccd29f31912e476e1cc26f1c541a6acd65d8` |
 | `openspec/changes/build-rwa-income-rights/design.md` | `7449d76bd4b9530a725e7393da0c9659ea443761deadf5d5dcd8fb23c8d759c7` |
 | `docs/repository-import.md` | `6beb2752dc2c2bb83fc73cb75cc5f1ccdac4af517f9c426bcb96d7d7c8d724e3` |
-| `docs/development.md` | `ef4508ff6b101677a21811a377722a28c7bcf02ef0b833fe1bf718b13816a315` |
+| `docs/development.md` | `61ad66ba7bb5cba59caf336513f2ead7dd289c3513645ddf5ce9cc4eca40c743` |
 | `docs/local-core.md` | `68c7570cb7b2dfd0433ec255f0c9cede6ec5c058a53d6718ed976f7ef992bfc8` |
-| `docs/core-verification.md` | `0bd90aa2e9414765fd8ec3a1f59b8bf1f7cdbc0a3823a38e6b582f973a79f30a` |
+| `docs/core-verification.md` | `7b46c203119719e645159a890b2bd0e0da5194c45751c05d710cfb51753dd893` |
 | `docs/presepolia-remediation.md` | `61c562667f87498c4b39e548165358cb2bedc10026ae84da882188c7b37b0509` |
 | `openspec/changes/build-rwa-income-rights/specs/ai-assistant/spec.md` | `069c6c4b018a33fbb973cff3680c6c79decfeaa8f57f28090e5af0a2b87fe846` |
 | `openspec/changes/build-rwa-income-rights/specs/asset-events/spec.md` | `f2af508bdfa53f2623c100974411196670249637d07292e02178d875b7a7d8cb` |
@@ -39,7 +39,7 @@ Bundle source digest: `0d730bdb3cab1f6bc7da3523822d77bcde45efe09ba5da3239a2b1769
 | `docs/spec/contract-interface.md` | `af73a698537a83c1c85b86ea1e94990d948268883bb9966d969c2667ee3875d3` |
 | `docs/spec/coverage.md` | `34b86ec1dbad3fa23756c67c16763a7081c534c8884d053d19fdb810bb9307c8` |
 | `docs/spec/data-contracts.md` | `5b9157d30122d02bf2521b462a5a9b0afd48ec55f9c6354af51731c63d7bca40` |
-| `docs/spec/execution-plan.md` | `497c8670edecc7725cba4a77ba204f4b87e3abdb32705572322bb4ad6aa55f2d` |
+| `docs/spec/execution-plan.md` | `ce087a721175e478e5d5d2bdee525807d3ed5ea8d53eb2854c2b594f365340eb` |
 | `docs/spec/sources.md` | `a1819d19113a41a401e78ef7fd72f04e01c71b17e8fbcc015ea3233f74121bc3` |
 | `docs/spec/team-workflow.md` | `536dede4a1323bff31c7c6fd217857cb633c5f558693b4ded9c8a04de0194c2d` |
 | `docs/spec/verification.md` | `2a3c1361dc3d2ad940b46bbaebf900e85dbcee85cdec70d8b64f464aeca58d1c` |
@@ -78,7 +78,7 @@ Bundle source digest: `0d730bdb3cab1f6bc7da3523822d77bcde45efe09ba5da3239a2b1769
 | `examples/uint256-max.valid.json` | `445dc6951c3597b4a57108db0755fa2d1e8603114175049031ac6e8b53cc1a60` |
 | `examples/uint256-overflow.invalid.json` | `fb939b2c5a21d397e95423da4e837ba63318e9892419e1fcd4d2eafc6a24e9ff` |
 | `examples/uint64-overflow.invalid.json` | `4a324732507ee662c232e67abf269d69bcc5fe6c4ee58d1f8398bc0b6a108d5e` |
-| `openspec/changes/build-rwa-income-rights/tasks.md` | `954f96982fecc138fe32e39bb61ece2d12c4ba2c720d57e854752244bf79a249` |
+| `openspec/changes/build-rwa-income-rights/tasks.md` | `b66c7ebaf1e1ebb62fca419c91255cf804eccca20b789ffec618436779d1713e` |
 
 ---
 
@@ -114,7 +114,7 @@ schemas/examples     Definisi data dan fixtures bersama
 openspec/docs        Scope, interface, skenario, task dan panduan tim
 ```
 
-ABI saat ini **IMPLEMENTED_LOCAL**, dihasilkan dari implementasi dan diperiksa terhadap interface normatif. Deployment lokal dihasilkan script; Sepolia belum dideploy. `pnpm generate` memperbarui file bersama; jangan edit generated files. Lanjutkan task yang dipilih di OpenSpec setelah menyepakati ownership dengan tim.
+ABI saat ini **IMPLEMENTED_LOCAL**, dihasilkan dari implementasi dan diperiksa terhadap interface normatif. Deployment lokal dihasilkan script; Sepolia sudah dideploy; alamat resmi demo dan source commit ada di [manifest](deployments/sepolia.json). Lihat [status hosted](docs/hosted-rollout.md) untuk gate yang sudah/belum diverifikasi. `pnpm generate` memperbarui file bersama; jangan edit generated files. Lanjutkan task yang dipilih di OpenSpec setelah menyepakati ownership dengan tim.
 
 ## Mulai dari sini
 
@@ -154,7 +154,7 @@ Validator dokumen memerlukan `jsonschema==4.25.1`; `pnpm spec:check` menjalankan
 
 Repository tim: [wildanniam/yieldex-rwa](https://github.com/wildanniam/yieldex-rwa) (public). Initial commit mengimpor baseline eksperimen yang telah diuji dari commit `fc03e032c186c51e13a274cd222cbaae4e11d47a`; asal kode tetap dicatat pada [catatan import](docs/repository-import.md). Wildan mengotorisasi initial import/push sebagai bootstrap repo baru setelah pemeriksaan. Workflow tim berikutnya: branch fitur → coding → tes → push → PR → review; issue opsional. Satu PR dapat berisi beberapa commit terkait. Pengecualian initial push tidak berlaku otomatis untuk perubahan berikutnya.
 
-Arsitektur ada di [design](openspec/changes/build-rwa-income-rights/design.md). Core lokal menyediakan market/accounting, token demo, adapter, read API, auth/history, quote, reviewed finalizer dan functional wallet lab di `/lab`. **Integrasi visual Afer, chatbot Rafi dan deployment/journey Sepolia masih terbuka.** Hanya task dengan bukti acceptance yang boleh dicentang. Test interface/schema tidak membuktikan keamanan ekonomi kontrak atau keberhasilan integrasi provider.
+Arsitektur ada di [design](openspec/changes/build-rwa-income-rights/design.md). Core lokal menyediakan market/accounting, token demo, adapter, read API, auth/history, quote, reviewed finalizer dan functional wallet lab di `/lab`. **Integrasi visual Afer dan chatbot Rafi masih terbuka.** Deployment Sepolia sudah tersedia; status journey testnet dicatat terpisah di [hosted rollout](docs/hosted-rollout.md). Hanya task dengan bukti acceptance yang boleh dicentang. Test interface/schema tidak membuktikan keamanan ekonomi kontrak atau keberhasilan integrasi provider.
 
 ## Riset pendukung
 
@@ -1098,6 +1098,10 @@ Type generation tidak mengubah JSON string integer menjadi JS number. Runtime va
 
 Versi dependency aktual dipin dalam package.json dan pnpm-lock.yaml. TypeScript 5.9 dipilih dalam rentang kompatibilitas typescript-eslint. ESLint 9.39.4 dipertahankan karena plugin React/import/a11y yang dipakai eslint-config-next belum menerima ESLint 10 dalam peer range; registry menandai ESLint 9 deprecated. Ini batas dev tooling yang dicatat, bukan alasan memaksakan peer override. Evaluasi migrasi lint setelah plugin kompatibel; production Next/React memakai versi yang dipin dan diuji. Tidak otomatis menaikkan semua tools ke major terbaru.
 
+## Hosted staging
+
+Runbook rollout: [hosted rollout](hosted-rollout.md). Remote PostgreSQL memerlukan `DATABASE_SSL_CA` berisi PEM CA resmi; web dan worker memverifikasi sertifikat. `DEPLOYMENT_MANIFEST_JSON` pada web menggantikan kebutuhan file lokal di Vercel, tetap melalui validator manifest yang sama. Worker memakai file manifest release. Tidak ada key signer pada web/Vercel.
+
 ---
 
 # Source: docs/local-core.md
@@ -1197,6 +1201,8 @@ Intent menyimpan nonce dari transaksi RPC yang sudah cocok dengan preview. Repla
 # Source: docs/core-verification.md
 
 # Core implementation — bukti dan batas acceptance
+
+Latest hosted deployment status: [hosted rollout](hosted-rollout.md). Earlier local checkpoints below remain historical evidence.
 
 > Riwayat verifikasi dari repo eksperimen `wildanniam/eth-jkt` sebelum import. Nomor issue/PR dan hash lama di bawah mengacu ke repo sumber yang private, bukan Yieldex. Hasil ulang pada repo aktif dan batas import ada di [catatan import](repository-import.md).
 
@@ -3799,9 +3805,14 @@ Detailed financial matrix: [verification.md](verification.md). Semua gate dimula
 
 Docker belum terhubung pada pemeriksaan terakhir; Supabase lokal belum berjalan. AI_MODEL kosong dan inference/runtime belum diuji. 0x price read berhasil sekali, tetapi pricing FAQ membatasi quote berkelanjutan tanpa transaksi; produk tetap tanpa swap, provider qualification wajib. Sepolia wallet memiliki 0.4 test ETH menurut screenshot; signer/deploy belum disiapkan. Afer/Rafi progress belum diverifikasi. Ini bukan alasan menurunkan acceptance atau mengarang data sukses.
 
-## Checkpoint 9 Oktober 2026
+## Checkpoint lokal 9 Oktober 2026 — sebelum hosted rollout
 
 Core lokal, native auth admission, private history, 9 intent actions, reviewed-source outbox/reconciler, live read-only quote dan functional browser lifecycle sudah diuji. Lihat core-verification.md untuk batas tiap bukti. Docker/Supabase lokal sekarang berjalan. Gate Afer/Rafi dan Sepolia tetap terbuka; tidak ada deployment publik atau merge yang diklaim.
+
+
+## Hosted rollout — 9 Oktober 2026
+
+Kontrak Sepolia, Supabase hosted, Vercel dan worker Hostinger sudah aktif. [Bukti hosted rollout](../hosted-rollout.md) menjadi sumber status aktual; checkpoint lokal di atas adalah riwayat. Runtime web/worker `f73935c` dan source kontrak `f82cb0d` dibedakan. G7a / task 7.8 PASS: lifecycle 23 transaksi, saldo tepat, receipt canonical/finalized dan hasil persisted Supabase/API sudah terbukti; snapshot akhir 11875185 FINALIZED/HEALTHY. Integrasi visual Afer, chatbot Rafi, G7b dan merge tetap terpisah; tidak ada perubahan scope ekonomi atau interface v1.
 
 ---
 
@@ -10055,7 +10066,7 @@ Alice lists backed income → Bob asks AI and buys → controlled labelled divid
 
 **LOCKED 8 Oktober 2026:** ikuti [execution plan](../../../docs/spec/execution-plan.md). Implementasi autonomous Wildan/Codex harus lulus tes milestone sebelum dependent work mengandalkannya; kegagalan diperbaiki, gate eksternal dicatat BLOCKED, bukan dianggap selesai. Ownership: Afer UI; Rafi chatbot; Wildan/Codex core/backend/contracts/quote/testing/integrasi. Review tim 1.1 belum dianggap selesai; pekerjaan core lokal sekarang diotorisasi Wildan.
 
-**Evidence core 9 Oktober:** task yang dicentang di bawah dibuktikan oleh [core verification](../../../docs/core-verification.md) dan script tes yang ditautkan di sana. Task UI final, AI dan Sepolia tetap terbuka; `/lab` sudah diuji sebagai functional integration, bukan penerimaan desain tim.
+**Evidence core 9 Oktober:** task yang dicentang di bawah dibuktikan oleh [core verification](../../../docs/core-verification.md) dan script tes yang ditautkan di sana. Task UI final dan AI tetap terbuka; deployment/seed 7.3 dan lifecycle core Sepolia 7.8 terverifikasi di docs/hosted-rollout.md; `/lab` sudah diuji sebagai functional integration, bukan penerimaan desain tim.
 
 Checklist membedakan bagian terverifikasi dan acceptance produk yang masih terbuka. Dependency memakai ID task; ownership mengikuti execution plan. GitHub issue opsional untuk tim; gunakan task ini untuk koordinasi dan tautkan PR terkait bila ada. Tiap task selesai mempunyai evidence; keberadaan interface/fixture bukan bukti fitur ekonomi berjalan. Wildan mengotorisasi starter sebelum meet, sehingga task 1.2 dapat dikerjakan terpisah dari review bersama 1.1; review itu tetap gate sebelum coding paralel tim.
 
@@ -10121,10 +10132,10 @@ Checklist membedakan bagian terverifikasi dan acceptance produk yang masih terbu
 
 - [ ] 7.1 Run Anvil full lifecycle with at least Alice/Bob/Carol across supported demo assets. Depends: 3.8, 5.6, 6.8. Acceptance: first/second dividend, resale, split, expiry, old claims and release with state/balance proof. Refs: integration-quality.
 - [x] 7.2 Run official-token fork adapter suite on pinned blocks. Depends: 2.2, 3.8. Acceptance: real source/state assertions separate synthetic event injection; blocked RPC explicitly reported. Evidence: docs/core-verification.md.
-- [ ] 7.3 Configure isolated Sepolia deployment and reproducible seed script/manifest. Depends: 2.6, 3.8, 3.9, 7.2. Acceptance: source commit, chain/address, token labels, roles, verified explorer and reproducible setup; no real-money/private raw secrets.
+- [x] 7.3 Configure isolated Sepolia deployment and reproducible seed script/manifest. Depends: 2.6, 3.8, 3.9, 7.2. Acceptance: source commit, chain/address, token labels, roles, verified explorer and reproducible setup; no real-money/private raw secrets. Evidence: docs/hosted-rollout.md; deployments/sepolia.json; Sourcify creation/runtime match for all seven contracts.
 - [ ] 7.4 Test full browser journey on Sepolia and live read-only mainnet quote panel. Depends: 7.1, 7.3, 7.8, 6.8. Acceptance: evidence distinguishes testnet economic state from real quotes; all demo accounts/wallet flows correct.
 - [ ] 7.5 Review failure/recovery and security matrix plus final interface parity. Depends: 7.2, 7.4. Acceptance: failed cases fixed or material limitations explicitly recorded; no unresolved critical loss/authorization defect labelled ready.
 - [ ] 7.6 Produce team/demo runbook and requirement coverage report on tested revision. Depends: 7.5. Acceptance: others can reproduce; source attribution and hackathon-period provenance recorded; no fabricated adoption/integration claim.
 - [ ] 7.7 Archive baseline only after accepted implementation and verification. Depends: 7.6. Acceptance: completed change truthfully updates main specs; unfinished tasks stay active rather than marked done for submission.
 
-- [ ] 7.8 Verify Sepolia core lifecycle independently of final UI/chatbot. Depends: 7.3. Acceptance: Alice/Bob/Carol create/buy/dividend/resale/split/expiry/claims/release through scripts or functional harness, actual receipts/balances, rejected unauthorized and premature operations, real finalized coverage and role checks; no Anvil time travel or simulated finality presented as Sepolia. Final product acceptance still requires 7.4–7.6.
+- [x] 7.8 Verify Sepolia core lifecycle independently of final UI/chatbot. Depends: 7.3. Acceptance: Alice/Bob/Carol create/buy/dividend/resale/split/expiry/claims/release through scripts or functional harness, actual receipts/balances, rejected unauthorized and premature operations, real finalized coverage and role checks; no Anvil time travel or simulated finality presented as Sepolia. Final product acceptance still requires 7.4–7.6. Evidence: docs/hosted-rollout.md; 23 canonical successful receipts, finalized terminal block 11875166, exact actor balances, zero claims/vault and hosted FINALIZED/HEALTHY snapshot 11875185.

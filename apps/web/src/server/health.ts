@@ -1,12 +1,12 @@
-import { INTERFACE_VERSION, STARTER_STAGE } from '@rwa/shared';
+import { INTERFACE_VERSION } from '@rwa/shared';
 
 /** Process liveness only. Does not probe or claim readiness of any integration. */
 export function getWebHealth() {
   return {
     service: 'web',
     status: 'ok',
-    stage: STARTER_STAGE,
+    stage: 'CORE_BASELINE',
     interfaceVersion: INTERFACE_VERSION,
-    integrations: 'NOT_IMPLEMENTED',
+    integrations: 'NOT_PROBED',
   } as const;
 }
