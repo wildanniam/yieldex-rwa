@@ -3,8 +3,11 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const appRoot = resolve(__dirname);
-const layoutSource = readFileSync(resolve(appRoot, 'layout.tsx'), 'utf8');
-const pageSource = readFileSync(resolve(appRoot, 'page.tsx'), 'utf8');
+const layoutSource = readFileSync(
+  resolve(appRoot, '../components/WorkspaceShell.tsx'),
+  'utf8',
+);
+const pageSource = readFileSync(resolve(appRoot, 'workspace/page.tsx'), 'utf8');
 const stylesSource = readFileSync(resolve(appRoot, 'globals.css'), 'utf8');
 const tailwindSource = readFileSync(
   resolve(appRoot, '../../tailwind.config.ts'),

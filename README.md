@@ -17,6 +17,8 @@ corepack pnpm dev
 
 Web: `http://127.0.0.1:3000`. Worker health: `http://127.0.0.1:3101/health`. Panduan lengkap, alternatif setup tanpa NVM/Corepack, command dan batas package ada di **[development guide](docs/development.md)**. `pnpm check` menjalankan pemeriksaan gabungan. Lihat [bukti core](docs/core-verification.md) dan [runbook lokal](docs/local-core.md); bukti starter tetap historis.
 
+Halaman `/` adalah landing Yieldex; overview developer sebelumnya tersedia di `/workspace`. `/lab` tetap menjadi demo fungsional dan `/design-system` katalog komponen bersama. Komponen landing berada di `apps/web/src/components/landing/`, memakai Button/Icon bersama; arah desain dan batas simulasi dijelaskan di [DESIGN.md](DESIGN.md). Angka ilustrasi tidak mengirim transaksi, sedangkan tombol AI memakai sesi chatbot yang sama di seluruh halaman.
+
 ```text
 apps/web             Next.js, read API, quote read-only; ruang UI/chatbot tim
 apps/worker          Finalized indexer, issuer observations dan reviewed finalizer

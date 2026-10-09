@@ -1,0 +1,69 @@
+{
+  "figmaNode": "50:21692",
+  "verifiedAt": "2026-10-09",
+  "assets": [
+    {
+      "path": "apps/web/public/landing/hero-glow.svg",
+      "figmaNodeId": "50:21718",
+      "sha256": "25e2de0fc0c09d6e358f3c775069b262d1571ca81d8e91623d0873f14b5d627e",
+      "width": "1840",
+      "height": "1480",
+      "viewBox": "0 0 1840 1480"
+    },
+    {
+      "path": "apps/web/public/landing/ethereum-large-left.svg",
+      "figmaNodeId": "50:21740",
+      "sha256": "d7555339f08cb57857653c19c38ed810f20e2142b20548ce654ec4c9492a1f58",
+      "width": "299",
+      "height": "377",
+      "viewBox": "0 0 299 377"
+    },
+    {
+      "path": "apps/web/public/landing/ethereum-large-right.svg",
+      "figmaNodeId": "51:5657",
+      "sha256": "a42d6f0355c6058cd31e05d886034a9f269530085187a8da177e6cd2d5216a2f",
+      "width": "299",
+      "height": "377",
+      "viewBox": "0 0 299 377"
+    },
+    {
+      "path": "apps/web/public/landing/ethereum-small-left.svg",
+      "figmaNodeId": "51:5655",
+      "sha256": "e9b79f85f4f6a81260f830c078a177337d40a15cc4d57349e3b26570fe89c268",
+      "width": "114.981",
+      "height": "165.1",
+      "viewBox": "0 0 114.981 165.1"
+    },
+    {
+      "path": "apps/web/public/landing/ethereum-small-right.svg",
+      "figmaNodeId": "51:5658",
+      "sha256": "5ac1bb10ef9ca66433339fafe153a17551208f1ab7280516068e841e5febd296",
+      "width": "114.981",
+      "height": "165.1",
+      "viewBox": "0 0 114.981 165.1"
+    },
+    {
+      "path": "apps/web/public/landing/ethereum-upper-left.svg",
+      "figmaNodeId": "51:5656",
+      "sha256": "d80b53a8082ebd6eafd188ad8cf003a25d1a425a98d8373603de87a42aaaa8c0",
+      "width": "114.981",
+      "height": "165.1",
+      "viewBox": "0 0 114.981 165.1"
+    },
+    {
+      "path": "apps/web/public/landing/ethereum-upper-right.svg",
+      "figmaNodeId": "51:5659",
+      "sha256": "de260b840702b025d72bc2e7006263ae7878f28e96d4e4979b52fe1193ec6630",
+      "width": "114.981",
+      "height": "165.1",
+      "viewBox": "0 0 114.981 165.1"
+    },
+    {
+      "path": "apps/web/public/landing/yieldex-logo.png",
+      "figmaNodeId": "51:5669",
+      "width": 611,
+      "height": 188,
+      "sha256": "2c02dea1bfe683d4ecad7e9913c554e3862df8810352111ab44fe88c4c316ace"
+    }
+  ]
+}

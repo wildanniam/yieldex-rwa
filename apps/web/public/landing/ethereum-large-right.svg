@@ -1,0 +1,9 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="299" height="377" viewBox="0 0 299 377" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path id="Ethereum silhouette" opacity="0.23" d="M149.5 0L299 192.125L149.5 261L0 192.125L149.5 0ZM0 221.125L149.5 290L299 221.125L149.5 377L0 221.125Z" fill-rule="evenodd" clip-rule="evenodd" fill="url(#paint0_linear_0_259)"/>
+<defs>
+<linearGradient id="paint0_linear_0_259" x1="149.5" y1="0" x2="149.5" y2="377" gradientUnits="userSpaceOnUse">
+<stop stop-color="#D1FFD4"/>
+<stop offset="1" stop-color="#00BD11"/>
+</linearGradient>
+</defs>
+</svg>

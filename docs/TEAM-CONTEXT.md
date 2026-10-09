@@ -6,13 +6,13 @@ Sumber asli, urutan bagian, dan SHA-256 tercantum di bawah. Link relatif di bagi
 File ini menyertakan kontrak data dan fixtures; beberapa fixture sengaja invalid untuk pengujian. Jangan menganggap fixture sebagai transaksi/provider data nyata.
 UI visual mengikuti Afer; chatbot Rafi; core/backend/contracts/quote Wildan/Codex. Lihat execution plan untuk scope dan gate. Jangan menambah swap execution/NFT/training ML di luar scope.
 
-Bundle source digest: `09ed3cac8ae4740986cacf48dc4e3ca2e1d0171c5fcd328331e8b0f1e34de66a`
+Bundle source digest: `21fe88b46038039213a5e5ef02c69a887336d1b4e2d76c37d3f1abac61c1bab4`
 
 ## Source Manifest
 
 | Source | SHA-256 |
 | --- | --- |
-| `README.md` | `5eb7ccd428c61cb1b851be2d79d1a3aa66712b2b7356b284f042e4b3d183ae97` |
+| `README.md` | `05fa56b2da5ce35d4e9c0abe5b81dd9f465e11a016617c1553717358cb6d72ce` |
 | `CONTRIBUTING.md` | `67e4c0d37a93a1bcf89b0c7b6aad938df00e6d5ec0127f3669ef231220866ca2` |
 | `AGENTS.md` | `8518e0cd8d3bf136bccd4e275cdb6b4b7c3b4ce52d92c618c252a63620a9efd9` |
 | `docs/product.md` | `9bfe11d7a5b540559447d113263a3f6a5c1c57a853a2ba726726fd0723328342` |
@@ -102,6 +102,8 @@ corepack pnpm dev
 ```
 
 Web: `http://127.0.0.1:3000`. Worker health: `http://127.0.0.1:3101/health`. Panduan lengkap, alternatif setup tanpa NVM/Corepack, command dan batas package ada di **[development guide](docs/development.md)**. `pnpm check` menjalankan pemeriksaan gabungan. Lihat [bukti core](docs/core-verification.md) dan [runbook lokal](docs/local-core.md); bukti starter tetap historis.
+
+Halaman `/` adalah landing Yieldex; overview developer sebelumnya tersedia di `/workspace`. `/lab` tetap menjadi demo fungsional dan `/design-system` katalog komponen bersama. Komponen landing berada di `apps/web/src/components/landing/`, memakai Button/Icon bersama; arah desain dan batas simulasi dijelaskan di [DESIGN.md](DESIGN.md). Angka ilustrasi tidak mengirim transaksi, sedangkan tombol AI memakai sesi chatbot yang sama di seluruh halaman.
 
 ```text
 apps/web             Next.js, read API, quote read-only; ruang UI/chatbot tim
