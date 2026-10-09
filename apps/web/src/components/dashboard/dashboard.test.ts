@@ -12,7 +12,7 @@ describe('dashboard presentation boundaries', () => {
     const html = render('empty');
     expect(html).toContain('No positions yet');
     expect(html).toContain('Nothing to claim yet');
-    expect(html).toContain('Your story starts here');
+    expect(html).toContain('No activity yet');
     expect(html).not.toContain('Income allocated');
     expect(html).toContain('No wallet connected');
     expect(html).toContain('disabled=""');
@@ -24,8 +24,6 @@ describe('dashboard presentation boundaries', () => {
     expect(html).toContain('Not live receipts');
     expect(html).toContain('0.50');
     expect(html).toContain('demoAAPL');
-    expect(html).toContain('demoMSFT');
-    expect(html).toContain('demoSPY');
     expect(html).not.toContain('dNVDA');
     expect(html).not.toContain('$50');
     expect(html).not.toContain('etherscan.io/tx');

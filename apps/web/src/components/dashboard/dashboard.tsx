@@ -125,10 +125,6 @@ export function PortfolioDashboard({
   function showAction(label: string) {
     setAction(label);
   }
-  function selectTab(value: PortfolioTab) {
-    setTab(value);
-    setMenuOpen(false);
-  }
   function tabKey(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     let target = index;
     if (event.key === 'ArrowRight') target = (index + 1) % tabs.length;
@@ -191,7 +187,6 @@ export function PortfolioDashboard({
           />
         </Link>
         <nav aria-label="Application navigation">
-          <p className={s.navLabel}>Your workspace</p>
           {navAction(
             'My Portfolio',
             'layers',
@@ -206,51 +201,28 @@ export function PortfolioDashboard({
           {navAction('Create listing', 'plus', () =>
             showAction('Create listing'),
           )}
-          <p className={s.navLabel}>Manage</p>
-          {navAction('Positions', 'vault', () => {
-            selectTab('positions');
-            document
-              .getElementById('holdings')
-              ?.scrollIntoView({ block: 'start' });
-          })}
-          {navAction('My listings', 'receipt', () => {
-            selectTab('listings');
-            document
-              .getElementById('holdings')
-              ?.scrollIntoView({ block: 'start' });
-          })}
-          <a
-            className={s.navItem}
-            href="#claims"
-            onClick={() => setMenuOpen(false)}
-          >
-            <Symbol name="coins" />
-            Claims
-          </a>
-          <p className={s.navLabel}>Tools</p>
           {navAction('AI Assistant', 'sparkles', () => {
             if (!assistant.busy) assistant.open();
           })}
           <a
             className={s.navItem}
             href="#activity"
-            onClick={() => setMenuOpen(false)}
+            onClick={() => {
+              setMenuOpen(false);
+              const details = document.getElementById('activity');
+              if (details instanceof HTMLDetailsElement) details.open = true;
+            }}
           >
             <Symbol name="history" />
             Activity
           </a>
-          <Link className={s.navItem} href="/lab">
-            <Symbol name="globe" />
-            Demo console
-            <Symbol name="arrow-up-right" size={16} />
-          </Link>
         </nav>
         <div className={s.sidebarFoot}>
-          <span className={s.networkDot} />
-          <span>
-            Ethereum Sepolia<small>Test network · 11155111</small>
-          </span>
-          <Symbol name="shield-check" size={18} />
+          <Link href="/lab">
+            <Symbol name="globe" size={18} /> Demo console{' '}
+            <Symbol name="arrow-up-right" size={14} />
+          </Link>
+          <span>Sepolia testnet</span>
         </div>
       </aside>
       <div className={s.workspace}>
@@ -266,9 +238,7 @@ export function PortfolioDashboard({
           >
             <Symbol name={menuOpen ? 'x' : 'layers'} />
           </button>
-          <div className={s.headerTitle}>
-            Dashboard<span> / My Portfolio</span>
-          </div>
+          <div className={s.headerTitle}>Workspace</div>
           <div className={s.headerActions}>
             <span className={s.networkLabel}>
               <i />
@@ -286,119 +256,47 @@ export function PortfolioDashboard({
         </header>
         <main id="portfolio-main" tabIndex={-1} className={s.main}>
           <div className={s.intro}>
-            <div>
-              <p className={s.eyebrow}>YOUR INCOME, AT A GLANCE</p>
-              <h1>
-                My Portfolio<span>.</span>
-              </h1>
-              <p>Your positions, your backing. All in one place.</p>
-            </div>
-            <Button
-              leadingIcon="plus"
-              onClick={() => showAction('Create listing')}
-            >
-              Create listing
-            </Button>
+            <h1>My Portfolio</h1>
+            <span className={s.previewLabel}>
+              Demo preview · No wallet connected
+            </span>
           </div>
-          <div className={s.previewBar}>
-            <div>
-              <span className={s.previewDot} />
-              <strong>Design preview</strong>
-              <span className={s.previewExplanation}>
-                Illustrative data · No wallet connected
-              </span>
-            </div>
-            <label className={s.statePicker}>
-              View state
-              <select
-                aria-label="Preview state"
-                value={preview}
-                onChange={(e) => setPreview(e.target.value as DashboardPreview)}
+          <section
+            className={s.incomeCard}
+            id="claims"
+            aria-label="Claimable now"
+            aria-busy={preview === 'loading'}
+          >
+            <span className={s.incomeLabel}>Available to claim</span>
+            <strong className={s.incomeAmount}>
+              {known ? (example ? '0.50' : '0.00') : '—'}{' '}
+              <small>demoAAPL</small>
+            </strong>
+            <p>
+              {example
+                ? 'Your allocated income, ready when you are.'
+                : known
+                  ? 'Nothing to claim yet'
+                  : 'Balance unavailable'}
+            </p>
+            <div className={s.incomeActions}>
+              <Button
+                variant="outline"
+                leadingIcon="coins"
+                disabled={!example}
+                onClick={() => showAction('Claim income')}
               >
-                <option value="example">Example portfolio</option>
-                <option value="empty">Empty portfolio</option>
-                <option value="loading">Loading</option>
-                <option value="error">Error</option>
-              </select>
-            </label>
-          </div>
-          <div className={s.metrics} aria-busy={preview === 'loading'}>
-            <section
-              className={`${s.metric} ${s.claimMetric}`}
-              aria-label="Claimable now"
-            >
-              <div className={s.metricTop}>
-                <span>Claimable now</span>
-                <Symbol name="coins" />
-              </div>
-              <strong>
-                {known ? (example ? '0.50' : '0.00') : '—'}
-                <small>demoAAPL</small>
-              </strong>
-              <div className={s.metricBottom}>
-                <span>
-                  {known ? 'Paid in tokens, not cash' : 'Balance unavailable'}
-                </span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={!example}
-                  onClick={() => showAction('Claim income')}
-                >
-                  Claim
-                  <Symbol name="arrow-up-right" size={14} />
-                </Button>
-              </div>
-            </section>
-            <section className={s.metric} aria-label="Active positions">
-              <div className={s.metricTop}>
-                <span>Active positions</span>
-                <Symbol name="layers" />
-              </div>
-              <strong>{known ? (example ? '1' : '0') : '—'}</strong>
-              <div className={s.metricBottom}>
-                <span>
-                  {example
-                    ? 'Retained income overview'
-                    : known
-                      ? 'No income rights yet'
-                      : 'Waiting for portfolio data'}
-                </span>
-              </div>
-            </section>
-            <section className={s.metric} aria-label="Active listings">
-              <div className={s.metricTop}>
-                <span>Active listings</span>
-                <Symbol name="tag" />
-              </div>
-              <strong>{known ? (example ? '2' : '0') : '—'}</strong>
-              <div className={s.metricBottom}>
-                <span>
-                  {example
-                    ? 'Illustrative primary offers'
-                    : known
-                      ? 'No offers published'
-                      : 'Waiting for portfolio data'}
-                </span>
-              </div>
-            </section>
-            <section className={s.metric} aria-label="Locked backing">
-              <div className={s.metricTop}>
-                <span>Locked backing</span>
-                <Symbol name="lock" />
-              </div>
-              <strong>
-                {known ? (example ? '100' : '0') : '—'}
-                <small>demoAAPL</small>
-              </strong>
-              <div className={s.metricBottom}>
-                <span>Principal remains yours</span>
-                <span className={s.miniIcon}>
-                  <Symbol name="shield-check" size={16} />
-                </span>
-              </div>
-            </section>
-          </div>
+                Claim income
+              </Button>
+              <Button
+                variant="outline"
+                leadingIcon="plus"
+                onClick={() => showAction('Create listing')}
+              >
+                Create listing
+              </Button>
+            </div>
+          </section>
           {preview === 'error' && (
             <div className={s.error} role="alert">
               <Symbol name="alert-triangle" />
@@ -417,15 +315,7 @@ export function PortfolioDashboard({
             </div>
           )}
           <div className={s.grid}>
-            <Panel
-              title="Positions and listings"
-              id="holdings"
-              extra={
-                <span className={s.caption}>
-                  {example ? 'Example account' : 'Portfolio overview'}
-                </span>
-              }
-            >
+            <Panel title="Your portfolio" id="holdings">
               <div
                 role="tablist"
                 aria-label="Portfolio holdings"
@@ -482,9 +372,9 @@ export function PortfolioDashboard({
                     }
                   >
                     {tab === 'positions'
-                      ? 'Explore time-limited income rights. Review the share, term and risks before buying.'
+                      ? 'Find income rights that fit your plans.'
                       : tab === 'listings'
-                        ? 'Offer a share of future income while keeping ownership of your backing.'
+                        ? 'Create an offer to sell a share of future income.'
                         : 'Backing is locked when a primary offer is created.'}
                     {tab === 'positions' ? (
                       <span className={s.emptyAction}>{explore}</span>
@@ -526,18 +416,18 @@ export function PortfolioDashboard({
                             <strong>6 months</strong>
                           </div>
                         </div>
-                        <div className={s.term}>
-                          <span>Illustrative term at activation</span>
-                          <strong>0 of 6 months</strong>
-                        </div>
-                        <div className={s.progress} aria-hidden="true">
-                          <span />
-                        </div>
-                        <p className={s.finePrint}>
-                          Your retained 50% is not transferable. The buyer holds
-                          the other income right; your backing remains locked
-                          until release is safe.
-                        </p>
+                        <details className={s.positionDisclosure}>
+                          <summary>
+                            Position details{' '}
+                            <Symbol name="chevron-down" size={14} />
+                          </summary>
+                          <p className={s.finePrint}>
+                            Illustrative term at activation: 0 of 6 months. Your
+                            retained 50% is not transferable. Backing remains
+                            locked until release is safe. Old claims stay yours
+                            after resale.
+                          </p>
+                        </details>
                       </>
                     )}
                     {tab === 'listings' && (
@@ -627,67 +517,14 @@ export function PortfolioDashboard({
                 )}
               </div>
             </Panel>
-            <Panel
-              title="Claimable balances"
-              id="claims"
-              extra={<Symbol name="coins" />}
-            >
-              {example ? (
-                <>
-                  <div className={s.balances}>
-                    {[
-                      ['A', 'demoAAPL', '0.50'],
-                      ['M', 'demoMSFT', '0.00'],
-                      ['S', 'demoSPY', '0.00'],
-                    ].map(([letter, symbol, amount]) => (
-                      <div className={s.balance} key={symbol}>
-                        <span className={`${s.token} ${s.smallToken}`}>
-                          {letter}
-                        </span>
-                        <div>
-                          <strong>{symbol}</strong>
-                          <small>Simulated token</small>
-                        </div>
-                        <strong
-                          className={amount === '0.50' ? s.positive : s.muted}
-                        >
-                          {amount}
-                        </strong>
-                      </div>
-                    ))}
-                  </div>
-                  <Button
-                    className={s.fullButton}
-                    onClick={() => showAction('Claim income')}
-                    trailingIcon="arrow-right"
-                  >
-                    Review claim
-                  </Button>
-                </>
-              ) : (
-                <Empty
-                  icon="coins"
-                  title={known ? 'Nothing to claim yet' : 'Balance unavailable'}
-                >
-                  {known
-                    ? 'Income appears here after an allocation event.'
-                    : 'Claimable amounts will appear when data is available.'}
-                </Empty>
-              )}
-              <div className={s.note}>
-                <Symbol name="info" size={18} />
-                <span>Old claims stay yours after you resell.</span>
-              </div>
-            </Panel>
-            <Panel
-              title="Recent activity"
-              id="activity"
-              extra={<span className={s.exampleBadge}>Illustration</span>}
-            >
+            <details className={s.activityDisclosure} id="activity">
+              <summary>
+                Recent activity <Symbol name="chevron-down" size={16} />
+              </summary>
               {example ? (
                 <>
                   <p className={s.caption}>
-                    One income allocation, three views. Not live receipts.
+                    Illustrative data · Not live receipts.
                   </p>
                   <ol className={s.activity}>
                     {activity.map(([title, description, icon], i) => (
@@ -707,75 +544,35 @@ export function PortfolioDashboard({
               ) : (
                 <Empty
                   icon="history"
-                  title={
-                    known ? 'Your story starts here' : 'Activity unavailable'
-                  }
+                  title={known ? 'No activity yet' : 'Activity unavailable'}
                 >
                   {known
                     ? 'Your listings, purchases and claims will appear here once confirmed.'
                     : 'No activity can be shown in this preview state.'}
                 </Empty>
               )}
-            </Panel>
-            <Panel
-              title="Ask Yieldex AI"
-              className={s.aiPanel}
-              extra={
-                <span className={s.aiSymbol}>
-                  <Symbol name="sparkles" />
-                </span>
-              }
-            >
-              <p className={s.aiCopy}>
-                A little clarity.
-                <br />
-                <span>Before your next move.</span>
-              </p>
-              <p className={s.caption}>
-                Understand offers, income rights and risks.
-              </p>
-              <div className={s.suggestions}>
-                {[
-                  'How do income rights work?',
-                  'What happens after resale?',
-                ].map((question) => (
-                  <button
-                    type="button"
-                    key={question}
-                    disabled={assistant.busy}
-                    onClick={assistant.open}
-                  >
-                    {question}
-                    <Symbol name="arrow-up-right" size={16} />
-                  </button>
-                ))}
-              </div>
-              <Button
-                variant="accent"
-                className={s.fullButton}
-                leadingIcon="sparkles"
-                isLoading={assistant.busy}
-                onClick={assistant.open}
-              >
-                Open assistant
-              </Button>
-              <small className={s.finePrint}>
-                Opens chat; example holdings are not sent as your data.
-              </small>
-            </Panel>
+            </details>
           </div>
-          <footer className={s.disclosure}>
-            <Symbol name="shield-check" />
-            <p>
-              <strong>Built for the demo. Clear about the limits.</strong>
-              <span>
-                Sepolia testnet · Simulated assets · Income is not guaranteed.
-              </span>
-            </p>
-            <Link href="/lab">
-              Open demo console
-              <Symbol name="arrow-up-right" size={16} />
-            </Link>
+          <footer className={s.footer}>
+            <span>Simulated assets · Income is not guaranteed.</span>
+            <details className={s.previewTools}>
+              <summary>Preview settings</summary>
+              <label className={s.statePicker}>
+                Illustrative data
+                <select
+                  aria-label="Preview state"
+                  value={preview}
+                  onChange={(e) =>
+                    setPreview(e.target.value as DashboardPreview)
+                  }
+                >
+                  <option value="example">Example portfolio</option>
+                  <option value="empty">Empty portfolio</option>
+                  <option value="loading">Loading</option>
+                  <option value="error">Error</option>
+                </select>
+              </label>
+            </details>
           </footer>
           <noscript>
             <p>

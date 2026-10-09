@@ -50,4 +50,4 @@ References: Figma 60:18962 (empty), 60:18558 (Alice). Product register: compact,
 
 ### Shared platform artwork
 
-User-provided city/crypto background is the persistent decorative layer for all product routes under `app/(platform)`. Dashboard and lab currently share it; future product screens must join the same layout. Keep artwork fixed, proportional (cover), noninteractive and without entry motion. Retain solid cards/sidebar so text and amounts remain clear. Next Image serves optimized sizes from the original local PNG. Do not duplicate a background per menu/page.
+User-provided city/crypto background is the persistent decorative layer for all product routes under `app/(platform)`. Dashboard and lab currently share it; future product screens must join the same layout. Keep artwork fixed, proportional (cover), noninteractive and without entry motion. Use a transparent dashboard sidebar and restrained content surfaces so the artwork spans the full canvas. Keep opaque dialogs and a dark translucent mobile menu for contrast. The replacement artwork is stored as WebP and served through Next Image. Do not duplicate a background per menu/page.

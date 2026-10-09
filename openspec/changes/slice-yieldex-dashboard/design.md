@@ -1,6 +1,6 @@
 ## Approach
 
-Product UI with a 248px sidebar, compact header, four metrics, a two-column portfolio/claims row and activity/assistant row. At narrow widths the sidebar becomes a disclosure and cards stack. Reuse canonical icons and landing logo; no new assets or dependencies required. Purple identifies claim summary/AI, mint identifies actions, yellow identifies demo context.
+User refinement (9 October): use Fradium as a reference for information hierarchy and whitespace. One claim summary, portfolio tabs, collapsed activity and contextual position details replace repeated metrics/claim balances and the large AI panel. Sidebar is transparent with fewer destinations; AI remains available through the canonical entry. A compact demo disclosure stays visible; state controls live under Preview settings. Use the replacement user artwork as WebP across the full viewport including the sidebar. Keep Yieldex semantics, assets and design tokens.
 
 The Figma-linked screen is a personal portfolio overview, distinct from Marketplace. /dashboard is this overview; naming it My Portfolio in the navigation follows the product discussion. Figma has inconsistent empty-state activity and unsupported dNVDA/dKO examples: empty state has no activity, and examples use supported demoAAPL/demoMSFT/demoSPY labels. No invented dollar valuation, transaction hash or connected identity.
 

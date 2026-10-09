@@ -30,7 +30,7 @@ The dashboard SHALL reuse local design-system controls, support keyboard tab and
 
 
 ### Requirement: DASH-003 Persistent application background
-Application pages SHALL share the user-supplied decorative background through the persistent platform layout. The background SHALL remain fixed to the viewport, preserve the source aspect ratio, ignore pointer events and have no accessible text. Content panels SHALL retain readable solid surfaces.
+Application pages SHALL share the user-supplied decorative background through the persistent platform layout. The background SHALL remain fixed to the viewport, preserve the source aspect ratio, ignore pointer events and have no accessible text. Content SHALL retain readable contrast. The dashboard sidebar SHALL allow the shared artwork to remain visible.
 
 #### Scenario: Navigation and scroll
 - **WHEN** the user scrolls the dashboard or navigates to another route within the platform group

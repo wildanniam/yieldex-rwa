@@ -10,3 +10,7 @@
 ## 3. Shared platform background
 - [x] 3.1 Store user artwork unchanged and add a persistent layout for platform routes.
 - [x] 3.2 Verify desktop/mobile, scroll and dashboard/lab navigation, and run pre-push checks.
+
+## 4. Minimal portfolio refinement
+- [x] 4.1 Simplify hierarchy, preserve contextual details and replace full-canvas artwork with compressed WebP.
+- [x] 4.2 Verify states, keyboard, mobile, background and adjacent routes; run required checks.

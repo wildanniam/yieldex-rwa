@@ -11,7 +11,7 @@ export function PlatformBackground({ children }: { children: ReactNode }) {
         data-platform-background="true"
       >
         <Image
-          src="/backgrounds/platform.png"
+          src="/backgrounds/platform.webp"
           alt=""
           fill
           sizes="100vw"
