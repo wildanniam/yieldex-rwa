@@ -13,6 +13,8 @@ describe('custom iconography', () => {
     expect(componentSource).toContain("from 'next/image'");
     expect(componentSource).toContain("'search'");
     expect(componentSource).toContain("'wallet'");
+    expect(componentSource).toContain("'layout-grid'");
+    expect(componentSource).toContain("'list'");
     expect(componentSource).not.toContain('lucide-react');
   });
 
