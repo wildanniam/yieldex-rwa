@@ -2,22 +2,13 @@
   position: relative;
   isolation: isolate;
   overflow: clip;
-  border-top: 1px solid #acd8b525;
-  background: linear-gradient(180deg, #0b1913 0%, #06100e 60%, #020c10 100%);
+  background: transparent;
   color: #cddbcf;
-}
-.footer::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(ellipse at 5% 100%, #62b07919, transparent 57%);
-  z-index: -1;
 }
 .inner {
   width: min(1184px, calc(100% - 96px));
   margin: auto;
-  padding: 67px 0 106px;
+  padding: 32px 0 106px;
 }
 .top {
   display: grid;
@@ -83,10 +74,9 @@
 .links > a {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 10px;
   min-height: 43px;
-  border-bottom: 1px solid #a4cca914;
   color: #97ac9e;
   font-size: 13px;
   transition:
@@ -116,7 +106,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  border-bottom: 1px solid #9dc6a226;
   padding-bottom: 19px;
 }
 .signatureLine > span {
@@ -137,7 +126,6 @@
   place-items: center;
   height: 33px;
   width: 33px;
-  border: 1px solid #b1d8b63d;
   border-radius: 50%;
   font-size: 17px;
   transition:
@@ -149,31 +137,48 @@
   transform: translateY(-3px);
   background: #a1c79b15;
 }
-.wordmark {
+.brand {
   position: relative;
-  width: fit-content;
-  margin: 12px auto 0;
-  padding-right: 0.08em;
-  font-size: clamp(90px, 22.2vw, 320px);
-  font-weight: 550;
-  line-height: 1.04;
-  letter-spacing: -0.035em;
-  background: linear-gradient(175deg, #dcf1cc 4%, #a8c89c 42%, #456c51 90%);
-  color: transparent;
-  background-clip: text;
+  display: grid;
+  grid-template-columns: 0.85fr 5fr;
+  align-items: center;
+  gap: 3%;
+  margin: 18px 0 30px;
+  --light-x: 50%;
+  --light-y: 50%;
   user-select: none;
 }
-.horizon {
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    #a0c99688 35%,
-    #d7e6c78c 55%,
-    transparent
+.brandMark {
+  width: 100%;
+  height: auto;
+  opacity: 0.9;
+}
+.wordmark,
+.brandLight {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: clamp(60px, 18.2vw, 262px);
+  font-weight: 550;
+  line-height: 1.2;
+  letter-spacing: -0.045em;
+  background: linear-gradient(175deg, #bcd3b1, #547761);
+  color: transparent;
+  background-clip: text;
+}
+.brandLight {
+  background: radial-gradient(
+    ellipse 240px 180px at var(--light-x) var(--light-y),
+    #eeffe0 0%,
+    #b9f0ae 28%,
+    transparent 75%
   );
-  box-shadow: 0 3px 27px #a2d49626;
-  margin-top: 13px;
+  background-clip: text;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.brand[data-lit] .brandLight {
+  opacity: 1;
 }
 .bottom {
   display: flex;
@@ -262,10 +267,12 @@
     width: 29px;
     height: 29px;
   }
-  .wordmark {
-    font-size: 24vw;
-    line-height: 1.2;
-    margin-top: 19px;
+  .wordmark,
+  .brandLight {
+    font-size: 18.2vw;
+  }
+  .brand {
+    margin: 16px 0 24px;
   }
   .bottom {
     flex-wrap: wrap;
@@ -282,6 +289,9 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .brandLight {
+    display: none;
+  }
   .footer *,
   .footer *::before {
     transition: none !important;

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Icon } from '@/components/ui/icon';
 import deployment from '../../../../../deployments/sepolia.json';
 import s from './footer.module.css';
+import { FooterBrand } from './footer-brand';
 
 const repo = 'https://github.com/wildanniam/yieldex-rwa';
 
@@ -35,46 +36,30 @@ export function LandingFooter() {
             </a>
           </div>
           <nav className={s.links} aria-label="Footer product navigation">
-            <h2>
-              <span>01</span> Explore
-            </h2>
-            <Link href="/lab">
-              Enter Yieldex <span aria-hidden="true">↗</span>
-            </Link>
-            <a href="#how-it-works">
-              How it works <span aria-hidden="true">↗</span>
-            </a>
-            <a href="#calculator">
-              Income scenarios <span aria-hidden="true">↗</span>
-            </a>
-            <a href="#assistant">
-              AI assistant <span aria-hidden="true">↗</span>
-            </a>
+            <h2>Explore</h2>
+            <Link href="/lab">Enter Yieldex</Link>
+            <a href="#how-it-works">How it works</a>
+            <a href="#calculator">Income scenarios</a>
+            <a href="#assistant">AI assistant</a>
           </nav>
           <nav className={s.links} aria-label="Footer resources">
-            <h2>
-              <span>02</span> Discover
-            </h2>
+            <h2>Resources</h2>
             <a
               href={`${repo}/blob/main/docs/product.md`}
               target="_blank"
               rel="noreferrer"
             >
-              Product docs <span aria-hidden="true">↗</span>
+              Product docs
             </a>
             <a
               href={`${repo}/blob/main/docs/hosted-rollout.md`}
               target="_blank"
               rel="noreferrer"
             >
-              Onchain deployment <span aria-hidden="true">↗</span>
+              Onchain deployment
             </a>
-            <Link href="/design-system">
-              Design system <span aria-hidden="true">↗</span>
-            </Link>
-            <a href="#risks">
-              Risks & limitations <span aria-hidden="true">↗</span>
-            </a>
+            <Link href="/design-system">Design system</Link>
+            <a href="#risks">Risks & limitations</a>
           </nav>
         </div>
         <div className={s.signature}>
@@ -87,10 +72,7 @@ export function LandingFooter() {
               </span>
             </a>
           </div>
-          <div className={s.wordmark} aria-label="Yieldex">
-            Yieldex
-          </div>
-          <div className={s.horizon} aria-hidden="true" />
+          <FooterBrand />
         </div>
         <div className={s.bottom}>
           <span>© 2026 Yieldex</span>
