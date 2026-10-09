@@ -112,3 +112,11 @@ User requested conceptual assets and relevant hover/animation for the three prev
 Risk matrix: ordinary purchase/dividend/replay, keyboard and rapid stage selection, backing remains100 and allocation0.50/0.50, reload default, hover/reset, narrow layouts and console; touch/reduced-motion source checks. Baseline8898309/user screenshot.
 
 PASS full pnpm check (153 Vitest/46 Foundry/9 OpenSpec, format/lint/types/generated/build). Browser production purchase→allocation→replay preserves100 backing,90 price,50% share and0.50/0.50 claim example. Keyboard replay and rapid3→2→1 stage selection recover; reload initializes first stage. Real hover activates the coin lift/rotation (observed translateY−6.6px during transition toward−8px). Mobile320 has no overflow; desktop1440 inspected. Production console has no errors. Touch/reduced-motion/pointer-cancel source-only; no live wallet/provider verification. Screenshot evidence outside Git.
+
+## Assistant bubble — 9 October 2026
+
+User requests a compact purple chat bubble that attracts clicks. Replaces only the initial session launcher with a64px rounded speech bubble, original inline face/spark, two gentle2.4s greeting/blink cycles and hover/focus label. Motion stops after4.8s; reduced-motion disables it. Native button keeps the existing session request/pending guard, disabled busy state and error recovery; connected Copilot UI unchanged.
+
+Verification matrix: keyboard/click session opening, busy disabled, unavailable-session recovery/retry, mobile320 overflow and label placement, focus, finite motion and reduced-motion source, full quality gate. No live provider success implied by local fallback.
+
+PASS full pnpm check153 Vitest/46 Foundry/9 OpenSpec and build. Real keyboard Enter starts request, displays disabled Membuka chat, then unavailable-session alert and enabled retry on the unconfigured local environment. PASS production320px no overflow;64px bubble and focus outline/tooltip (opacity1) observed. Finite animation iteration count2 confirmed; production console clean before session request. Live successful chat, physical touch and OS reduced-motion runtime not tested; unchanged provider/session behavior is not re-certified.
