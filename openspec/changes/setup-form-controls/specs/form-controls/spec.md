@@ -1,7 +1,7 @@
 ## ADDED Requirements
 
 ### Requirement: FCT-001 Shared Field Geometry and States
-All field-like controls SHALL use 48px height where applicable, 12px radius, `bg-card`, a 1px `input-border` border, green-2 focus treatment, danger error treatment, and 40% opacity/not-allowed cursor when disabled. Labels SHALL use text-2 at 12px/14px and helper/error copy SHALL use 12px text.
+All field-like controls SHALL use 48px height where applicable, 12px radius, `bg-card`, a 1px `input-border` border, green-2 focus treatment, danger error treatment, and 40% opacity/not-allowed cursor when disabled. Labels SHALL use text-1 at 14px/20px, weight 500 and helper/error copy SHALL use 12px text.
 
 #### Scenario: Default, focus, and disabled field
 - **WHEN** a field is rendered default, keyboard-focused, or disabled
@@ -49,3 +49,11 @@ Form controls SHALL reuse the existing `Icon` component and SHALL NOT import or 
 #### Scenario: Reviewing control dependencies
 - **WHEN** form-control implementations are reviewed
 - **THEN** icons resolve through the shared component and no external icon dependency is introduced
+
+### Requirement: FCT-008 Consistent Accessible Field State
+Controls SHALL generate IDs when omitted and associate labels/messages. Error treatment SHALL persist on focus. Password/amount adornments SHALL stay inside the control regardless of labels/helpers and respect disabled state. Controlled and uncontrolled toggle/range state SHALL match visible outputs. Segments SHALL support radio arrow-key behavior. OTP deletion SHALL preserve occupied slot positions and disabled paste SHALL not update value.
+
+#### Scenario: Recovery and keyboard
+- **WHEN** an uncontrolled switch or range changes, or a segment changes using arrows
+- **THEN** its displayed and accessible state matches the actual selection
+- **AND** clearing an OTP slot keeps later occupied slots in their original positions

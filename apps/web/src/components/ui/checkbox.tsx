@@ -1,6 +1,7 @@
 'use client';
 import * as React from 'react';
-import { cn, FieldMessage } from './field';
+import { Icon } from './icon';
+import { cn, FieldMessage, useField } from './field';
 export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   description?: string;
@@ -12,32 +13,52 @@ export function Checkbox({
   description,
   error,
   className,
+  disabled,
+  'aria-describedby': describedBy,
   ...props
 }: CheckboxProps) {
+  const field = useField(id, description, error, describedBy);
   return (
-    <div className="grid gap-2">
+    <div className={cn('grid gap-2', disabled && 'opacity-40')}>
       <label
+        htmlFor={field.fieldId}
         className={cn(
-          'flex items-start gap-2 text-sm text-text-1',
-          props.disabled && 'cursor-not-allowed opacity-40',
+          'flex items-start gap-2 text-sm leading-5 text-text-1',
+          disabled && 'cursor-not-allowed',
           className,
         )}
       >
-        <input
-          {...props}
-          id={id}
-          type="checkbox"
-          className="mt-0.5 size-5 accent-green-2"
-          aria-invalid={Boolean(error)}
-        />
-        <span>
-          <span className="block">{label}</span>
-          {description && (
-            <span className="block text-xs text-text-3">{description}</span>
-          )}
+        <span className="relative inline-flex size-5 shrink-0">
+          <input
+            {...props}
+            id={field.fieldId}
+            disabled={disabled}
+            type="checkbox"
+            aria-describedby={field.describedBy}
+            aria-invalid={Boolean(error)}
+            className="peer absolute inset-0 z-10 m-0 h-full w-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
+          />
+          <span
+            className={cn(
+              'size-5 rounded-full border border-input-border bg-card peer-checked:border-green-2 peer-checked:bg-green-2 peer-focus-visible:ring-2 peer-focus-visible:ring-green-2 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-canvas',
+              error && 'border-danger peer-focus-visible:ring-danger',
+            )}
+          />
+          <Icon
+            name="check"
+            size={20}
+            alt=""
+            inheritColor
+            className="pointer-events-none absolute inset-0 hidden text-primary-label peer-checked:inline-block"
+          />
         </span>
+        <span>{label}</span>
       </label>
-      <FieldMessage error={error} />
+      <FieldMessage
+        id={field.messageId}
+        helperText={description}
+        error={error}
+      />
     </div>
   );
 }

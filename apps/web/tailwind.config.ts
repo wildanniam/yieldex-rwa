@@ -21,6 +21,7 @@ const config: Config = {
       },
       colors: {
         canvas: 'var(--canvas)',
+        'primary-label': 'var(--primary-label)',
         'canvas-deep': 'var(--canvas-deep)',
         card: 'var(--card)',
         raised: 'var(--raised)',

@@ -5,7 +5,7 @@ The button SHALL support exactly `primary`, `accent`, `outline`, and `ghost` var
 
 #### Scenario: Rendering hierarchy classes
 - **WHEN** a button is rendered with each supported variant
-- **THEN** primary uses the primary gradient and canvas text, accent uses the accent gradient and white text, outline uses a transparent fill with a 1px `#505555` border, and ghost uses a transparent fill and border
+- **THEN** primary uses the primary gradient and `#092011` text, accent uses the accent gradient and white text, outline uses a transparent fill with a 1px `#505555` border and text-1 label, and ghost uses a transparent fill and border with text-1 label
 - **AND** no `secondary` or effect-specific variant API is exposed
 
 ### Requirement: BWR-002 Dimensions and Geometry
@@ -39,3 +39,11 @@ The button SHALL use the shared `Icon` component from `@/components/ui/icon` for
 - **GIVEN** a valid shared icon name is supplied as a leading or trailing icon
 - **WHEN** the button renders
 - **THEN** the shared `Icon` renders at 20px with the configured 8px gap
+
+### Requirement: BWR-006 Figma State Fidelity
+Enabled hover and pressed SHALL replace action gradients with their solid green/purple 1 and 3 colors. Loading SHALL keep full opacity with the exported 20px Figma loader and retain native disabled plus aria-busy behavior. Optional icons SHALL inherit the label color without changing SVG geometry.
+
+#### Scenario: Pointer and loading
+- **WHEN** a primary button is hovered or pressed
+- **THEN** no global gradient rule masks its solid state
+- **AND** a loading button rejects activation while retaining full visual emphasis

@@ -46,3 +46,10 @@ The implementation SHALL use only repository SVG assets and `next/image`; it SHA
 - **WHEN** the icon component and dependency manifest are reviewed
 - **THEN** no external icon package is added for rendering these icons
 - **AND** no component imports an external icon library
+
+### Requirement: ICO-005 Source Fidelity and Label Color
+The canonical 40 icon files SHALL match Figma geometry at 20px. Existing exact matches SHALL be retained. An optional `inheritColor` mode MAY use the same local SVG as a CSS mask for action-label contrast, without editing paths or adding a second icon library. Default image behavior stays compatible. Loader assets live separately under `public/ui/`.
+
+#### Scenario: Icon in primary action
+- **WHEN** a leading icon is shown on a primary button
+- **THEN** its geometry is the canonical local SVG and its color follows the dark primary label

@@ -49,6 +49,12 @@ export default function RootLayout({
                     >
                       Marketplace lab
                     </Link>
+                    <Link
+                      className="rounded-inner px-2 py-2 text-sm text-text-2 hover:text-green-1 focus-visible:outline-2 focus-visible:outline-green-2"
+                      href="/design-system"
+                    >
+                      Design system
+                    </Link>
                   </nav>
                 </aside>
                 <div className="min-w-0 flex-1 pb-24">{children}</div>
