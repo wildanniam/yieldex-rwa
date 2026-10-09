@@ -2,7 +2,7 @@
 
 **LOCKED 8 Oktober 2026:** ikuti [execution plan](../../../docs/spec/execution-plan.md). Implementasi autonomous Wildan/Codex harus lulus tes milestone sebelum dependent work mengandalkannya; kegagalan diperbaiki, gate eksternal dicatat BLOCKED, bukan dianggap selesai. Ownership: Afer UI; Rafi chatbot; Wildan/Codex core/backend/contracts/quote/testing/integrasi. Review tim 1.1 belum dianggap selesai; pekerjaan core lokal sekarang diotorisasi Wildan.
 
-**Evidence core 9 Oktober:** task yang dicentang di bawah dibuktikan oleh [core verification](../../../docs/core-verification.md) dan script tes yang ditautkan di sana. Task UI final, AI dan Sepolia tetap terbuka; `/lab` sudah diuji sebagai functional integration, bukan penerimaan desain tim.
+**Evidence core 9 Oktober:** task yang dicentang di bawah dibuktikan oleh [core verification](../../../docs/core-verification.md) dan script tes yang ditautkan di sana. Task UI final, AI dan journey Sepolia tetap terbuka; deployment/seed7.3 terverifikasi di docs/hosted-rollout.md; `/lab` sudah diuji sebagai functional integration, bukan penerimaan desain tim.
 
 Checklist membedakan bagian terverifikasi dan acceptance produk yang masih terbuka. Dependency memakai ID task; ownership mengikuti execution plan. GitHub issue opsional untuk tim; gunakan task ini untuk koordinasi dan tautkan PR terkait bila ada. Tiap task selesai mempunyai evidence; keberadaan interface/fixture bukan bukti fitur ekonomi berjalan. Wildan mengotorisasi starter sebelum meet, sehingga task 1.2 dapat dikerjakan terpisah dari review bersama 1.1; review itu tetap gate sebelum coding paralel tim.
 
@@ -68,7 +68,7 @@ Checklist membedakan bagian terverifikasi dan acceptance produk yang masih terbu
 
 - [ ] 7.1 Run Anvil full lifecycle with at least Alice/Bob/Carol across supported demo assets. Depends: 3.8, 5.6, 6.8. Acceptance: first/second dividend, resale, split, expiry, old claims and release with state/balance proof. Refs: integration-quality.
 - [x] 7.2 Run official-token fork adapter suite on pinned blocks. Depends: 2.2, 3.8. Acceptance: real source/state assertions separate synthetic event injection; blocked RPC explicitly reported. Evidence: docs/core-verification.md.
-- [ ] 7.3 Configure isolated Sepolia deployment and reproducible seed script/manifest. Depends: 2.6, 3.8, 3.9, 7.2. Acceptance: source commit, chain/address, token labels, roles, verified explorer and reproducible setup; no real-money/private raw secrets.
+- [x] 7.3 Configure isolated Sepolia deployment and reproducible seed script/manifest. Depends: 2.6, 3.8, 3.9, 7.2. Acceptance: source commit, chain/address, token labels, roles, verified explorer and reproducible setup; no real-money/private raw secrets. Evidence: docs/hosted-rollout.md; deployments/sepolia.json; Sourcify creation/runtime match for all seven contracts.
 - [ ] 7.4 Test full browser journey on Sepolia and live read-only mainnet quote panel. Depends: 7.1, 7.3, 7.8, 6.8. Acceptance: evidence distinguishes testnet economic state from real quotes; all demo accounts/wallet flows correct.
 - [ ] 7.5 Review failure/recovery and security matrix plus final interface parity. Depends: 7.2, 7.4. Acceptance: failed cases fixed or material limitations explicitly recorded; no unresolved critical loss/authorization defect labelled ready.
 - [ ] 7.6 Produce team/demo runbook and requirement coverage report on tested revision. Depends: 7.5. Acceptance: others can reproduce; source attribution and hackathon-period provenance recorded; no fabricated adoption/integration claim.

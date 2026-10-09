@@ -28,7 +28,7 @@ schemas/examples     Definisi data dan fixtures bersama
 openspec/docs        Scope, interface, skenario, task dan panduan tim
 ```
 
-ABI saat ini **IMPLEMENTED_LOCAL**, dihasilkan dari implementasi dan diperiksa terhadap interface normatif. Deployment lokal dihasilkan script; Sepolia belum dideploy. `pnpm generate` memperbarui file bersama; jangan edit generated files. Lanjutkan task yang dipilih di OpenSpec setelah menyepakati ownership dengan tim.
+ABI saat ini **IMPLEMENTED_LOCAL**, dihasilkan dari implementasi dan diperiksa terhadap interface normatif. Deployment lokal dihasilkan script; Sepolia sudah dideploy; alamat resmi demo dan source commit ada di [manifest](deployments/sepolia.json). Lihat [status hosted](docs/hosted-rollout.md) untuk gate yang sudah/belum diverifikasi. `pnpm generate` memperbarui file bersama; jangan edit generated files. Lanjutkan task yang dipilih di OpenSpec setelah menyepakati ownership dengan tim.
 
 ## Mulai dari sini
 
@@ -68,7 +68,7 @@ Validator dokumen memerlukan `jsonschema==4.25.1`; `pnpm spec:check` menjalankan
 
 Repository tim: [wildanniam/yieldex-rwa](https://github.com/wildanniam/yieldex-rwa) (public). Initial commit mengimpor baseline eksperimen yang telah diuji dari commit `fc03e032c186c51e13a274cd222cbaae4e11d47a`; asal kode tetap dicatat pada [catatan import](docs/repository-import.md). Wildan mengotorisasi initial import/push sebagai bootstrap repo baru setelah pemeriksaan. Workflow tim berikutnya: branch fitur → coding → tes → push → PR → review; issue opsional. Satu PR dapat berisi beberapa commit terkait. Pengecualian initial push tidak berlaku otomatis untuk perubahan berikutnya.
 
-Arsitektur ada di [design](openspec/changes/build-rwa-income-rights/design.md). Core lokal menyediakan market/accounting, token demo, adapter, read API, auth/history, quote, reviewed finalizer dan functional wallet lab di `/lab`. **Integrasi visual Afer, chatbot Rafi dan deployment/journey Sepolia masih terbuka.** Hanya task dengan bukti acceptance yang boleh dicentang. Test interface/schema tidak membuktikan keamanan ekonomi kontrak atau keberhasilan integrasi provider.
+Arsitektur ada di [design](openspec/changes/build-rwa-income-rights/design.md). Core lokal menyediakan market/accounting, token demo, adapter, read API, auth/history, quote, reviewed finalizer dan functional wallet lab di `/lab`. **Integrasi visual Afer dan chatbot Rafi masih terbuka.** Deployment Sepolia sudah tersedia; status journey testnet dicatat terpisah di [hosted rollout](docs/hosted-rollout.md). Hanya task dengan bukti acceptance yang boleh dicentang. Test interface/schema tidak membuktikan keamanan ekonomi kontrak atau keberhasilan integrasi provider.
 
 ## Riset pendukung
 

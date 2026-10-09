@@ -6,13 +6,13 @@ Sumber asli, urutan bagian, dan SHA-256 tercantum di bawah. Link relatif di bagi
 File ini menyertakan kontrak data dan fixtures; beberapa fixture sengaja invalid untuk pengujian. Jangan menganggap fixture sebagai transaksi/provider data nyata.
 UI visual mengikuti Afer; chatbot Rafi; core/backend/contracts/quote Wildan/Codex. Lihat execution plan untuk scope dan gate. Jangan menambah swap execution/NFT/training ML di luar scope.
 
-Bundle source digest: `f8da58e2e348acc15734194945238ef874060e5cccf3b888374e1456bea869c6`
+Bundle source digest: `7ecdf5c0d72aacfce0740a74620eb5c93168d8f0614e9749c30a54d9ab391585`
 
 ## Source Manifest
 
 | Source | SHA-256 |
 | --- | --- |
-| `README.md` | `7296260836cf7b533220e8a7b095ec771bc9eecf7e02b6b9c10785ac7e3cdf65` |
+| `README.md` | `5eb7ccd428c61cb1b851be2d79d1a3aa66712b2b7356b284f042e4b3d183ae97` |
 | `CONTRIBUTING.md` | `67e4c0d37a93a1bcf89b0c7b6aad938df00e6d5ec0127f3669ef231220866ca2` |
 | `AGENTS.md` | `8518e0cd8d3bf136bccd4e275cdb6b4b7c3b4ce52d92c618c252a63620a9efd9` |
 | `docs/product.md` | `9bfe11d7a5b540559447d113263a3f6a5c1c57a853a2ba726726fd0723328342` |
@@ -23,7 +23,7 @@ Bundle source digest: `f8da58e2e348acc15734194945238ef874060e5cccf3b888374e1456b
 | `docs/repository-import.md` | `6beb2752dc2c2bb83fc73cb75cc5f1ccdac4af517f9c426bcb96d7d7c8d724e3` |
 | `docs/development.md` | `61ad66ba7bb5cba59caf336513f2ead7dd289c3513645ddf5ce9cc4eca40c743` |
 | `docs/local-core.md` | `68c7570cb7b2dfd0433ec255f0c9cede6ec5c058a53d6718ed976f7ef992bfc8` |
-| `docs/core-verification.md` | `0bd90aa2e9414765fd8ec3a1f59b8bf1f7cdbc0a3823a38e6b582f973a79f30a` |
+| `docs/core-verification.md` | `7b46c203119719e645159a890b2bd0e0da5194c45751c05d710cfb51753dd893` |
 | `docs/presepolia-remediation.md` | `61c562667f87498c4b39e548165358cb2bedc10026ae84da882188c7b37b0509` |
 | `openspec/changes/build-rwa-income-rights/specs/ai-assistant/spec.md` | `069c6c4b018a33fbb973cff3680c6c79decfeaa8f57f28090e5af0a2b87fe846` |
 | `openspec/changes/build-rwa-income-rights/specs/asset-events/spec.md` | `f2af508bdfa53f2623c100974411196670249637d07292e02178d875b7a7d8cb` |
@@ -78,7 +78,7 @@ Bundle source digest: `f8da58e2e348acc15734194945238ef874060e5cccf3b888374e1456b
 | `examples/uint256-max.valid.json` | `445dc6951c3597b4a57108db0755fa2d1e8603114175049031ac6e8b53cc1a60` |
 | `examples/uint256-overflow.invalid.json` | `fb939b2c5a21d397e95423da4e837ba63318e9892419e1fcd4d2eafc6a24e9ff` |
 | `examples/uint64-overflow.invalid.json` | `4a324732507ee662c232e67abf269d69bcc5fe6c4ee58d1f8398bc0b6a108d5e` |
-| `openspec/changes/build-rwa-income-rights/tasks.md` | `954f96982fecc138fe32e39bb61ece2d12c4ba2c720d57e854752244bf79a249` |
+| `openspec/changes/build-rwa-income-rights/tasks.md` | `a6b89dbaf02db605cb9ba941a09bce0d293b6da3702438f5462d6380daca3b7d` |
 
 ---
 
@@ -114,7 +114,7 @@ schemas/examples     Definisi data dan fixtures bersama
 openspec/docs        Scope, interface, skenario, task dan panduan tim
 ```
 
-ABI saat ini **IMPLEMENTED_LOCAL**, dihasilkan dari implementasi dan diperiksa terhadap interface normatif. Deployment lokal dihasilkan script; Sepolia belum dideploy. `pnpm generate` memperbarui file bersama; jangan edit generated files. Lanjutkan task yang dipilih di OpenSpec setelah menyepakati ownership dengan tim.
+ABI saat ini **IMPLEMENTED_LOCAL**, dihasilkan dari implementasi dan diperiksa terhadap interface normatif. Deployment lokal dihasilkan script; Sepolia sudah dideploy; alamat resmi demo dan source commit ada di [manifest](deployments/sepolia.json). Lihat [status hosted](docs/hosted-rollout.md) untuk gate yang sudah/belum diverifikasi. `pnpm generate` memperbarui file bersama; jangan edit generated files. Lanjutkan task yang dipilih di OpenSpec setelah menyepakati ownership dengan tim.
 
 ## Mulai dari sini
 
@@ -154,7 +154,7 @@ Validator dokumen memerlukan `jsonschema==4.25.1`; `pnpm spec:check` menjalankan
 
 Repository tim: [wildanniam/yieldex-rwa](https://github.com/wildanniam/yieldex-rwa) (public). Initial commit mengimpor baseline eksperimen yang telah diuji dari commit `fc03e032c186c51e13a274cd222cbaae4e11d47a`; asal kode tetap dicatat pada [catatan import](docs/repository-import.md). Wildan mengotorisasi initial import/push sebagai bootstrap repo baru setelah pemeriksaan. Workflow tim berikutnya: branch fitur → coding → tes → push → PR → review; issue opsional. Satu PR dapat berisi beberapa commit terkait. Pengecualian initial push tidak berlaku otomatis untuk perubahan berikutnya.
 
-Arsitektur ada di [design](openspec/changes/build-rwa-income-rights/design.md). Core lokal menyediakan market/accounting, token demo, adapter, read API, auth/history, quote, reviewed finalizer dan functional wallet lab di `/lab`. **Integrasi visual Afer, chatbot Rafi dan deployment/journey Sepolia masih terbuka.** Hanya task dengan bukti acceptance yang boleh dicentang. Test interface/schema tidak membuktikan keamanan ekonomi kontrak atau keberhasilan integrasi provider.
+Arsitektur ada di [design](openspec/changes/build-rwa-income-rights/design.md). Core lokal menyediakan market/accounting, token demo, adapter, read API, auth/history, quote, reviewed finalizer dan functional wallet lab di `/lab`. **Integrasi visual Afer dan chatbot Rafi masih terbuka.** Deployment Sepolia sudah tersedia; status journey testnet dicatat terpisah di [hosted rollout](docs/hosted-rollout.md). Hanya task dengan bukti acceptance yang boleh dicentang. Test interface/schema tidak membuktikan keamanan ekonomi kontrak atau keberhasilan integrasi provider.
 
 ## Riset pendukung
 
@@ -1201,6 +1201,8 @@ Intent menyimpan nonce dari transaksi RPC yang sudah cocok dengan preview. Repla
 # Source: docs/core-verification.md
 
 # Core implementation — bukti dan batas acceptance
+
+Latest hosted deployment status: [hosted rollout](hosted-rollout.md). Earlier local checkpoints below remain historical evidence.
 
 > Riwayat verifikasi dari repo eksperimen `wildanniam/eth-jkt` sebelum import. Nomor issue/PR dan hash lama di bawah mengacu ke repo sumber yang private, bukan Yieldex. Hasil ulang pada repo aktif dan batas import ada di [catatan import](repository-import.md).
 
@@ -10059,7 +10061,7 @@ Alice lists backed income → Bob asks AI and buys → controlled labelled divid
 
 **LOCKED 8 Oktober 2026:** ikuti [execution plan](../../../docs/spec/execution-plan.md). Implementasi autonomous Wildan/Codex harus lulus tes milestone sebelum dependent work mengandalkannya; kegagalan diperbaiki, gate eksternal dicatat BLOCKED, bukan dianggap selesai. Ownership: Afer UI; Rafi chatbot; Wildan/Codex core/backend/contracts/quote/testing/integrasi. Review tim 1.1 belum dianggap selesai; pekerjaan core lokal sekarang diotorisasi Wildan.
 
-**Evidence core 9 Oktober:** task yang dicentang di bawah dibuktikan oleh [core verification](../../../docs/core-verification.md) dan script tes yang ditautkan di sana. Task UI final, AI dan Sepolia tetap terbuka; `/lab` sudah diuji sebagai functional integration, bukan penerimaan desain tim.
+**Evidence core 9 Oktober:** task yang dicentang di bawah dibuktikan oleh [core verification](../../../docs/core-verification.md) dan script tes yang ditautkan di sana. Task UI final, AI dan journey Sepolia tetap terbuka; deployment/seed7.3 terverifikasi di docs/hosted-rollout.md; `/lab` sudah diuji sebagai functional integration, bukan penerimaan desain tim.
 
 Checklist membedakan bagian terverifikasi dan acceptance produk yang masih terbuka. Dependency memakai ID task; ownership mengikuti execution plan. GitHub issue opsional untuk tim; gunakan task ini untuk koordinasi dan tautkan PR terkait bila ada. Tiap task selesai mempunyai evidence; keberadaan interface/fixture bukan bukti fitur ekonomi berjalan. Wildan mengotorisasi starter sebelum meet, sehingga task 1.2 dapat dikerjakan terpisah dari review bersama 1.1; review itu tetap gate sebelum coding paralel tim.
 
@@ -10125,7 +10127,7 @@ Checklist membedakan bagian terverifikasi dan acceptance produk yang masih terbu
 
 - [ ] 7.1 Run Anvil full lifecycle with at least Alice/Bob/Carol across supported demo assets. Depends: 3.8, 5.6, 6.8. Acceptance: first/second dividend, resale, split, expiry, old claims and release with state/balance proof. Refs: integration-quality.
 - [x] 7.2 Run official-token fork adapter suite on pinned blocks. Depends: 2.2, 3.8. Acceptance: real source/state assertions separate synthetic event injection; blocked RPC explicitly reported. Evidence: docs/core-verification.md.
-- [ ] 7.3 Configure isolated Sepolia deployment and reproducible seed script/manifest. Depends: 2.6, 3.8, 3.9, 7.2. Acceptance: source commit, chain/address, token labels, roles, verified explorer and reproducible setup; no real-money/private raw secrets.
+- [x] 7.3 Configure isolated Sepolia deployment and reproducible seed script/manifest. Depends: 2.6, 3.8, 3.9, 7.2. Acceptance: source commit, chain/address, token labels, roles, verified explorer and reproducible setup; no real-money/private raw secrets. Evidence: docs/hosted-rollout.md; deployments/sepolia.json; Sourcify creation/runtime match for all seven contracts.
 - [ ] 7.4 Test full browser journey on Sepolia and live read-only mainnet quote panel. Depends: 7.1, 7.3, 7.8, 6.8. Acceptance: evidence distinguishes testnet economic state from real quotes; all demo accounts/wallet flows correct.
 - [ ] 7.5 Review failure/recovery and security matrix plus final interface parity. Depends: 7.2, 7.4. Acceptance: failed cases fixed or material limitations explicitly recorded; no unresolved critical loss/authorization defect labelled ready.
 - [ ] 7.6 Produce team/demo runbook and requirement coverage report on tested revision. Depends: 7.5. Acceptance: others can reproduce; source attribution and hackathon-period provenance recorded; no fabricated adoption/integration claim.

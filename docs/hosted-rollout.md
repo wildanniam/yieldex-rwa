@@ -28,3 +28,30 @@ Vercel uses apps/web as root with workspace packages available. Secrets are supp
 - Real web `/lab` loading/refresh, requests/console, wallet/auth and available lifecycle. Final designed UI/chatbot acceptance remains open.
 
 This runbook describes the operational plan. Actual addresses, URLs, tested revisions and PASS/FAIL/BLOCKED results are appended only after execution. Task7.3/7.8 are not complete merely because scripts exist.
+
+## Live checkpoint — 9 October 2026
+
+The deployment source is `f82cb0d9ef26141a39bdf187f1e02f5d7451f0fc`, on issue [#3](https://github.com/wildanniam/yieldex-rwa/issues/3). Public addresses and deployment block are in [the Sepolia manifest](../deployments/sepolia.json). Deploy/seed submitted 23 successful transactions. The deployer spent `9074536138363962` wei including `0.009` Sepolia ETH transferred to three dedicated demo wallets. This excludes subsequent lifecycle-test gas.
+
+All seven deployed contracts have Sourcify creation and runtime matches. [Market source](https://repo.sourcify.dev/11155111/0x25e2288d8fa689a1d9895a31b26130153f2dc76f); use the same chain/address URL pattern for the other manifest contracts. Sourcify's additional Etherscan/Blockscout submissions hit provider quotas; do not describe them as Etherscan verified. See the [official verification API](https://docs.sourcify.dev/docs/api/) for source-only submission and lookup.
+
+| Scenario                                | Result           | Scope                                                                                                                                |
+| --------------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Local full check at deployment revision | PASS             | 111 Vitest, 46 Foundry, lint/types/spec/generated artifacts/build                                                                    |
+| Deployment rehearsal and resume         | PASS, simulation | Separate Anvil chain; second run retains nonce23, no duplicate transactions                                                          |
+| Seven Sepolia contracts and demo seed   | PASS, live       | Actual receipts/code; distinct admin/finalizer permissions; unprivileged actor has neither role                                      |
+| Supabase migrations and RLS             | PASS, hosted     | Seven migrations, 22 application tables with RLS; official CA verification and server SSL enforcement enabled                        |
+| Native hosted auth/RLS                  | PASS, hosted     | Two wallets; one-use/racing challenge; invalid signature/origin/browser/expiry; provider replay and foreign-chain denial; revocation |
+| Vercel build and `/lab` response        | PASS, hosted     | [Staging lab](https://yieldex-rwa.vercel.app/lab), functional harness; final UI/chatbot not integrated                               |
+| Hosted HTTP session/history/intent flow | IN PROGRESS      | Separate end-to-end HTTP verification required beyond direct service tests                                                           |
+| Hostinger image                         | PASS, build      | Pinned Node24.18.0, isolated image; service activation still pending                                                                 |
+| Sepolia complete lifecycle              | IN PROGRESS      | Primary listing/buy mined; awaits real finalized dividend source; task7.8 stays open                                                 |
+| Final product UI/AI acceptance          | NOT TESTED       | Tasks7.4–7.6 depend on Afer/Rafi integration                                                                                         |
+
+`/api/health` is process liveness, not integration readiness. Its new `CORE_BASELINE` / `NOT_PROBED` labels avoid claiming unimplemented integrations or successful readiness. Use actual API responses, finalized indexer progress and scenario checks for readiness.
+
+### Worker operation
+
+Build `infra/worker/Dockerfile` from the repository root. Its build context excludes secrets and generated outputs. Runtime uses a dedicated container with no published ports and no signing keys. Provide `DATABASE_URL` (session pooler), `MARKETPLACE_RPC_URL`, `DEPLOYMENT_MANIFEST` and `DATABASE_SSL_CA_FILE`; mount the identical public manifest and official public CA read-only. The entrypoint loads the PEM into `DATABASE_SSL_CA` before starting the indexer. The env file must be mode0600 outside the release. Run non-root, read-only root filesystem, dropped capabilities, memory/CPU/log limits and `unless-stopped` restart policy. Use graceful stop/restart; cursor and unique chain-event keys live in Supabase.
+
+Do not copy local Supabase auth configuration onto the hosted project. In the installed CLI, `config push --workdir` ignored the requested directory; running from the dedicated staging config directory applied the intended origin. A later Storage-config read error did not roll back the successful auth update. Verify the actual login and SSL enforcement afterward. Only the exact staging domain is allowed, and unrelated auth/API defaults were restored.

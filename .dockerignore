@@ -1,0 +1,12 @@
+.git
+.local
+.vercel
+**/node_modules
+**/.env*
+**/dist
+**/.next
+packages/contracts/out
+packages/contracts/cache
+research
+test-results
+output

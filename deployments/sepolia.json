@@ -1,0 +1,41 @@
+{
+  "interfaceVersion": "1.0",
+  "environment": "SEPOLIA",
+  "chainId": 11155111,
+  "market": "0x25e2288d8fa689a1d9895a31b26130153f2dc76f",
+  "registry": "0x1dc400d88dd48bfd1dbb2687453e0e23dac77fa5",
+  "paymentToken": {
+    "address": "0x510e5e7ea5235fa2a1480a84c15e64873081b378",
+    "decimals": 6,
+    "symbol": "DemoUSD",
+    "isDemo": true
+  },
+  "deploymentBlock": "11874876",
+  "sourceCommit": "f82cb0d9ef26141a39bdf187f1e02f5d7451f0fc",
+  "assets": [
+    {
+      "assetId": "0x5716b16acd11b705e56e16cbcd4f603ae16c7c35246e756ba250a28cd2723828",
+      "token": "0xd25c2f24144d18f86b91d49d84b947f3719d4029",
+      "adapter": "0x95e826532252ee95a655cec940d2573765af71d4",
+      "symbol": "demoSPY",
+      "tokenDecimals": 18,
+      "isDemo": true
+    },
+    {
+      "assetId": "0xdaf8df83b3e0978aa9042866957dc28944bfcbf5c04acb5ca346b27f7dfce1e9",
+      "token": "0xabbbded7f841db35230b1994366175c8978ea053",
+      "adapter": "0x95e826532252ee95a655cec940d2573765af71d4",
+      "symbol": "demoAAPL",
+      "tokenDecimals": 18,
+      "isDemo": true
+    },
+    {
+      "assetId": "0x77132ecfc6a31f144d71f56399f9a1762cd27d5a04d28f63c3ff6eb836bd03bc",
+      "token": "0xd92925cf1a8f60d1a410024df26fe14645262765",
+      "adapter": "0x95e826532252ee95a655cec940d2573765af71d4",
+      "symbol": "demoMSFT",
+      "tokenDecimals": 18,
+      "isDemo": true
+    }
+  ]
+}
