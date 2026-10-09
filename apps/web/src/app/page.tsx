@@ -27,9 +27,9 @@ const modules = [
 
 export default function Home() {
   return (
-    <main
+    <div
       id="main-content"
-      className="grid min-w-0 grid-cols-12 gap-6 bg-canvas p-4 text-text-1 sm:p-6 lg:p-8"
+      className="grid min-w-0 grid-cols-12 gap-6 text-text-1"
     >
       <p className="col-span-12 text-xs font-bold tracking-widest text-text-2 uppercase">
         RWA INCOME RIGHTS · TEAM WORKSPACE
@@ -150,6 +150,6 @@ export default function Home() {
           autoComplete="off"
         />
       </section>
-    </main>
+    </div>
   );
 }

@@ -1,0 +1,7 @@
+- [x] 1. Add the global `AppSidebar` and `AppTopBar` components with the specified shell geometry, semantic landmarks, links, and focus states.
+- [x] 2. Update `apps/web/src/app/layout.tsx` to render the sidebar, sticky top bar, and `p-8` main content panel around all page children.
+- [x] 3. Wire pathname-based active highlighting in `AppSidebar` using `usePathname()`, `bg-tint`, `text-green-1`, and `aria-current`.
+- [x] 4. Add placeholder `page.tsx` routes for dashboard, marketplace, sell, listings, positions, claims, AI assistant, activity, assets, demo console, and settings.
+- [x] 5. Preserve and visually fit the existing root starter page and functional `/lab` route inside the new shell without changing their domain behavior.
+- [x] 6. Add focused source/route coverage for shell landmarks, active-state contracts, required destinations, and no-404 route generation.
+- [x] 7. Run targeted web typecheck, formatting, tests, and the applicable strict OpenSpec validation; record any workspace-wide pre-existing blockers.
