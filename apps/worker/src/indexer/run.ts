@@ -17,7 +17,8 @@ async function main() {
     await client.getChainId(),
   );
   const db = createDatabase(DATABASE_URL),
-    indexer = new FinalizedIndexer(db, new ChainReader(client, manifest));
+    // The configured hosted RPC free tier permits at most 10 blocks per log request.
+    indexer = new FinalizedIndexer(db, new ChainReader(client, manifest), 10);
   let stopped = false;
   process.once('SIGINT', () => {
     stopped = true;
