@@ -120,3 +120,7 @@ User requests a compact purple chat bubble that attracts clicks. Replaces only t
 Verification matrix: keyboard/click session opening, busy disabled, unavailable-session recovery/retry, mobile320 overflow and label placement, focus, finite motion and reduced-motion source, full quality gate. No live provider success implied by local fallback.
 
 PASS full pnpm check153 Vitest/46 Foundry/9 OpenSpec and build. Real keyboard Enter starts request, displays disabled Membuka chat, then unavailable-session alert and enabled retry on the unconfigured local environment. PASS production320px no overflow;64px bubble and focus outline/tooltip (opacity1) observed. Finite animation iteration count2 confirmed; production console clean before session request. Live successful chat, physical touch and OS reduced-motion runtime not tested; unchanged provider/session behavior is not re-certified.
+
+## Orbiting chat lights — 9 October 2026
+
+User clarified that the bubble should have ongoing fairy-like lights around it. Two offset5s/7s orbits with soft shimmer/trails replace the fixed sparkle; hover increases brightness. A small pause/resume button and reduced-motion static fallback keep ongoing motion controllable. Loading pauses orbit. Session logic unchanged. Matrix: orbit position changes, pause/resume, keyboard control, mobile edge clearance, full checks. Browser observed2 moving orbits and paused computed animation state; provider success is not re-tested by this visual refinement.

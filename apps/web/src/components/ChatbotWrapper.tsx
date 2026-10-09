@@ -109,6 +109,7 @@ export function useAssistant() {
 export function ChatbotWrapper({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<ChatSession | null>(null);
   const [busy, setBusy] = useState(false);
+  const [sparkMotion, setSparkMotion] = useState(true);
   const [error, setError] = useState('');
   const [open, setOpen] = useState(true);
   const pending = useRef(false);
@@ -162,6 +163,7 @@ export function ChatbotWrapper({ children }: { children: ReactNode }) {
           <button
             type="button"
             className={styles.chatBubble}
+            data-motion={sparkMotion && !busy ? 'on' : 'off'}
             aria-label={busy ? 'Membuka chat…' : 'Tanya Yieldex Assistant'}
             aria-busy={busy || undefined}
             disabled={busy}
@@ -197,9 +199,26 @@ export function ChatbotWrapper({ children }: { children: ReactNode }) {
                 strokeLinecap="round"
               />
             </svg>
-            <span className={styles.bubbleSpark} aria-hidden="true">
-              ✦
+            <span className={styles.fairyOrbit} aria-hidden="true">
+              <span>✦</span>
             </span>
+            <span
+              className={`${styles.fairyOrbit} ${styles.fairySecond}`}
+              aria-hidden="true"
+            >
+              <span>✧</span>
+            </span>
+          </button>
+          <button
+            type="button"
+            className={styles.motionToggle}
+            onClick={() => setSparkMotion((value) => !value)}
+            aria-label={
+              sparkMotion ? 'Jeda animasi bubble' : 'Aktifkan animasi bubble'
+            }
+            aria-pressed={!sparkMotion}
+          >
+            {sparkMotion ? 'Ⅱ' : '▷'}
           </button>
           {error && <p role="alert">{error}</p>}
         </aside>
