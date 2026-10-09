@@ -18,15 +18,15 @@ Gunakan komponen bersama; jangan salin markup katalog ke halaman produk. Ukuran 
 
 Empat variant: `primary`, `accent`, `outline`, `ghost`. Tiga ukuran: `lg` 48 px / padding horizontal 28 px / label 16 px; `md` 40 / 24 / 14; `sm` 32 / 16 / 13. Label weight 500, pill radius, ikon 20 px, jarak ikon 8 px.
 
-- Primary menggunakan gradient green-1 → green-2 → green-3; label `#092011`. Hover solid green-1, pressed solid green-3.
-- Accent menggunakan gradient purple-1 → purple-2 → purple-3; label putih. Hover solid purple-1, pressed solid purple-3.
-- Outline dan ghost memakai text-1; interaksi memakai green-1/green-3.
-- Focus keyboard memakai ring green-text 2 px dengan offset canvas 2 px.
+- Primary menggunakan gradient green-1 → green-2 → green-3; label `#092011`. Gradient dipertahankan pada hover/pressed.
+- Accent menggunakan gradient purple-1 → purple-2 → purple-3; label putih. Gradient dipertahankan pada hover/pressed.
+- Outline dan ghost memakai text-1; hover memakai tint lembut dan border lebih terang.
+- Focus keyboard memakai outline green-text 2 px dengan offset 3 px.
 - Disabled opacity 40%. Loading tetap opacity 100%, native disabled, `aria-busy`, dan loader sesuai warna variant. Reduced-motion menghentikan putaran.
 - `type` default `button`; hanya tombol submit yang diberikan `type="submit"`.
 - `leadingIcon`/`trailingIcon` menerima `IconName`, dekoratif, mengikuti warna label.
 
-Gradient harus berada di layer utility Tailwind. Deklarasi CSS tanpa layer pernah mengalahkan `hover:bg-none`, sehingga gradient tidak berubah saat hover. Jangan kembalikan deklarasi tersebut.
+Motion bersama berada di `button.module.css` dan dipakai oleh `Button` serta link `buttonVariants`. Hover fine-pointer: lift2px, highlight permukaan dan shadow kecil selama220ms; press90ms dengan scale0.975. Trailing icon dapat diberi `data-button-icon="trailing"` untuk respons2px. Loading/disabled/aria-busy tidak bergerak. Reduced-motion menghilangkan transform dan transisi. Gradient tetap utility Tailwind; jangan menambah override hover yang menghapus gradient di halaman. Keputusan ini menggantikan hover solid Figma awal atas permintaan Wildan.
 
 Matriks katalog menampilkan 72 spesimen (4 × 3 × 6). Spesimen hover/pressed/focus dipaksa lewat CSS khusus katalog; playground di bawahnya menggunakan event native untuk verifikasi perilaku sebenarnya.
 

@@ -27,11 +27,13 @@ export function LinkAction({
       })}
     >
       {children}
-      <Icon
-        name={outline ? 'arrow-right' : 'arrow-up-right'}
-        alt=""
-        inheritColor
-      />
+      <span data-button-icon="trailing">
+        <Icon
+          name={outline ? 'arrow-right' : 'arrow-up-right'}
+          alt=""
+          inheritColor
+        />
+      </span>
     </Link>
   );
 }

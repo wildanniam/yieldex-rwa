@@ -9,17 +9,6 @@
 .landing :is(h1, h2, h3, p) {
   margin: 0;
 }
-.landing a[data-action='primary']:hover {
-  background-image: none;
-  background-color: var(--green-1);
-}
-.landing a[data-action='primary']:active {
-  background-color: var(--green-3);
-}
-.landing a[data-action='outline']:hover {
-  color: var(--green-1);
-  border-color: var(--green-text);
-}
 .landing :is(button, a, input, summary):focus-visible {
   outline: 2px solid var(--mint);
   outline-offset: 5px;
@@ -1233,29 +1222,6 @@
 .heroArt [data-eth-pointer] {
   transform-origin: 50% 60%;
 }
-.landing a[data-action] {
-  transition:
-    background-color 0.18s,
-    box-shadow 0.22s,
-    scale 0.18s;
-}
-.landing a[data-action] > :last-child {
-  transition: transform 0.22s;
-}
-.landing a[data-action]:active {
-  scale: 0.975;
-}
-@media (hover: hover) and (pointer: fine) {
-  .landing a[data-action='primary']:hover {
-    box-shadow: 0 5px 26px #8be89f25;
-  }
-  .landing a[data-action]:hover > :last-child {
-    transform: translate(2px, -2px);
-  }
-  .landing a[data-action='outline']:hover > :last-child {
-    transform: translateX(3px);
-  }
-}
 @media (max-width: 600px) {
   .hero {
     padding-bottom: 58px;
@@ -1291,10 +1257,5 @@
 @media (max-width: 650px) {
   .finalCta {
     margin-block: 76px 60px;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .landing a[data-action]:hover > :last-child {
-    transform: none;
   }
 }

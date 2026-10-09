@@ -25,8 +25,8 @@ The design sheet specifies four button hierarchies, three sizes, and six states:
 ### 2. State and geometry classes
 
 - All variants use `rounded-full`, `font-medium`, `focus-visible:ring-2`, `focus-visible:ring-green-text`, `focus-visible:ring-offset-2`, and `focus-visible:ring-offset-canvas`.
-- Primary uses `bg-primary-gradient text-primary-label`, green-1 hover, and green-3 pressed.
-- Accent uses `bg-accent-gradient text-white`, purple-1 hover, and purple-3 pressed.
+- Primary uses `bg-primary-gradient text-primary-label`, shared surface-light hover and compressed press.
+- Accent uses `bg-accent-gradient text-white`, shared surface-light hover and compressed press.
 - Outline uses a 1px `#505555` border, transparent background, and green-text label.
 - Ghost uses transparent background, transparent border, and green-text label.
 - Disabled uses `disabled:opacity-40 disabled:cursor-not-allowed`.
@@ -42,4 +42,8 @@ The component accepts typed icon names compatible with `IconName` and renders th
 - CSS hover/pressed states cannot be fully asserted by the current non-DOM test runner; class contract tests cover their emitted tokens.
 - The icon type must remain synchronized with the archived custom-iconography inventory.
 
-Figma alignment (issue #9): primary label is #092011; outline/ghost default to text-1. Loading remains full opacity with local Figma loader assets while native disabled blocks activation. SVG mask rendering inherits the label color without modifying icon geometry. Gradient utilities share the Tailwind layer so enabled hover/active solid states win.
+Figma alignment (issue #9): primary label is #092011; outline/ghost default to text-1. Loading remains full opacity with local Figma loader assets while native disabled blocks activation. SVG mask rendering inherits the label color without modifying icon geometry. Gradient utilities share the Tailwind layer. Superseded solid hover behavior is replaced by the user-approved motion revision below.
+
+
+## User-requested motion revision, 9 October 2026
+Shared scoped CSS preserves gradients, adds220ms surface light/lift/shadow on fine-pointer hover and90ms press compression. Focus outline is explicit because unlayered shadow styling takes precedence over Tailwind ring shadows. Disabled/loading/busy states do not move. Reduced-motion removes transforms/transitions. Page-specific hover overrides are removed; native Button and buttonVariants links share treatment.
