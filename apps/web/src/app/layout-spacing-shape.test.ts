@@ -4,6 +4,14 @@ import { describe, expect, it } from 'vitest';
 
 const appRoot = resolve(__dirname);
 const layoutSource = readFileSync(resolve(appRoot, 'layout.tsx'), 'utf8');
+const sidebarSource = readFileSync(
+  resolve(appRoot, '../components/navigation/app-sidebar.tsx'),
+  'utf8',
+);
+const topBarSource = readFileSync(
+  resolve(appRoot, '../components/navigation/app-top-bar.tsx'),
+  'utf8',
+);
 const pageSource = readFileSync(resolve(appRoot, 'page.tsx'), 'utf8');
 const stylesSource = readFileSync(resolve(appRoot, 'globals.css'), 'utf8');
 const tailwindSource = readFileSync(
@@ -13,15 +21,20 @@ const tailwindSource = readFileSync(
 
 describe('layout spacing and shape contracts', () => {
   it('keeps the desktop shell dimensions and responsive navigation landmarks', () => {
-    expect(layoutSource).toContain('max-w-[1440px]');
-    expect(layoutSource).toContain('max-w-[1200px]');
-    expect(layoutSource).toContain('h-[72px]');
-    expect(layoutSource).toContain('lg:w-[248px]');
-    expect(layoutSource).toContain('aria-label="Navigasi utama"');
+    expect(layoutSource).toContain('flex min-h-screen bg-canvas text-text-1');
+    expect(layoutSource).toContain('<AppSidebar />');
+    expect(layoutSource).toContain('<AppTopBar />');
+    expect(layoutSource).toContain('overflow-x-hidden');
+    expect(layoutSource).toContain('<main className="flex-1 p-8">');
+    expect(sidebarSource).toContain(
+      'w-[248px] shrink-0 border-r border-border',
+    );
+    expect(sidebarSource).toContain('aria-label="Navigasi utama"');
+    expect(topBarSource).toContain('sticky top-0 z-40');
+    expect(topBarSource).toContain('h-[72px]');
     expect(pageSource).toContain('id="main-content"');
     expect(pageSource).toContain('grid-cols-12');
     expect(pageSource).toContain('gap-6');
-    expect(pageSource).toContain('lg:p-8');
   });
 
   it('keeps semantic radius and flat surface tokens wired', () => {
