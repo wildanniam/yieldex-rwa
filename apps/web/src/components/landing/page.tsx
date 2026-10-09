@@ -1,3 +1,8 @@
+import {
+  AssetCollection,
+  RiskGuide,
+  ClosingInvitation,
+} from './closing-scenes';
 import { FlowStory, IncomeCalculator } from './interactive-scenes';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,16 +13,10 @@ import {
   ProductPreview,
   SectionMotion,
 } from './interactions';
-import deployment from '../../../../../deployments/sepolia.json';
 import s from './landing.module.css';
 import { HeroMotion } from './hero-motion';
 import { ConceptCards } from './concept-cards';
 const repo = 'https://github.com/wildanniam/yieldex-rwa';
-const assetNames: Record<string, string> = {
-  demoAAPL: 'Apple-linked simulation',
-  demoMSFT: 'Microsoft-linked simulation',
-  demoSPY: 'S&P 500-linked simulation',
-};
 function HeroArt() {
   // Retain the intrinsic SVG geometry from the Figma export. Wrappers compose the artwork.
   return (
@@ -229,33 +228,7 @@ export function YieldexLanding() {
               real shares or real-world backing.
             </p>
           </div>
-          <div className={s.assetGrid}>
-            {[...deployment.assets]
-              .sort((a, b) => a.symbol.localeCompare(b.symbol))
-              .map((asset) => (
-                <a
-                  key={asset.assetId}
-                  href={`https://sepolia.etherscan.io/address/${asset.token}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={s.assetCard}
-                >
-                  <div className={s.assetCardTop}>
-                    <span className={s.assetLetter}>
-                      {asset.symbol.replace('demo', '')[0]}
-                    </span>
-                    <span>SIMULATED</span>
-                    <Icon name="arrow-up-right" alt="" inheritColor />
-                  </div>
-                  <h3>{asset.symbol}</h3>
-                  <p>{assetNames[asset.symbol]}</p>
-                  <div>
-                    <Icon name="layers" alt="" inheritColor size={16} />
-                    <span>In-kind income · Sepolia</span>
-                  </div>
-                </a>
-              ))}
-          </div>
+          <AssetCollection />
         </section>
         <section
           id="risks"
@@ -273,61 +246,13 @@ export function YieldexLanding() {
               And what never gets promised.
             </p>
           </div>
-          <div className={s.riskGrid}>
-            <article>
-              <Icon name="receipt" alt="" inheritColor />
-              <h3>A sale, not a loan.</h3>
-              <p>
-                The buyer acquires income rights for a fixed term. There is no
-                debt or principal repayment.
-              </p>
-            </article>
-            <article>
-              <Icon name="alert-triangle" alt="" inheritColor />
-              <h3>Income can be zero.</h3>
-              <p>
-                Dividends aren’t guaranteed. Income may be less than the price
-                paid. Expiry does not refund the purchase.
-              </p>
-            </article>
-            <article>
-              <Icon name="globe" alt="" inheritColor />
-              <h3>A testnet demo.</h3>
-              <p>
-                All assets and DemoUSD are simulated on Ethereum Sepolia. This
-                is not a production investment service.
-              </p>
-            </article>
-          </div>
-          <details className={s.riskDetails}>
-            <summary>
-              What happens if dividend data is delayed?
-              <span>
-                <Icon name="plus" alt="" inheritColor />
-              </span>
-            </summary>
-            <p>
-              The hackathon demo trusts a constrained team finalizer to verify
-              income events. Unclear or incomplete data can pause related
-              actions and delay backing release. There is no guaranteed
-              resolution time, and completed payouts cannot automatically be
-              clawed back.
-            </p>
-          </details>
+          <RiskGuide />
         </section>
         <section
           className={`${s.container} ${s.finalCta}`}
           aria-labelledby="cta-title"
         >
-          <div className={s.ctaMark} aria-hidden="true">
-            <Icon name="layers" size={32} alt="" inheritColor />
-          </div>
-          <h2 id="cta-title">Income, on your terms.</h2>
-          <p>Keep the asset. Explore what its income can do.</p>
-          <LinkAction href="/lab">Start exploring</LinkAction>
-          <span>
-            Sepolia testnet · Simulated tokens · Wallet confirmation required
-          </span>
+          <ClosingInvitation />
         </section>
       </main>
       <footer className={`${s.container} ${s.footer}`}>

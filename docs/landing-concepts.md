@@ -1,6 +1,6 @@
 # Landing concept illustrations
 
-Scope: the feature group after the hero/product preview (`#why-yieldex`), followed by the approved continuation into `#how-it-works` and `#calculator`. Fradium is a composition/material reference, not a source of Yieldex product claims. Figma3583:2778 and detailed cards3583:2826/3583:2877 were inspected.
+Scope: the feature group after the hero/product preview (`#why-yieldex`), followed by the approved continuation into `#how-it-works`, `#calculator`, `#assets`, `#risks` and the closing invitation/footer. Fradium is a composition/material reference, not a source of Yieldex product claims. Figma3583:2778 and detailed cards3583:2826/3583:2877 were inspected.
 
 Implementation lives in `apps/web/src/components/landing/concept-cards.tsx` and its CSS module. Original SVG/HTML/CSS artwork avoids embedded text in raster images and scales without downloaded third-party assets or a new rendering library. Canonical Icon/AskAssistant are reused. SVG IDs use the section-specific `yx-` prefix and appear once per landing.
 
@@ -10,7 +10,7 @@ Implementation lives in `apps/web/src/components/landing/concept-cards.tsx` and 
 - AI: illustrative term/risk explanation; real CTA uses existing admission/error behavior.
 - Proof: actual market deployment link.
 
-No illustration is an actionable form. No transaction, quote, balance or AI response is fabricated as live data. Hero, assets, risks, footer and backend logic remain unchanged. Process and calculator presentation were subsequently revised as documented below.
+No illustration is an actionable form. No transaction, quote, balance or AI response is fabricated as live data. Hero and backend logic remain unchanged. Flow, calculator, assets, risks and closing presentation were subsequently revised as documented below.
 
 Verification results and final tested revision are recorded in the PR. Designer review, live integrations and cross-browser/assistive-technology audit remain separate.
 
@@ -52,3 +52,25 @@ Before:2b1587d (user screenshots). After: final commit recorded in PR17. Local C
 | Live providers / wallet / cross-browser / AT | NOT TESTED   | No change to financial logic; no new claim of live-provider or Safari/Firefox/screen-reader verification                                   |
 
 The existing adjacent multi-anchor→AI fallback→lab→Back issue described above remains outside this visual revision. The earlier calculator hydration observation is superseded by the successful revised checks.
+
+## Remaining sections revision — 9 October 2026
+
+The user approved the visual direction and requested the remaining sections. `closing-scenes.tsx` and its scoped CSS own the asset collection, risk guide and closing invitation. Asset identities are the three currently deployed demo symbols; addresses, payment symbol and registry come from `deployments/sepolia.json`.
+
+- The selectable specimen collection uses original CSS coins and a pedestal. Labels explicitly distinguish DemoUSD payment from in-kind income in the selected backing token. Each asset retains its own explorer link before hydration; the selected detail address and explanation use the same manifest object.
+- The risk guide shows a possible90-paid/0-income outcome, plus four native details/summary disclosures. It preserves the sale/no-loan, no-refund, zero-income, simulated-backing, finalizer, delayed-release and no-clawback boundaries. No guaranteed return or fabricated market quote.
+- The final invitation uses a faceted sculpture with separate backing/income labels. Links go to the existing demo and lifecycle; footer links are enlarged for readability. Finite selection animation and hover/focus motion are disabled under reduced motion. No new dependencies or external image requests.
+
+| Scenario                         | Result       | Evidence / limit                                                                                                                           |
+| -------------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Full gate                        | PASS         | 153 Vitest,46 Foundry,9 OpenSpec changes; format/lint/types/generation/build                                                               |
+| All three assets                 | PASS         | Pointer and Enter selection update symbol, selected state, explanation and correct canonical explorer address; DemoUSD stays payment token |
+| Rapid switching and reload       | PASS         | SPY→MSFT→AAPL→MSFT remains consistent; reload restoresAAPL and default first disclosure                                                    |
+| Disclosures                      | PASS         | All four open simultaneously; Enter/Space open and close; finalizer text readable at320px                                                  |
+| Responsive                       | PASS         | 1440/768/390/320; no page overflow; selection panel, coin, long disclosures and closing CTA visible                                        |
+| Closing navigation               | PASS         | Revisit flow reaches#how-it-works; Start exploring reaches/lab; Home returns to landing                                                    |
+| Console and resources            | PASS         | No new production errors/hydration warning; dev Lit mode notice only. Production HTML/resources checked separately                         |
+| No JS / reduced motion           | SOURCE + SSR | Canonical explorer links and all risk text in server HTML; native details; reduced-motion CSS; browser preference/no-JS runtime not tested |
+| Live financial/provider behavior | NOT TESTED   | Local lab intentionally unconfigured; no wallet/AI/provider functionality changed or claimed reverified                                    |
+
+Previous adjacent Back-navigation limitation remains. No merge or manual deployment. Screenshot evidence and logs remain outside the repository. Final tested commit is recorded in PR17.

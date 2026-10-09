@@ -28,3 +28,14 @@ The simulator SHALL reuse the existing BigInt calculation for income values 200,
 #### Scenario: Zero income
 - **WHEN** the visitor chooses zero income at any available share
 - **THEN** both allocations SHALL be zero, the visual income ring SHALL be empty, and buyer net result SHALL be minus 90 and minus 100 percent.
+
+### Requirement: LC-005 Demo assets and risk boundaries
+The asset collection SHALL use deployed manifest symbols and explorer addresses, distinguish DemoUSD purchase payment from allocated income in the backing token, and state the lack of real-world backing. Risk disclosures SHALL preserve no-refund, no-guarantee, constrained-finalizer and delayed-release boundaries. The closing invitation SHALL use the existing demo route.
+
+#### Scenario: Selecting an asset
+- **WHEN** a visitor selects any deployed demo asset via pointer or keyboard
+- **THEN** the illustration, symbol, income-token explanation and contract link SHALL correspond to that same asset.
+
+#### Scenario: Inspecting risks without JavaScript
+- **WHEN** a visitor opens a native risk disclosure
+- **THEN** the full risk explanation SHALL be readable, including finalizer trust and the inability to automatically claw back completed payouts.

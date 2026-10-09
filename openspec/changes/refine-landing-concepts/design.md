@@ -18,3 +18,10 @@ Before63ffaed; after final revision recorded in PR. Test desktop1440/tablet768/m
 User approved the section2 approach and requested the next two sections. A stable Alice/vault/Bob scene lets visitors manually inspect offer, purchase and allocated-income states. Short directional light traces show payment and allocation; labels always state claimability, not automatic payouts. Backing remains fixed. The calculator uses a mint/neutral allocation ring with exact HTML amounts and the existing BigInt incomeScenario function. Native buttons/range input work by keyboard; zero income empties both arcs. No autoplay, looping animation or new dependency. CSS transitions are removed under reduced motion, with identical server/client initial markup.
 
 Additional verification: rapid/reverse stage selection, each of three income scenarios at shares10/50/90, break-even, fixed90 cost, buyer+seller conservation, keyboard range and refresh defaults; responsive diagram labels; dev hydration and production errors.
+
+## Asset collection and closing chapters
+The asset section becomes a specimen collection: selectable deployed tokens on the left, an original CSS coin/pedestal and the matching token/payment explanation on the right. Each row retains a direct explorer link, including without JavaScript. Selected details and address come from the same manifest entry; company-linked simulation names are not claims of real backing. Selection triggers a single short arrival animation.
+
+The risk section uses a deliberately quiet zero-income coin and a90-paid/0-income example beside four native disclosures. Finalizer trust, delays and no clawback remain explicit. The closing invitation uses a faceted Yieldex-inspired sculpture above separate backing/income labels, and real links to the demo and flow. Footer typography is enlarged for readability; existing destinations remain. No new library, raster asset, remote content or financial action.
+
+Verification adds all asset selections, rapid switching and reset, canonical addresses, native disclosure keyboard/open/close states,320px expanded finalizer text, closing CTA/navigation and reduced-motion source checks.

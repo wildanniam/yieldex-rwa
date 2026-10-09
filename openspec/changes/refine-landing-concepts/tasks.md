@@ -7,3 +7,8 @@
 - [x] 2.1 Build manual lifecycle scene with retained backing, upfront payment and separate claimable allocations.
 - [x] 2.2 Build exact-value income split simulator, optional finite motion, static SSR and keyboard controls.
 - [x] 2.3 Verify scenario matrix, responsive presentation, hydration and adjacent behavior before pushing.
+
+## 3. Complete remaining sections
+- [x] 3.1 Implement selectable asset collection with canonical contract links and payment/income distinction.
+- [x] 3.2 Illustrate zero-income risk, retain all disclosures, and improve closing invitation/footer.
+- [x] 3.3 Verify selection, disclosures, responsive layouts, navigation and full checks.

@@ -671,170 +671,8 @@
   line-height: 1.85;
   color: #91a297;
 }
-.assetGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-}
-.assetCard {
-  display: block;
-  padding: 26px;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  background: #0b1311;
-  transition:
-    transform 0.22s,
-    background 0.22s,
-    border-color 0.22s;
-}
-.assetCard:hover {
-  transform: translateY(-5px);
-  background: #111f17;
-  border-color: #598163;
-}
-.assetCardTop {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-.assetLetter {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border: 1px solid #5a7061;
-  background: #203528;
-  border-radius: 12px;
-  font-size: 20px;
-  color: #d8ebdb;
-}
-.assetCardTop > span:nth-child(2) {
-  font-size: 8px;
-  letter-spacing: 0.08em;
-  color: #91aa99;
-}
-.assetCardTop > span:last-child {
-  margin-left: auto;
-  color: #a2c9ac;
-}
-.assetCard h3 {
-  font-size: 23px;
-  font-weight: 450;
-  letter-spacing: -0.035em;
-  margin-top: 28px;
-}
-.assetCard p {
-  color: #99a99f;
-  font-size: 11px;
-  margin-top: 6px;
-}
-.assetCard > div:last-child {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border-top: 1px solid var(--line);
-  padding-top: 16px;
-  margin-top: 23px;
-  color: #9db8a5;
-  font-size: 10px;
-}
-.riskGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 38px;
-  padding-block: 31px;
-  border-block: 1px solid var(--line);
-}
-.riskGrid article > span {
-  color: #8ca995;
-}
-.riskGrid h3 {
-  font-size: 17px;
-  font-weight: 450;
-  letter-spacing: -0.025em;
-  margin-top: 16px;
-}
-.riskGrid p {
-  color: #98a89e;
-  font-size: 12px;
-  line-height: 1.85;
-  margin-top: 10px;
-}
-.riskDetails {
-  border-bottom: 1px solid var(--line);
-}
-.riskDetails summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  cursor: pointer;
-  padding: 24px 0;
-  font-size: 13px;
-  color: #bfd0c4;
-  list-style: none;
-}
-.riskDetails summary::-webkit-details-marker {
-  display: none;
-}
-.riskDetails summary > span {
-  display: flex;
-  transition: transform 0.2s;
-  color: #98bda3;
-}
-.riskDetails[open] summary > span {
-  transform: rotate(45deg);
-}
-.riskDetails > p {
-  font-size: 12px;
-  color: #9cac9f;
-  line-height: 1.9;
-  max-width: 790px;
-  padding-bottom: 26px;
-}
 .finalCta {
-  text-align: center;
   margin-block: 124px 90px;
-  padding: 68px 24px;
-  border: 1px solid #3d5745;
-  border-radius: 28px;
-  background: radial-gradient(
-    ellipse at 50% -15%,
-    #34503990,
-    #101e1660 58%,
-    #09100e
-  );
-  position: relative;
-  overflow: clip;
-}
-.ctaMark {
-  display: grid;
-  place-items: center;
-  color: #bdedc3;
-  width: 62px;
-  height: 62px;
-  margin: 0 auto 22px;
-  border: 1px solid #81b3896b;
-  border-radius: 18px;
-  background: #33533a65;
-  transform: rotate(-7deg);
-}
-.finalCta h2 {
-  font-size: clamp(32px, 3.8vw, 51px);
-}
-.finalCta p {
-  font-size: 14px;
-  color: #a1b8a9;
-  margin-top: 15px;
-}
-.finalCta > a {
-  margin-top: 27px;
-}
-.finalCta > span {
-  display: block;
-  font-size: 9px;
-  color: #90ac99;
-  margin-top: 19px;
 }
 .footer {
   /* Keep the last navigation row above the persistent assistant launcher. */
@@ -859,7 +697,7 @@
   margin-top: 19px;
 }
 .footerMain > div:not(:first-child) h3 {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   color: #cad9ce;
   margin-bottom: 19px;
@@ -868,7 +706,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 10px;
+  font-size: 12px;
   color: #98ada0;
   margin-bottom: 13px;
   width: fit-content;
@@ -1042,15 +880,6 @@
   .sectionHeading > p {
     max-width: 245px;
     font-size: 12px;
-  }
-  .assetCard {
-    padding: 20px;
-  }
-  .assetCard p {
-    min-height: 32px;
-  }
-  .riskGrid {
-    gap: 25px;
   }
   .footerMain {
     grid-template-columns: 1.5fr 1fr 1fr;
@@ -1248,67 +1077,6 @@
   .landing h2 {
     font-size: 33px;
   }
-  .assetGrid {
-    grid-template-columns: 1fr;
-    gap: 13px;
-  }
-  .assetCard {
-    padding: 22px;
-  }
-  .assetCard h3 {
-    margin-top: 19px;
-  }
-  .assetCard p {
-    min-height: auto;
-  }
-  .assetCard > div:last-child {
-    margin-top: 18px;
-  }
-  .riskGrid {
-    grid-template-columns: 1fr;
-    gap: 25px;
-  }
-  .riskGrid article {
-    display: grid;
-    grid-template-columns: 24px 1fr;
-    column-gap: 13px;
-  }
-  .riskGrid article > span {
-    grid-row: span 2;
-  }
-  .riskGrid h3 {
-    margin-top: 0;
-  }
-  .riskGrid p {
-    font-size: 11px;
-    margin-top: 8px;
-  }
-  .riskDetails summary {
-    font-size: 12px;
-    line-height: 1.7;
-    padding-block: 18px;
-  }
-  .riskDetails > p {
-    font-size: 11px;
-  }
-  .finalCta {
-    margin-block: 76px 60px;
-    padding: 42px 20px;
-    border-radius: 22px;
-  }
-  .finalCta h2 {
-    font-size: 32px;
-  }
-  .finalCta p {
-    font-size: 12px;
-    line-height: 1.8;
-  }
-  .finalCta > span {
-    font-size: 8px;
-    max-width: 230px;
-    margin-inline: auto;
-    line-height: 1.8;
-  }
   .footerMain {
     grid-template-columns: 1fr 1fr;
     gap: 32px;
@@ -1477,14 +1245,6 @@
 .landing a[data-action]:active {
   scale: 0.975;
 }
-.assetCardTop > span:first-child {
-  transition: transform 0.3s;
-}
-.assetCardTop > span:last-child {
-  transition:
-    transform 0.25s,
-    color 0.25s;
-}
 @media (hover: hover) and (pointer: fine) {
   .landing a[data-action='primary']:hover {
     box-shadow: 0 5px 26px #8be89f25;
@@ -1494,13 +1254,6 @@
   }
   .landing a[data-action='outline']:hover > :last-child {
     transform: translateX(3px);
-  }
-  .assetCard:hover .assetCardTop > span:first-child {
-    transform: rotate(-6deg) scale(1.05);
-  }
-  .assetCard:hover .assetCardTop > span:last-child {
-    transform: translate(2px, -2px);
-    color: var(--mint);
   }
 }
 @media (max-width: 600px) {
@@ -1533,8 +1286,14 @@
     transition: none !important;
     scroll-behavior: auto !important;
   }
-  .assetCard:hover,
-  .assetCard:hover .assetCardTop > span,
+}
+
+@media (max-width: 650px) {
+  .finalCta {
+    margin-block: 76px 60px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
   .landing a[data-action]:hover > :last-child {
     transform: none;
   }

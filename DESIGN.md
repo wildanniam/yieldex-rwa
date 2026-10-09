@@ -14,11 +14,11 @@ Design variance 6, motion intensity 5, density 4. Existing Inter + navy/green/pu
 | Hero              | Centered two-tone promise, Ethereum silhouettes, green CTA  | Clear Sepolia label, staged entrance, artwork in original aspect ratios                                                                           |
 | Product in action | Asset, fixed price, share, term, ownership                  | Interactive 3-step preview: listing → purchase → dividend; side cards explain retained backing and in-kind claims instead of 3 duplicate listings |
 | Why Yieldex       | Mixed-size feature cards, principal retained, resale and AI | Native grouped cards, subtle card depth; purple reserved for AI; complete-position resale and original expiry explicit                            |
-| How it works      | Three chronological steps                                   | Numbered rail explaining the interactive preview, no scroll hijacking                                                                             |
+| How it works      | Three chronological steps                                   | Selectable Alice/vault/Bob scene; finite causal traces and fixed backing                                                                          |
 | See the math      | 90 price, 50% share, 200/100/0 scenarios                    | Selectable scenarios + share slider; integer cents, hypothetical DemoUSD-equivalent valuation, actual payouts remain in-kind                      |
-| Assets            | Three token cards                                           | Canonical demoAAPL/demoMSFT/demoSPY; no unverified spot prices or unsupported NVDA/KO claims                                                      |
-| Risks             | Sale vs loan, uncertain income, testnet                     | Readable disclosure cards + expandable source/withdrawal caveat                                                                                   |
-| CTA/footer        | Final invitation, demo details and useful destinations      | Working lab/docs/explorer links; no nonexistent terms/privacy/signup pages                                                                        |
+| Assets            | Three token cards                                           | Selectable demoAAPL/demoMSFT/demoSPY specimen collection; manifest links and payment/in-kind-income distinction                                   |
+| Risks             | Sale vs loan, uncertain income, testnet                     | Zero-income illustration + four native disclosures including finalizer/delayed-release caveat                                                     |
+| CTA/footer        | Final invitation, demo details and useful destinations      | Sculptural backing/income invitation; working lab/docs/explorer links and readable footer                                                         |
 
 ## Primary path and boundaries
 
@@ -51,3 +51,7 @@ The user's Fradium reference replaces the prior repeated icon/text feature desig
 ## Lifecycle and allocation continuation
 
 Maintain the approved concept-led approach: a visual subject must explain what moves, what stays, and what the user can control. Sections3/4 use a stable glass vault with selectable Alice/Bob lifecycle states, then an income-allocation ring with exact buyer/seller values and an anchored upfront cost. `interactive-scenes.tsx` owns these client controls; `income-math.ts` remains the sole calculator arithmetic source. Finite directional traces show payment/allocation; ring transitions show share changes. Never animate an illustrative claim as a completed payment, imply guaranteed yield, or change the price when the scenario changes. Native controls, HTML labels, static SSR and CSS reduced-motion handling remain required.
+
+## Remaining sections continuation
+
+The specimen collection, quiet zero-income illustration and faceted closing sculpture extend the accepted concept-led direction through the rest of the landing. `closing-scenes.tsx` owns these sections. Treat token letters as demo identities, not issuer branding or real-stock backing. The palette can distinguish the selected token, but the payment/income distinction must stay explicit in text. Preserve manifest explorer links, native risk disclosures, reduced-motion/static behavior and existing destinations. Detailed verification and limits are in `docs/landing-concepts.md`.
