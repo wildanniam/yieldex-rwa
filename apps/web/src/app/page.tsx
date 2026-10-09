@@ -1,7 +1,6 @@
 import { CHAIN_IDS, INTERFACE_VERSION } from '@rwa/shared';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { PasswordInput, TextInput } from '@/components/ui/input';
+import { PasswordInput } from '@/components/ui/input';
 
 const modules = [
   [
