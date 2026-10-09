@@ -60,8 +60,12 @@ describe('landing server-rendered content', () => {
   });
   it('keeps the asset collection and risk guide useful before JavaScript', () => {
     const html = renderToStaticMarkup(createElement(YieldexLanding));
-    expect(html).toContain('aria-label="Explore demo assets"');
+    expect(html).toContain('aria-label="Explore assets"');
     expect(html).toContain('BUY THE RIGHTS WITH');
+    expect(html).toContain('Apple');
+    expect(html).toContain('Microsoft');
+    expect(html).not.toContain('Launch demo');
+    expect(html).toContain('Launch app');
     expect(html).toContain('CLAIM INCOME IN');
     expect(html).toContain(
       'href="https://sepolia.etherscan.io/address/' + deployment.registry + '"',

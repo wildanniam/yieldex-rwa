@@ -119,7 +119,7 @@ export function YieldexLanding() {
           <HeroArt />
           <div className={s.heroCopy}>
             <span className={s.networkBadge}>
-              <i /> Built on Ethereum <span>·</span> Sepolia demo
+              <i /> Built on Ethereum <span>·</span> Sepolia
             </span>
             <h1 id="hero-title">
               Your shares stay yours.
@@ -132,7 +132,7 @@ export function YieldexLanding() {
               fixed term. Keep the principal.
             </p>
             <div className={s.heroActions}>
-              <LinkAction href="/lab">Explore the demo</LinkAction>
+              <LinkAction href="/lab">Explore Yieldex</LinkAction>
               <LinkAction href="#how-it-works" outline>
                 See how it works
               </LinkAction>
@@ -218,14 +218,14 @@ export function YieldexLanding() {
             <div>
               <span className={s.sectionIndex}>04 / THE ASSETS</span>
               <h2 id="assets-title">
-                Real contracts.
+                Familiar assets.
                 <br />
-                <span>Simulated assets.</span>
+                <span>A new way to hold them.</span>
               </h2>
             </div>
             <p>
-              Start with the three tokens in our Sepolia demo deployment. No
-              real shares or real-world backing.
+              Explore equity-linked income rights. Choose an asset, keep the
+              backing, and decide how much income to share.
             </p>
           </div>
           <AssetCollection />
@@ -275,7 +275,7 @@ export function YieldexLanding() {
           </div>
           <div>
             <h3>Product</h3>
-            <Link href="/lab">Explore demo</Link>
+            <Link href="/lab">Explore Yieldex</Link>
             <a href="#how-it-works">How it works</a>
             <a href="#calculator">Income scenarios</a>
             <a href="#assistant">AI assistant</a>
@@ -295,7 +295,7 @@ export function YieldexLanding() {
               target="_blank"
               rel="noreferrer"
             >
-              Demo deployment{' '}
+              Onchain deployment{' '}
               <Icon name="arrow-up-right" size={14} alt="" inheritColor />
             </a>
             <Link href="/design-system">Design system</Link>

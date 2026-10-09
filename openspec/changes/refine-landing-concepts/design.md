@@ -25,3 +25,7 @@ The asset section becomes a specimen collection: selectable deployed tokens on t
 The risk section uses a deliberately quiet zero-income coin and a90-paid/0-income example beside four native disclosures. Finalizer trust, delays and no clawback remain explicit. The closing invitation uses a faceted Yieldex-inspired sculpture above separate backing/income labels, and real links to the demo and flow. Footer typography is enlarged for readability; existing destinations remain. No new library, raster asset, remote content or financial action.
 
 Verification adds all asset selections, rapid switching and reset, canonical addresses, native disclosure keyboard/open/close states,320px expanded finalizer text, closing CTA/navigation and reduced-motion source checks.
+
+
+## Presentation polish
+Company names and reference tickers lead the collection; deployed symbols remain visible beside their exact Sepolia contract addresses. Testnet/no-backing disclosure remains in the collection and risk details. Only deployed assets are shown. Main navigation avoids repetitive demo copy. The risk zero coin is replaced by a layered income statement; closing sculpture uses explicit extruded SVG facets and edges. Original art is decorative with meaningful adjacent HTML. No runtime external images.

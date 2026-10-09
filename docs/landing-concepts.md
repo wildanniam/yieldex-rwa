@@ -74,3 +74,15 @@ The user approved the visual direction and requested the remaining sections. `cl
 | Live financial/provider behavior | NOT TESTED   | Local lab intentionally unconfigured; no wallet/AI/provider functionality changed or claimed reverified                                    |
 
 Previous adjacent Back-navigation limitation remains. No merge or manual deployment. Screenshot evidence and logs remain outside the repository. Final tested commit is recorded in PR17.
+
+## Brand presentation and artwork polish — 9 October 2026
+
+User requested company identities instead of repeated demo headings and more refined risk/closing artwork. Main labels now use Apple/AAPL, Microsoft/MSFT and S&P500/SPY. Canonical contract symbols remain beside selected Sepolia addresses; the collection and native risk disclosure state simulation/no real backing. NVIDIA is not added because it is not in this deployment. No contract token has been renamed or remapped. Main CTA copy is Launch app / Explore Yieldex.
+
+Apple silhouette is from Simple Icons (CC0), https://github.com/simple-icons/simple-icons/blob/develop/icons/apple.svg; Microsoft uses four-square geometry. The S&P500 numeric mark is a custom index label. Marks identify reference assets, not a partnership. SVGs are inline with no runtime external requests.
+
+Risk artwork is an original layered income statement with a zero indicator. Closing artwork is an original extruded Yieldex-inspired mark, lit edges and glass platform. All financial copy, native disclosure behavior, routes, arithmetic and finalizer boundaries remain.
+
+Verification plan: compare against1393c45 screenshots, check all three company selections against canonical addresses, rapid selection/reload and keyboard, 1440/768/390/320 overflow/artwork, expanded risk and CTA navigation, console/network, full checks. Final results and tested hash are recorded in PR17.
+
+Final result: PASS full pnpm check (153 Vitest,46 Foundry,9 OpenSpec; format/lint/types/generated/build). PASS company selection and exact canonical addresses, rapid switching and reload defaults on production build; keyboard disclosure, flow anchor, Launch app→unconfigured local lab→Home. PASS 1440/768/390/320 no overflow; new SVG artwork inspected desktop/mobile. Production console clean; local HTML/static resources200. A dev-browser input timed out during concurrent compilation; the same selection journey passed on the final production build. Reduced-motion/no-JS remain source/SSR only; live providers and other browsers are not tested. No merge/deploy.

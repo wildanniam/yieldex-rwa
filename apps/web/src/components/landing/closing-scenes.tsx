@@ -3,22 +3,26 @@
 import { useState, type CSSProperties } from 'react';
 import { Icon } from '@/components/ui/icon';
 import { LinkAction } from './interactions';
+import { AssetMark } from './asset-mark';
+import { OutcomeArtwork, YieldexSculpture } from './closing-artwork';
 import deployment from '../../../../../deployments/sepolia.json';
 import s from './closing-scenes.module.css';
 
 const assets = [...deployment.assets].sort((a, b) =>
   a.symbol.localeCompare(b.symbol),
 );
-const identities: Record<string, { name: string; mark: string; hue: string }> =
-  {
-    demoAAPL: { name: 'Apple-linked simulation', mark: 'A', hue: '#b3dda8' },
-    demoMSFT: {
-      name: 'Microsoft-linked simulation',
-      mark: 'M',
-      hue: '#a6c9df',
-    },
-    demoSPY: { name: 'S&P 500-linked simulation', mark: '500', hue: '#c5b8e3' },
-  };
+const identities: Record<
+  string,
+  { name: string; ticker: string; hue: string }
+> = {
+  demoAAPL: { name: 'Apple', ticker: 'AAPL', hue: '#d5e3dc' },
+  demoMSFT: {
+    name: 'Microsoft',
+    ticker: 'MSFT',
+    hue: '#a6c9df',
+  },
+  demoSPY: { name: 'S&P 500', ticker: 'SPY', hue: '#c5b8e3' },
+};
 
 export function AssetCollection() {
   const [selected, setSelected] = useState(0);
@@ -28,13 +32,13 @@ export function AssetCollection() {
     <div className={s.collection}>
       <div className={s.catalog}>
         <div className={s.catalogHeader}>
-          <span>THE DEMO COLLECTION</span>
+          <span>THE ASSET COLLECTION</span>
           <span>03 ASSETS</span>
         </div>
         <div
           className={s.assetChoices}
           role="group"
-          aria-label="Explore demo assets"
+          aria-label="Explore assets"
         >
           {assets.map((item, index) => (
             <div
@@ -56,11 +60,13 @@ export function AssetCollection() {
                     } as CSSProperties
                   }
                 >
-                  {identities[item.symbol]!.mark}
+                  <AssetMark symbol={item.symbol} />
                 </span>
                 <span>
-                  <strong>{item.symbol}</strong>
-                  <small>{identities[item.symbol]!.name}</small>
+                  <strong>{identities[item.symbol]!.name}</strong>
+                  <small>
+                    {identities[item.symbol]!.ticker} · Equity reference
+                  </small>
                 </span>
                 <span className={s.selectedDot} aria-hidden="true" />
               </button>
@@ -103,8 +109,8 @@ export function AssetCollection() {
         style={{ '--token-hue': identity.hue } as CSSProperties}
       >
         <div className={s.specimenTop}>
-          <span>SIMULATED ASSET / 0{selected + 1}</span>
-          <span>NOT A REAL STOCK</span>
+          <span>ASSET COLLECTION / 0{selected + 1}</span>
+          <span>EQUITY REFERENCE</span>
         </div>
         <div key={asset.symbol} className={s.tokenScene} aria-hidden="true">
           <div className={s.plinth}>
@@ -115,18 +121,18 @@ export function AssetCollection() {
           <div className={s.tokenShadow} />
           <div className={s.tokenDisc}>
             <div className={s.tokenRim}>
-              <span className={s.tokenStamp}>YIELDEX · SEPOLIA</span>
-              <strong data-wide={identity.mark.length > 1}>
-                {identity.mark}
+              <span className={s.tokenStamp}>YIELDEX · INCOME RIGHTS</span>
+              <strong className={s.brandMark}>
+                <AssetMark symbol={asset.symbol} />
               </strong>
               <span className={s.tokenSerial}>
-                SIMULATED / {String(selected + 1).padStart(2, '0')}
+                {identity.ticker} / {String(selected + 1).padStart(2, '0')}
               </span>
             </div>
           </div>
           <div className={s.tokenTag}>
             <span>IN-KIND INCOME</span>
-            <strong>{asset.symbol}</strong>
+            <strong>{identity.ticker}</strong>
             <small>Same token as the backing</small>
           </div>
         </div>
@@ -136,12 +142,12 @@ export function AssetCollection() {
           aria-atomic="true"
         >
           <h3>
-            {asset.symbol}
-            <span>DEMO</span>
+            {identity.name}
+            <span>{identity.ticker}</span>
           </h3>
           <p>
-            Back an offer with {asset.symbol}. Any allocated income is claimed
-            in {asset.symbol} too.
+            Keep your backing. Trade a share of its income. Allocated income is
+            claimed in the same asset token.
           </p>
           <div className={s.assetRoles}>
             <div>
@@ -151,7 +157,7 @@ export function AssetCollection() {
             <span aria-hidden="true">↗</span>
             <div>
               <span>CLAIM INCOME IN</span>
-              <strong>{asset.symbol}</strong>
+              <strong>{identity.ticker}</strong>
             </div>
           </div>
           <a
@@ -160,7 +166,7 @@ export function AssetCollection() {
             target="_blank"
             rel="noreferrer"
           >
-            <span>Token contract</span>
+            <span>{asset.symbol} · Sepolia contract</span>
             <code>
               {asset.token.slice(0, 10)}…{asset.token.slice(-6)}
             </code>
@@ -191,13 +197,13 @@ const risks = [
   },
   {
     title: 'Are these real stocks?',
-    tag: 'THE DEMO',
+    tag: 'THE NETWORK',
     body: 'All assets and DemoUSD are simulated on Ethereum Sepolia. The smart contracts are onchain, but the demo tokens have no real shares or real-world backing. This is not a production investment service.',
   },
   {
     title: 'What happens if dividend data is delayed?',
     tag: 'THE DEPENDENCY',
-    body: 'The hackathon demo trusts a constrained team finalizer to verify income events. Unclear or incomplete data can pause related actions and delay backing release. There is no guaranteed resolution time, and completed payouts cannot automatically be clawed back.',
+    body: 'The Sepolia deployment trusts a constrained team finalizer to verify income events. Unclear or incomplete data can pause related actions and delay backing release. There is no guaranteed resolution time, and completed payouts cannot automatically be clawed back.',
   },
 ];
 
@@ -207,12 +213,7 @@ export function RiskGuide() {
       <div className={s.downside}>
         <span className={s.eyebrow}>A POSSIBLE OUTCOME</span>
         <div className={s.emptyScene} aria-hidden="true">
-          <div className={s.emptyPlate}>
-            <span>0</span>
-            <i />
-          </div>
-          <div className={s.emptyShadow} />
-          <span className={s.emptyCaption}>NO INCOME ALLOCATED</span>
+          <OutcomeArtwork />
         </div>
         <h3>
           A fixed price.
@@ -288,7 +289,7 @@ export function ClosingInvitation() {
         <p>
           You’ve seen how the pieces fit.
           <br />
-          Now try the flow in the Sepolia demo.
+          Put your assets to work. On your terms.
         </p>
         <div className={s.invitationActions}>
           <LinkAction href="/lab">Start exploring</LinkAction>
@@ -297,30 +298,10 @@ export function ClosingInvitation() {
             <Icon name="arrow-up-right" alt="" inheritColor size={15} />
           </a>
         </div>
-        <small>Simulated tokens · Your wallet confirms transactions</small>
+        <small>Your assets. Your decisions. Your wallet confirms.</small>
       </div>
       <div className={s.launchScene} aria-hidden="true">
-        <div className={s.launchOrbit} />
-        <svg className={s.launchPaths} viewBox="0 0 440 400" fill="none">
-          <path
-            d="M60 320 215 235 385 320M215 235V65"
-            stroke="#9bc7a1"
-            strokeOpacity=".24"
-          />
-          <path
-            d="m190 116 25-14 25 14-25 14Z"
-            stroke="#b5d6b0"
-            strokeOpacity=".35"
-          />
-          <circle cx="60" cy="320" r="4" fill="#94b695" />
-          <circle cx="385" cy="320" r="4" fill="#94b695" />
-        </svg>
-        <div className={s.launchBase} />
-        <div className={s.launchGlyph}>
-          <i />
-          <i />
-          <i />
-        </div>
+        <YieldexSculpture />
         <div className={`${s.launchLabel} ${s.launchBacking}`}>
           <Icon name="vault" alt="" inheritColor size={15} />
           <span>

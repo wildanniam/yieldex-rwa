@@ -30,7 +30,7 @@ The simulator SHALL reuse the existing BigInt calculation for income values 200,
 - **THEN** both allocations SHALL be zero, the visual income ring SHALL be empty, and buyer net result SHALL be minus 90 and minus 100 percent.
 
 ### Requirement: LC-005 Demo assets and risk boundaries
-The asset collection SHALL use deployed manifest symbols and explorer addresses, distinguish DemoUSD purchase payment from allocated income in the backing token, and state the lack of real-world backing. Risk disclosures SHALL preserve no-refund, no-guarantee, constrained-finalizer and delayed-release boundaries. The closing invitation SHALL use the existing demo route.
+The asset collection SHALL use deployed manifest identities and explorer addresses. Presentation MAY use company names and reference tickers, with the canonical contract symbol and testnet status visible in details. It SHALL distinguish DemoUSD purchase payment from allocated income in the backing token, and state the lack of real-world backing. Risk disclosures SHALL preserve no-refund, no-guarantee, constrained-finalizer and delayed-release boundaries. The closing invitation SHALL use the existing demo route.
 
 #### Scenario: Selecting an asset
 - **WHEN** a visitor selects any deployed demo asset via pointer or keyboard

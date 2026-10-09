@@ -369,7 +369,7 @@ export function ConceptCards() {
         </div>
         <OfferArtwork />
         <Link className={s.textLink} href="/lab">
-          Create an offer in the demo{' '}
+          Create an offer{' '}
           <Icon name="arrow-up-right" size={16} alt="" inheritColor />
         </Link>
       </article>

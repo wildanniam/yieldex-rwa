@@ -412,71 +412,14 @@
 }
 .emptyScene {
   position: relative;
-  height: 200px;
+  height: 245px;
   isolation: isolate;
   perspective: 600px;
 }
-.emptyPlate {
-  position: absolute;
-  width: 168px;
-  height: 168px;
-  left: calc(50% - 84px);
-  top: 3px;
-  transform: rotateX(29deg) rotateY(-19deg) rotateZ(-12deg);
-  border-radius: 50%;
-  border: 1px solid #b0c3b343;
-  background:
-    repeating-conic-gradient(
-      from 0deg,
-      #8ca89116 0deg 1deg,
-      transparent 1deg 6deg
-    ),
-    linear-gradient(135deg, #33463b, #0c1a14);
-  box-shadow:
-    1px 3px 0 #4c5c4f,
-    2px 5px 0 #15241b,
-    3px 8px 0 #485448,
-    8px 25px 32px #0007;
-  display: grid;
-  place-items: center;
-  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-.emptyPlate::before {
-  content: '';
-  position: absolute;
-  inset: 11px;
-  border: 1px solid #b5c9b22d;
-  border-radius: 50%;
-  background: linear-gradient(125deg, #314336, #0c1711);
-}
-.emptyPlate span {
-  position: relative;
-  font-size: 105px;
-  font-weight: 350;
-  color: #a6b4a16b;
-  line-height: 1;
-  text-shadow: 1px 2px #06110c;
-}
-.emptyShadow {
-  position: absolute;
-  bottom: 17px;
-  left: 25%;
-  width: 50%;
-  height: 22px;
-  border-radius: 50%;
-  background: #020b077a;
-  filter: blur(10px);
-  z-index: -1;
-}
-.emptyCaption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  text-align: center;
-  color: #718373;
-  font-size: 7px;
-  letter-spacing: 0.17em;
+.emptyScene svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 .riskLayout .downside h3 {
   margin-top: 23px;
@@ -669,60 +612,13 @@
   height: 365px;
   perspective: 700px;
 }
-.launchOrbit {
-  position: absolute;
-  inset: 14% 7% 7%;
-  border: 1px solid #accab41d;
-  border-radius: 50%;
-  transform: rotateX(60deg) rotateZ(-20deg);
-  box-shadow:
-    0 0 0 26px #a8c6af04,
-    0 0 0 27px #a8c6af0c;
-}
-.launchPaths {
-  position: absolute;
-  inset: 0;
+.launchScene > svg {
   width: 100%;
   height: 100%;
+  overflow: visible;
 }
-.launchBase {
-  position: absolute;
-  width: 155px;
-  height: 155px;
-  left: calc(50% - 80px);
-  top: 150px;
-  border-radius: 20px;
-  transform: rotateX(55deg) rotateZ(45deg);
-  border: 1px solid #a6c3a142;
-  background: linear-gradient(125deg, #39543a50, #0c1d13);
-  box-shadow:
-    5px 5px 0 #152e1c,
-    7px 7px 0 #90b5872c,
-    20px 25px 35px #0008;
-}
-.launchGlyph {
-  position: absolute;
-  width: 125px;
-  height: 140px;
-  left: calc(50% - 64px);
-  top: 85px;
-  transform: rotateY(-20deg) rotateZ(-8deg);
-  filter: drop-shadow(5px 20px 15px #0005);
-  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-.launchGlyph i {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(120deg, #bddcaa, #7ca668 50%, #1f532e);
-  clip-path: polygon(0 0, 55% 0, 100% 100%, 45% 100%);
-}
-.launchGlyph i:nth-child(2) {
-  clip-path: polygon(55% 0, 100% 0, 70% 60%, 44% 17%);
-  background: linear-gradient(130deg, #a4d195, #234d2e);
-}
-.launchGlyph i:nth-child(3) {
-  clip-path: polygon(21% 43%, 49% 86%, 41% 100%, 0 100%);
-  background: linear-gradient(130deg, #a3d496, #467b48);
+.launchScene [data-sculpture-float] {
+  transition: transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 .launchLabel {
   position: absolute;
@@ -749,12 +645,12 @@
 }
 .launchBacking {
   left: 1%;
-  top: 240px;
+  top: 264px;
   transform: rotate(-6deg);
 }
 .launchIncome {
   right: 4%;
-  top: 175px;
+  top: 180px;
   transform: rotate(6deg);
 }
 .launchNetwork {
@@ -771,15 +667,12 @@
   color: #759b7d;
 }
 @media (hover: hover) and (pointer: fine) {
-  .downside:hover .emptyPlate {
-    transform: rotateX(20deg) rotateY(-10deg) rotateZ(-8deg);
-  }
-  .invitation:hover .launchGlyph {
-    transform: rotateY(-12deg) rotateZ(-3deg) translateY(-7px);
+  .invitation:hover [data-sculpture-float] {
+    transform: translateY(-7px);
   }
 }
-.invitation:focus-within .launchGlyph {
-  transform: rotateY(-12deg) rotateZ(-3deg) translateY(-7px);
+.invitation:focus-within [data-sculpture-float] {
+  transform: translateY(-7px);
 }
 @media (max-width: 900px) {
   .catalog {
@@ -890,7 +783,7 @@
     gap: 30px;
   }
   .emptyScene {
-    height: 185px;
+    height: 220px;
   }
   .riskLayout .downside h3 {
     font-size: 29px;
@@ -919,15 +812,6 @@
     width: 100%;
     margin: 0 auto;
   }
-  .launchGlyph {
-    top: 48px;
-    width: 105px;
-    height: 120px;
-    left: calc(50% - 54px);
-  }
-  .launchBase {
-    top: 99px;
-  }
   .launchBacking {
     top: 202px;
     left: 7%;
@@ -947,4 +831,36 @@
     animation: none !important;
     transition: none !important;
   }
+}
+
+.miniToken svg {
+  width: 20px;
+  height: 20px;
+}
+.tokenRim .brandMark {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 94px;
+}
+.brandMark svg {
+  width: 67px;
+  height: 67px;
+  filter: drop-shadow(1px 3px 1px #0008);
+}
+.tokenRim {
+  background: radial-gradient(ellipse at 27% 12%, #c7e3d333, #10251e 65%);
+}
+.tokenDisc::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 26%,
+    #edffec1c 32%,
+    transparent 40%
+  );
 }

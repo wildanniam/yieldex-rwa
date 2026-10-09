@@ -160,7 +160,7 @@ export function LandingNav() {
             data-action="primary"
             className={buttonVariants({ size: 'sm' })}
           >
-            Launch demo <Icon name="arrow-up-right" alt="" inheritColor />
+            Launch app <Icon name="arrow-up-right" alt="" inheritColor />
           </Link>
           <button
             ref={trigger}
