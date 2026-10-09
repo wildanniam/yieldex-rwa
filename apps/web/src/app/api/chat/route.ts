@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
@@ -50,7 +51,7 @@ export async function POST(req: NextRequest) {
     if (!process.env.OPENAI_API_KEY) {
       return NextResponse.json(
         { error: 'OPENAI_API_KEY belum dikonfigurasi.' },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -58,20 +59,24 @@ export async function POST(req: NextRequest) {
       model: 'gpt-4o-mini',
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
-        ...messages.map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content })),
+        ...messages.map((m) => ({
+          role: m.role as 'user' | 'assistant',
+          content: m.content,
+        })),
       ],
       temperature: 0.7,
       max_tokens: 2048,
     });
 
-    const reply = completion.choices[0]?.message?.content ?? 'Maaf, terjadi kesalahan.';
+    const reply =
+      completion.choices[0]?.message?.content ?? 'Maaf, terjadi kesalahan.';
 
     return NextResponse.json({ reply });
   } catch (err: any) {
     console.error('Chat API error:', err);
     return NextResponse.json(
       { error: err.message ?? 'Internal server error' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
