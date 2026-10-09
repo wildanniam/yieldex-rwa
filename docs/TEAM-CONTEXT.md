@@ -6,7 +6,7 @@ Sumber asli, urutan bagian, dan SHA-256 tercantum di bawah. Link relatif di bagi
 File ini menyertakan kontrak data dan fixtures; beberapa fixture sengaja invalid untuk pengujian. Jangan menganggap fixture sebagai transaksi/provider data nyata.
 UI visual mengikuti Afer; chatbot Rafi; core/backend/contracts/quote Wildan/Codex. Lihat execution plan untuk scope dan gate. Jangan menambah swap execution/NFT/training ML di luar scope.
 
-Bundle source digest: `7ecdf5c0d72aacfce0740a74620eb5c93168d8f0614e9749c30a54d9ab391585`
+Bundle source digest: `5df9e35ce6583ba3ae6a365fa8079b192859e76cdf1d777b2d4596dfebc38ede`
 
 ## Source Manifest
 
@@ -39,7 +39,7 @@ Bundle source digest: `7ecdf5c0d72aacfce0740a74620eb5c93168d8f0614e9749c30a54d9a
 | `docs/spec/contract-interface.md` | `af73a698537a83c1c85b86ea1e94990d948268883bb9966d969c2667ee3875d3` |
 | `docs/spec/coverage.md` | `34b86ec1dbad3fa23756c67c16763a7081c534c8884d053d19fdb810bb9307c8` |
 | `docs/spec/data-contracts.md` | `5b9157d30122d02bf2521b462a5a9b0afd48ec55f9c6354af51731c63d7bca40` |
-| `docs/spec/execution-plan.md` | `497c8670edecc7725cba4a77ba204f4b87e3abdb32705572322bb4ad6aa55f2d` |
+| `docs/spec/execution-plan.md` | `ce087a721175e478e5d5d2bdee525807d3ed5ea8d53eb2854c2b594f365340eb` |
 | `docs/spec/sources.md` | `a1819d19113a41a401e78ef7fd72f04e01c71b17e8fbcc015ea3233f74121bc3` |
 | `docs/spec/team-workflow.md` | `536dede4a1323bff31c7c6fd217857cb633c5f558693b4ded9c8a04de0194c2d` |
 | `docs/spec/verification.md` | `2a3c1361dc3d2ad940b46bbaebf900e85dbcee85cdec70d8b64f464aeca58d1c` |
@@ -78,7 +78,7 @@ Bundle source digest: `7ecdf5c0d72aacfce0740a74620eb5c93168d8f0614e9749c30a54d9a
 | `examples/uint256-max.valid.json` | `445dc6951c3597b4a57108db0755fa2d1e8603114175049031ac6e8b53cc1a60` |
 | `examples/uint256-overflow.invalid.json` | `fb939b2c5a21d397e95423da4e837ba63318e9892419e1fcd4d2eafc6a24e9ff` |
 | `examples/uint64-overflow.invalid.json` | `4a324732507ee662c232e67abf269d69bcc5fe6c4ee58d1f8398bc0b6a108d5e` |
-| `openspec/changes/build-rwa-income-rights/tasks.md` | `a6b89dbaf02db605cb9ba941a09bce0d293b6da3702438f5462d6380daca3b7d` |
+| `openspec/changes/build-rwa-income-rights/tasks.md` | `b66c7ebaf1e1ebb62fca419c91255cf804eccca20b789ffec618436779d1713e` |
 
 ---
 
@@ -3805,9 +3805,14 @@ Detailed financial matrix: [verification.md](verification.md). Semua gate dimula
 
 Docker belum terhubung pada pemeriksaan terakhir; Supabase lokal belum berjalan. AI_MODEL kosong dan inference/runtime belum diuji. 0x price read berhasil sekali, tetapi pricing FAQ membatasi quote berkelanjutan tanpa transaksi; produk tetap tanpa swap, provider qualification wajib. Sepolia wallet memiliki 0.4 test ETH menurut screenshot; signer/deploy belum disiapkan. Afer/Rafi progress belum diverifikasi. Ini bukan alasan menurunkan acceptance atau mengarang data sukses.
 
-## Checkpoint 9 Oktober 2026
+## Checkpoint lokal 9 Oktober 2026 — sebelum hosted rollout
 
 Core lokal, native auth admission, private history, 9 intent actions, reviewed-source outbox/reconciler, live read-only quote dan functional browser lifecycle sudah diuji. Lihat core-verification.md untuk batas tiap bukti. Docker/Supabase lokal sekarang berjalan. Gate Afer/Rafi dan Sepolia tetap terbuka; tidak ada deployment publik atau merge yang diklaim.
+
+
+## Hosted rollout — 9 Oktober 2026
+
+Kontrak Sepolia, Supabase hosted, Vercel dan worker Hostinger sudah aktif. [Bukti hosted rollout](../hosted-rollout.md) menjadi sumber status aktual; checkpoint lokal di atas adalah riwayat. Runtime web/worker `f73935c` dan source kontrak `f82cb0d` dibedakan. G7a / task 7.8 PASS: lifecycle 23 transaksi, saldo tepat, receipt canonical/finalized dan hasil persisted Supabase/API sudah terbukti; snapshot akhir 11875185 FINALIZED/HEALTHY. Integrasi visual Afer, chatbot Rafi, G7b dan merge tetap terpisah; tidak ada perubahan scope ekonomi atau interface v1.
 
 ---
 
@@ -10061,7 +10066,7 @@ Alice lists backed income → Bob asks AI and buys → controlled labelled divid
 
 **LOCKED 8 Oktober 2026:** ikuti [execution plan](../../../docs/spec/execution-plan.md). Implementasi autonomous Wildan/Codex harus lulus tes milestone sebelum dependent work mengandalkannya; kegagalan diperbaiki, gate eksternal dicatat BLOCKED, bukan dianggap selesai. Ownership: Afer UI; Rafi chatbot; Wildan/Codex core/backend/contracts/quote/testing/integrasi. Review tim 1.1 belum dianggap selesai; pekerjaan core lokal sekarang diotorisasi Wildan.
 
-**Evidence core 9 Oktober:** task yang dicentang di bawah dibuktikan oleh [core verification](../../../docs/core-verification.md) dan script tes yang ditautkan di sana. Task UI final, AI dan journey Sepolia tetap terbuka; deployment/seed7.3 terverifikasi di docs/hosted-rollout.md; `/lab` sudah diuji sebagai functional integration, bukan penerimaan desain tim.
+**Evidence core 9 Oktober:** task yang dicentang di bawah dibuktikan oleh [core verification](../../../docs/core-verification.md) dan script tes yang ditautkan di sana. Task UI final dan AI tetap terbuka; deployment/seed 7.3 dan lifecycle core Sepolia 7.8 terverifikasi di docs/hosted-rollout.md; `/lab` sudah diuji sebagai functional integration, bukan penerimaan desain tim.
 
 Checklist membedakan bagian terverifikasi dan acceptance produk yang masih terbuka. Dependency memakai ID task; ownership mengikuti execution plan. GitHub issue opsional untuk tim; gunakan task ini untuk koordinasi dan tautkan PR terkait bila ada. Tiap task selesai mempunyai evidence; keberadaan interface/fixture bukan bukti fitur ekonomi berjalan. Wildan mengotorisasi starter sebelum meet, sehingga task 1.2 dapat dikerjakan terpisah dari review bersama 1.1; review itu tetap gate sebelum coding paralel tim.
 
@@ -10133,4 +10138,4 @@ Checklist membedakan bagian terverifikasi dan acceptance produk yang masih terbu
 - [ ] 7.6 Produce team/demo runbook and requirement coverage report on tested revision. Depends: 7.5. Acceptance: others can reproduce; source attribution and hackathon-period provenance recorded; no fabricated adoption/integration claim.
 - [ ] 7.7 Archive baseline only after accepted implementation and verification. Depends: 7.6. Acceptance: completed change truthfully updates main specs; unfinished tasks stay active rather than marked done for submission.
 
-- [ ] 7.8 Verify Sepolia core lifecycle independently of final UI/chatbot. Depends: 7.3. Acceptance: Alice/Bob/Carol create/buy/dividend/resale/split/expiry/claims/release through scripts or functional harness, actual receipts/balances, rejected unauthorized and premature operations, real finalized coverage and role checks; no Anvil time travel or simulated finality presented as Sepolia. Final product acceptance still requires 7.4–7.6.
+- [x] 7.8 Verify Sepolia core lifecycle independently of final UI/chatbot. Depends: 7.3. Acceptance: Alice/Bob/Carol create/buy/dividend/resale/split/expiry/claims/release through scripts or functional harness, actual receipts/balances, rejected unauthorized and premature operations, real finalized coverage and role checks; no Anvil time travel or simulated finality presented as Sepolia. Final product acceptance still requires 7.4–7.6. Evidence: docs/hosted-rollout.md; 23 canonical successful receipts, finalized terminal block 11875166, exact actor balances, zero claims/vault and hosted FINALIZED/HEALTHY snapshot 11875185.
