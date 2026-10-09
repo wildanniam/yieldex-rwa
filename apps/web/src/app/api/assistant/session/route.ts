@@ -22,7 +22,10 @@ export async function POST(request: Request) {
     const session = await assistantIdentity();
     const jar = await cookies();
     const old = jar.get(CHAT_COOKIE)?.value;
-    const browser = old && /^[0-9a-f-]{36}$/.test(old) ? old : randomUUID();
+    const url = new URL(request.url);
+    const shouldReset = url.searchParams.get('reset') === 'true';
+    const browser =
+      !shouldReset && old && /^[0-9a-f-]{36}$/.test(old) ? old : randomUUID();
     jar.set(CHAT_COOKIE, browser, {
       httpOnly: true,
       secure: new URL(request.url).protocol === 'https:',

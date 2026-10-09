@@ -11,6 +11,9 @@ export class ApiFailure extends Error {
   }
 }
 export function apiError(error: unknown, requestId = randomUUID()) {
+  if (!(error instanceof ApiFailure)) {
+    console.error('[UNHANDLED ERROR in API]', error);
+  }
   const e =
     error instanceof ApiFailure
       ? error
