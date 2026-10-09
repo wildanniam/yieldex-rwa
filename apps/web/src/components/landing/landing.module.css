@@ -134,8 +134,7 @@
   letter-spacing: 0.015em;
 }
 .networkBadge i,
-.previewTop i,
-.footerNetwork i {
+.previewTop i {
   width: 5px;
   height: 5px;
   display: inline-block;
@@ -663,80 +662,6 @@
 .finalCta {
   margin-block: 124px 90px;
 }
-.footer {
-  /* Keep the last navigation row above the persistent assistant launcher. */
-  padding-bottom: 100px;
-}
-.footerMain {
-  display: grid;
-  grid-template-columns: 1.7fr 1fr 1.2fr 1fr;
-  gap: 40px;
-  padding-bottom: 54px;
-}
-.footerBrand p {
-  font-size: 11px;
-  line-height: 1.9;
-  color: #9caea3;
-  margin-top: 19px;
-}
-.footerBrand > span {
-  display: block;
-  font-size: 9px;
-  color: #93ab9c;
-  margin-top: 19px;
-}
-.footerMain > div:not(:first-child) h3 {
-  font-size: 12px;
-  font-weight: 500;
-  color: #cad9ce;
-  margin-bottom: 19px;
-}
-.footerMain > div:not(:first-child) > a {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 12px;
-  color: #98ada0;
-  margin-bottom: 13px;
-  width: fit-content;
-}
-.footerMain a:hover,
-.footerBottom a:hover {
-  color: var(--mint);
-}
-.footerNetwork {
-  border-left: 1px solid var(--line);
-  padding-left: 26px;
-}
-.footerNetwork > span {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 8px;
-  letter-spacing: 0.07em;
-  color: #b6cdbc;
-}
-.footerNetwork p {
-  font-size: 10px;
-  color: #8da495;
-  line-height: 2.2;
-  margin-top: 16px;
-}
-.footerBottom {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  padding-top: 23px;
-  border-top: 1px solid var(--line);
-  font-size: 9px;
-  color: #8a9f91;
-}
-.footerBottom a {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
 @media (min-width: 1600px) {
   .heroArt {
     max-width: 1550px;
@@ -869,13 +794,6 @@
   .sectionHeading > p {
     max-width: 245px;
     font-size: 12px;
-  }
-  .footerMain {
-    grid-template-columns: 1.5fr 1fr 1fr;
-    gap: 30px;
-  }
-  .footerNetwork {
-    display: none;
   }
 }
 @media (max-width: 640px) {
@@ -1065,27 +983,6 @@
   }
   .landing h2 {
     font-size: 33px;
-  }
-  .footerMain {
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-    padding-bottom: 35px;
-  }
-  .footer {
-    padding-bottom: 32px;
-  }
-  .footerBrand {
-    grid-column: 1/-1;
-  }
-  .footerBottom {
-    flex-wrap: wrap;
-    font-size: 8px;
-    row-gap: 12px;
-    padding-bottom: 64px;
-  }
-  .footerBottom > span:nth-child(2) {
-    order: 3;
-    width: 100%;
   }
 }
 @media (max-width: 359px) {

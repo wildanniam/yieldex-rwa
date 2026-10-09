@@ -4,9 +4,6 @@ import {
   ClosingInvitation,
 } from './closing-scenes';
 import { FlowStory, IncomeCalculator } from './interactive-scenes';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Icon } from '@/components/ui/icon';
 import {
   LandingNav,
   LinkAction,
@@ -16,7 +13,7 @@ import {
 import s from './landing.module.css';
 import { HeroMotion } from './hero-motion';
 import { ConceptCards } from './concept-cards';
-const repo = 'https://github.com/wildanniam/yieldex-rwa';
+import { LandingFooter } from './footer';
 function HeroArt() {
   // Retain the intrinsic SVG geometry from the Figma export. Wrappers compose the artwork.
   return (
@@ -255,74 +252,7 @@ export function YieldexLanding() {
           <ClosingInvitation />
         </section>
       </main>
-      <footer className={`${s.container} ${s.footer}`}>
-        <div className={s.footerMain}>
-          <div className={s.footerBrand}>
-            <a href="#top" aria-label="Yieldex home">
-              <Image
-                src="/landing/yieldex-logo.png"
-                width={117}
-                height={36}
-                alt="Yieldex"
-              />
-            </a>
-            <p>
-              Trade time-limited income rights.
-              <br />
-              Keep the asset. Understand the risk.
-            </p>
-            <span>Built on Ethereum Sepolia.</span>
-          </div>
-          <div>
-            <h3>Product</h3>
-            <Link href="/lab">Explore Yieldex</Link>
-            <a href="#how-it-works">How it works</a>
-            <a href="#calculator">Income scenarios</a>
-            <a href="#assistant">AI assistant</a>
-          </div>
-          <div>
-            <h3>Resources</h3>
-            <a
-              href={`${repo}/blob/main/docs/product.md`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Product docs{' '}
-              <Icon name="arrow-up-right" size={14} alt="" inheritColor />
-            </a>
-            <a
-              href={`${repo}/blob/main/docs/hosted-rollout.md`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Onchain deployment{' '}
-              <Icon name="arrow-up-right" size={14} alt="" inheritColor />
-            </a>
-            <Link href="/design-system">Design system</Link>
-            <a href="#risks">Risks & limitations</a>
-          </div>
-          <div className={s.footerNetwork}>
-            <span>
-              <i /> ETHEREUM SEPOLIA
-            </span>
-            <p>
-              Chain 11155111
-              <br />
-              Payments in DemoUSD
-              <br />
-              All tokens simulated
-            </p>
-          </div>
-        </div>
-        <div className={s.footerBottom}>
-          <span>© 2026 Yieldex</span>
-          <span>Built for Ethereum Jakarta Hackathon 2026</span>
-          <Link href="/workspace">
-            Team workspace{' '}
-            <Icon name="arrow-up-right" size={14} alt="" inheritColor />
-          </Link>
-        </div>
-      </footer>
+      <LandingFooter />
     </div>
   );
 }

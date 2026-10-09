@@ -39,3 +39,11 @@ The asset collection SHALL use deployed manifest identities and explorer address
 #### Scenario: Inspecting risks without JavaScript
 - **WHEN** a visitor opens a native risk disclosure
 - **THEN** the full risk explanation SHALL be readable, including finalizer trust and the inability to automatically claw back completed payouts.
+
+
+### Requirement: LC-006 Brand footer with real navigation
+The footer SHALL retain product, resource and team destinations, include a keyboard-accessible back-to-top link, and preserve a readable testnet/no-real-backing disclosure. Decorative typography SHALL NOT introduce horizontal overflow at320px or duplicate navigation for assistive technology.
+
+#### Scenario: Reaching the end of the landing
+- **WHEN** a visitor reaches the footer on a narrow screen or uses the keyboard
+- **THEN** links and network disclosure SHALL remain accessible and the back-to-top control SHALL target the existing top anchor.

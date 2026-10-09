@@ -55,3 +55,7 @@ Maintain the approved concept-led approach: a visual subject must explain what m
 ## Remaining sections continuation
 
 The specimen collection, quiet zero-income illustration and faceted closing sculpture extend the accepted concept-led direction through the rest of the landing. `closing-scenes.tsx` owns these sections. Treat token letters as demo identities, not issuer branding or real-stock backing. The palette can distinguish the selected token, but the payment/income distinction must stay explicit in text. Preserve manifest explorer links, native risk disclosures, reduced-motion/static behavior and existing destinations. Detailed verification and limits are in `docs/landing-concepts.md`.
+
+## Footer signature
+
+The landing footer uses an editorial brand statement, two navigation groups and a large typographic Yieldex signature on a full-width green-black surface. Footer artwork is live text/CSS, not a bitmap. Use the existing product/resource destinations and a native back-to-top anchor; avoid invented social links or status claims. Compact Sepolia/payment/no-real-backing disclosure remains visible at all breakpoints. Keep bottom clearance for the persistent assistant launcher. Motion is limited to link arrows and back-to-top response, with reduced-motion fallback.
