@@ -1,0 +1,6 @@
+- [x] 1. Define typed Sell asset, draft preview, and five-step state models using canonical asset/listing terminology.
+- [x] 2. Replace `/sell` placeholder with the responsive Sell shell, stepper, active Asset form, registered asset cards, disabled unregistered token, and live draft preview.
+- [x] 3. Add accessible selection semantics, active/check states, responsive columns, and Continue progression from Asset to Deposit without chain side effects.
+- [x] 4. Add explicit draft disclosures for backing, payout, principal ownership, time-limited income rights, illustrative values, and non-loan semantics.
+- [x] 5. Add focused tests for Sell heading/navigation, five-step progress, asset selection, disabled registry state, synchronized preview, and no-transaction draft boundary.
+- [x] 6. Run formatting, targeted web typecheck/tests, relevant OpenSpec validation, and `git diff --check`; record broader check blockers without changing unrelated files.

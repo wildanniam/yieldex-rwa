@@ -1,0 +1,7 @@
+- [x] 1. Define the detail adapter/view-model boundary using canonical `ListingResponse` and `ListingDetail` types, including explicit ready, unavailable, and not-found states.
+- [x] 2. Add `/marketplace/[id]/page.tsx` with the global shell, breadcrumb, contract banner, terms card, calculation timeline, illustrative scenarios table, and responsive buy-offer sidebar.
+- [x] 3. Update `AssetCard` so `View offer` links to `/marketplace/{listing.id}` with accessible navigation semantics and no transaction side effect.
+- [x] 4. Add the supplied `L-0142` presentation fixture and ensure unknown IDs never fall back to another listing's financial terms.
+- [x] 5. Add focused tests for route mapping, breadcrumb navigation, detail anatomy, explicit disclosures, responsive columns, canonical API references, and unavailable/error behavior.
+- [x] 6. Keep purchase controls non-executing until the canonical `BUY_LISTING` intent flow is wired; document or test the unavailable action state.
+- [x] 7. Run formatting, targeted web typecheck/tests, relevant OpenSpec validation, and `git diff --check`; record broader check blockers without changing unrelated files.

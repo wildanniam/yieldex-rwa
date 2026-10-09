@@ -1,0 +1,6 @@
+- [x] 1. Add controlled Review acknowledgement state and guarded local transition from Review to Confirm.
+- [x] 2. Render the Review title, subtitle, listing summary, vault/rights acknowledgements, and Edit terms action.
+- [x] 3. Update the right preview for Review with Ready to publish status and synchronized draft values.
+- [x] 4. Keep the first four stepper tracks active, Confirm inactive, and prevent either Continue control from bypassing the acknowledgement gate.
+- [x] 5. Add focused tests for summary copy, checkbox gating, edit navigation, preview synchronization, and no-transaction boundary.
+- [x] 6. Run formatting, targeted web typecheck/tests, relevant OpenSpec validation, and `git diff --check` after implementation.

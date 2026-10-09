@@ -1,0 +1,7 @@
+- [x] 1. Define a typed mock listing model and six records: three primary offers and three resales, with string financial display values and explicit simulated disclaimers.
+- [x] 2. Implement `apps/web/src/components/marketplace/asset-card.tsx` with the required card geometry, metrics, CTA, footer metadata, and optional highlighted gradient.
+- [x] 3. Replace the `/marketplace` placeholder with the responsive toolbar, listing grid, and pagination using existing UI primitives and icons.
+- [x] 4. Add accessible state semantics for offer tabs, search, sort, view toggles, and pagination without introducing live data behavior.
+- [x] 5. Define a typed listing adapter boundary against `schemas/api.schema.json` (`SearchListingsQuery`, `ListingsPage`) and `schemas/domain.schema.json` (`ListingDetail`), preserving string atomic values and typed error states.
+- [x] 6. Add focused tests for card anatomy, highlighted state, six-listing composition, responsive grid classes, disclosures, pagination labels, schema-shaped adapter data, and API failure handling.
+- [x] 7. Run targeted web formatting, typecheck, tests, and strict OpenSpec validation; record any broader check blockers without changing unrelated files.

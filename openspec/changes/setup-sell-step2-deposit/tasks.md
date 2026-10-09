@@ -1,0 +1,6 @@
+- [x] 1. Add controlled deposit amount state tied to the selected Sell asset and reuse `AmountInput` with token, MAX, illustrative USD, and available balance metadata.
+- [x] 2. Render the Deposit step title/subtitle, vault notice, approval/deposit checklist, allowance/destination details, and non-executing `Open wallet` accent action.
+- [x] 3. Update stepper and right draft preview for pending deposit state, keeping Terms/Review/Confirm inactive.
+- [x] 4. Keep Continue as a local transition from Deposit to Terms with no wallet or chain side effect.
+- [x] 5. Add focused tests for Deposit anatomy, progress tracks, exact allowance language, unconfirmed state, preview update, and no-transaction behavior.
+- [x] 6. Run formatting, targeted web typecheck/tests, relevant OpenSpec validation, and `git diff --check`; record broader check blockers without changing unrelated files.

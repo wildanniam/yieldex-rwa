@@ -1,0 +1,6 @@
+- [x] 1. Add bounded Terms draft state for income share, DemoUSD price, and 1m/3m/6m/12m duration defaults.
+- [x] 2. Render Terms deposit status, income-share slider/breakdown, price input, duration selector, and illustrative income box.
+- [x] 3. Bind controls to the draft and synchronize the right preview values and disclosures.
+- [x] 4. Update stepper behavior so Asset, Deposit, and Terms tracks are active while Review and Confirm remain inactive; Continue advances Terms to Review locally.
+- [x] 5. Add focused tests for controls, defaults, preview synchronization strings, income disclosure, progress state, and no-transaction boundary.
+- [x] 6. Run formatting, targeted web typecheck/tests, relevant OpenSpec validation, and `git diff --check`; record broader check blockers without changing unrelated files.

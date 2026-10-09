@@ -1,0 +1,6 @@
+- [x] 1. Define the typed modal props and discriminated `review`/`pay`/`confirm`/`done` state machine using selected listing detail context.
+- [x] 2. Implement `components/marketplace/buy-modal.tsx` with the accessible overlay, progress bar, close/Escape behavior, responsive shell, and all four requested step views.
+- [x] 3. Add the Review checkbox gate, read-only Pay quote/route presentation, Confirm wallet boundary, demo Done receipt, and `/positions` navigation.
+- [x] 4. Connect the Listing Detail buy action to open the modal at Review without auto-signing, swapping, or sending a transaction.
+- [x] 5. Add focused tests for step transitions, consent gating, close/reset, modal accessibility semantics, route navigation, explicit simulated receipt copy, and canonical `BUY_LISTING` references.
+- [x] 6. Run formatting, targeted web typecheck/tests, relevant OpenSpec validation, and `git diff --check`; record broader check blockers without changing unrelated files.

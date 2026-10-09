@@ -1,0 +1,6 @@
+- [x] 1. Add controlled Confirm risk acknowledgement state and a guarded simulated completion action.
+- [x] 2. Render the Confirm rights summary, network fee, cancellation notice, and risk acknowledgement.
+- [x] 3. Update the final preview and CTA for Confirm with synchronized draft values and `Create listing`.
+- [x] 4. Highlight all five progress tracks and navigate successful simulated completion to `/listings` with an explicit notification.
+- [x] 5. Add focused tests for summary copy, checkbox gating, fee/cancellation disclosures, route target, and no-transaction boundary.
+- [x] 6. Run formatting, targeted web typecheck/tests, relevant OpenSpec validation, and `git diff --check` after implementation.
