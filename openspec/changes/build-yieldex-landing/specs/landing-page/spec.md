@@ -34,3 +34,12 @@ Landing AI actions SHALL use the same assistant session flow as the existing lau
 #### Scenario: Assistant is unavailable
 - **WHEN** session admission fails
 - **THEN** the visitor sees the existing unavailable message and can retry or open the manual demo without an automatic transaction.
+
+### Requirement: LP-006 Controlled decorative motion
+The hero SHALL support pointer-responsive Ethereum artwork and ambient decoration without moving text or blocking controls. A keyboard-accessible pause toggle SHALL stop hero motion. Ambient work SHALL stop outside the viewport and in hidden documents, and remain disabled under system reduced motion. Pointer-specific effects SHALL require a fine mouse pointer. Animation setup SHALL clean up on unmount or preference changes.
+
+#### Scenario: Pause and resume
+- **WHEN** the visitor pauses hero motion
+- **THEN** the artwork remains static, the toggle reports its state, and all navigation still works.
+- **WHEN** the visitor resumes without system reduced motion
+- **THEN** motion resumes only while the hero is visible.

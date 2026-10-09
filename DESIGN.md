@@ -26,7 +26,7 @@ Design variance 6, motion intensity 5, density 4. Existing Inter + navy/green/pu
 
 ## Motion and states
 
-Use pinned Motion for tilt on the main illustrative card (mouse only), selection indicators and short causal transitions. No continuous React state updates for pointer motion. CSS hero entrance and progressive one-time section reveals stop with reduced motion. No autoplay carousel, infinite float, pinned scroll, or hidden content awaiting hydration. Reduced-motion and no-JS keep readable content and navigation. Hover/focus/pressed reuse Button; loading/error/disabled come from canonical chat/session behavior. Mobile menu closes on navigation/Escape and restores focus on Escape.
+Use pinned Motion for tilt on the main illustrative card (mouse only), selection indicators and short causal transitions. No continuous React state updates for pointer motion. CSS hero entrance and progressive one-time section reveals stop with reduced motion. No autoplay carousel, pinned scroll, or hidden content awaiting hydration. The October 9 motion revision adds pausable ambient hero motion as specified below. Reduced-motion and no-JS keep readable content and navigation. Hover/focus/pressed reuse Button; loading/error/disabled come from canonical chat/session behavior. Mobile menu closes on navigation/Escape and restores focus on Escape.
 
 ## Implementation and verification
 
@@ -37,3 +37,9 @@ Verify 1440/768/390/320 widths, keyboard/menu/selection, actual tilt/reset, redu
 ## Reuse
 
 Page sections live in `apps/web/src/components/landing/page.tsx`; client controls and `LinkAction` are in `interactions.tsx`. Import shared `Button`/`Icon` for new controls. `buttonVariants` currently belongs to a client module, so call it within a client leaf such as `LinkAction`, not a server component. `income-math.ts` is a display-only valuation helper, never a financial API or accounting implementation.
+
+## Hero motion revision
+
+Wildan requested stronger ETH hover response and a living background. The signature is an orbital Ethereum field: six original assets buoy gently, nearby assets lean toward the pointer, and thin elliptical light trails move behind the copy. GSAP owns nested artwork transforms; Motion owns product selections/result transitions; CSS owns button/icon feedback. Keep text static and CTA hit targets stable. Ambient movement stops offscreen, when the document is hidden, under system reduced motion, or via the visible pause control. Coarse pointers use smaller floats without pointer tilt. No canvas/WebGL, scroll hijacking or per-frame React renders.
+
+Verification matrix for this revision: desktop idle/pointer/leave; pause/resume plus rapid repeated toggles; scroll away/back; navigation/unmount/re-entry; mobile/tablet/320px overflow and menu; keyboard pause/scenario/range; result arithmetic and preview stages; adjacent lab/catalog; requests/console and full checks. OS reduced-motion and JS-disabled runtime remain separately reported if unavailable.

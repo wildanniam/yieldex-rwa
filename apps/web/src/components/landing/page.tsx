@@ -11,6 +11,7 @@ import {
 } from './interactions';
 import deployment from '../../../../../deployments/sepolia.json';
 import s from './landing.module.css';
+import { HeroMotion } from './hero-motion';
 const repo = 'https://github.com/wildanniam/yieldex-rwa';
 const assetNames: Record<string, string> = {
   demoAAPL: 'Apple-linked simulation',
@@ -37,52 +38,76 @@ function HeroArt() {
         alt=""
       />
       <div className={s.ethLargeLeft}>
-        <img
-          src="/landing/ethereum-large-left.svg"
-          width="299"
-          height="377"
-          alt=""
-        />
+        <div data-eth-pointer>
+          <div data-eth-float>
+            <img
+              src="/landing/ethereum-large-left.svg"
+              width="299"
+              height="377"
+              alt=""
+            />
+          </div>
+        </div>
       </div>
       <div className={s.ethLargeRight}>
-        <img
-          src="/landing/ethereum-large-right.svg"
-          width="299"
-          height="377"
-          alt=""
-        />
+        <div data-eth-pointer>
+          <div data-eth-float>
+            <img
+              src="/landing/ethereum-large-right.svg"
+              width="299"
+              height="377"
+              alt=""
+            />
+          </div>
+        </div>
       </div>
       <div className={s.ethSmallLeft}>
-        <img
-          src="/landing/ethereum-small-left.svg"
-          width="114.981"
-          height="165.1"
-          alt=""
-        />
+        <div data-eth-pointer>
+          <div data-eth-float>
+            <img
+              src="/landing/ethereum-small-left.svg"
+              width="114.981"
+              height="165.1"
+              alt=""
+            />
+          </div>
+        </div>
       </div>
       <div className={s.ethSmallRight}>
-        <img
-          src="/landing/ethereum-small-right.svg"
-          width="114.981"
-          height="165.1"
-          alt=""
-        />
+        <div data-eth-pointer>
+          <div data-eth-float>
+            <img
+              src="/landing/ethereum-small-right.svg"
+              width="114.981"
+              height="165.1"
+              alt=""
+            />
+          </div>
+        </div>
       </div>
       <div className={s.ethUpperLeft}>
-        <img
-          src="/landing/ethereum-upper-left.svg"
-          width="114.981"
-          height="165.1"
-          alt=""
-        />
+        <div data-eth-pointer>
+          <div data-eth-float>
+            <img
+              src="/landing/ethereum-upper-left.svg"
+              width="114.981"
+              height="165.1"
+              alt=""
+            />
+          </div>
+        </div>
       </div>
       <div className={s.ethUpperRight}>
-        <img
-          src="/landing/ethereum-upper-right.svg"
-          width="114.981"
-          height="165.1"
-          alt=""
-        />
+        <div data-eth-pointer>
+          <div data-eth-float>
+            <img
+              src="/landing/ethereum-upper-right.svg"
+              width="114.981"
+              height="165.1"
+              alt=""
+            />
+          </div>
+        </div>
       </div>
       {/* eslint-enable @next/next/no-img-element */}
     </div>
@@ -98,7 +123,7 @@ export function YieldexLanding() {
       </a>
       <LandingNav />
       <main id="main-content" tabIndex={-1}>
-        <section className={s.hero} aria-labelledby="hero-title">
+        <HeroMotion>
           <HeroArt />
           <div className={s.heroCopy}>
             <span className={s.networkBadge}>
@@ -124,7 +149,7 @@ export function YieldexLanding() {
               Time-limited income rights. Onchain, on your terms.
             </p>
           </div>
-        </section>
+        </HeroMotion>
         <div className={s.container}>
           <ProductPreview />
         </div>

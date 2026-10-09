@@ -476,8 +476,9 @@ export function IncomeCalculator() {
           <div>
             <motion.strong
               key={`${scenario}-${share}`}
-              initial={false}
-              animate={{ opacity: 1 }}
+              initial={reduced === false ? { opacity: 0.45, y: 7 } : false}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: reduced === false ? 0.22 : 0 }}
             >
               {values.netCents > 0n ? '+' : ''}
               {fixedHundredths(values.netCents)}
