@@ -44,6 +44,14 @@ Wildan requested stronger ETH hover response and a living background. The signat
 
 Verification matrix for this revision: desktop idle/pointer/leave; pause/resume plus rapid repeated toggles; scroll away/back; navigation/unmount/re-entry; mobile/tablet/320px overflow and menu; keyboard pause/scenario/range; result arithmetic and preview stages; adjacent lab/catalog; requests/console and full checks. OS reduced-motion and JS-disabled runtime remain separately reported if unavailable.
 
+## Portfolio dashboard slice
+
+References: Figma 60:18962 (empty), 60:18558 (Alice). Product register: compact, scanable personal overview at `/dashboard`, labeled My Portfolio. Preserve sidebar, metric row, portfolio/claims split and activity/assistant row. Use canonical Button/Icon and local logo, 24px panels, 16–24px rhythm and 150–200ms feedback. No hero motion on this working surface. Preview states are explicit examples, not wallet balances; omit unsupported token examples, invented USD prices and fake transaction links. Loading/error mean unknown, not zero. Live account/claim integration remains separate acceptance.
+
+### Shared platform artwork
+
+User-provided city/crypto background is the persistent decorative layer for all product routes under `app/(platform)`. Dashboard and lab currently share it; future product screens must join the same layout. Keep artwork fixed, proportional (cover), noninteractive and without entry motion. Use a transparent dashboard sidebar and restrained content surfaces so the artwork spans the full canvas. Keep opaque dialogs and a dark translucent mobile menu for contrast. The replacement artwork is stored as WebP and served through Next Image. Do not duplicate a background per menu/page.
+
 ## Concept-led benefits revision
 
 The user's Fradium reference replaces the prior repeated icon/text feature design at `#why-yieldex` only. `concept-cards.tsx` and its CSS module own original glass-vault/income-stream, layered offer ticket, resale pass and AI explanation scenes. Their visuals explain actual Yieldex concepts; Fradium branding, security claims and source assets are not copied. Labels remain HTML, all data is illustrative, and the compact chain row links to the deployment manifest. Use hover/focus only for short object motion with reduced-motion fallback. Other landing sections and canonical assistant behavior remain intact.

@@ -1,0 +1,9 @@
+{
+  "source": "User-supplied replacement background-1.png, 9 October 2026",
+  "asset": "apps/web/public/backgrounds/platform.webp",
+  "width": 2600,
+  "height": 1560,
+  "sha256": "194d625444d1e70e81bbd0ba6242be4639998c44bfe5e6f04f02e90a9ffd55c7",
+  "modifications": "WebP quality 85; original dimensions and artwork preserved.",
+  "usage": "Decorative persistent background across platform including transparent dashboard sidebar"
+}
