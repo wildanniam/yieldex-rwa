@@ -6,22 +6,22 @@ const modules = [
   [
     'Web & API',
     'apps/web',
-    'Halaman starter dan health endpoint tersedia. UI produk mengikuti desain tim.',
+    'Read API, private history, quote dan functional wallet lab tersedia. UI final mengikuti desain tim.',
   ],
   [
     'Worker',
     'apps/worker',
-    'Proses dan shutdown tersedia. Indexer serta finalizer belum diimplementasikan.',
+    'Finalized indexer dan reviewed finalizer tersedia. Event issuer tetap memerlukan pemeriksaan sumber.',
   ],
   [
     'Smart contracts',
     'packages/contracts',
-    'Interface mengikuti spec. Belum ada market, token atau deployment.',
+    'Market, registry, adapter dan token simulasi terdeploy di Sepolia; lihat runbook hosted untuk bukti dan batas demo.',
   ],
   [
     'Shared data',
     'packages/shared',
-    'Types, validator schema dan ABI interface digunakan bersama.',
+    'Types, validator schema, compiled ABI dan transaction builder digunakan bersama.',
   ],
 ];
 
@@ -40,12 +40,12 @@ export default function Home() {
         Bangun bersama.
       </h1>
       <p className="col-span-12 max-w-2xl text-lg leading-relaxed text-text-2">
-        Starter development untuk tim. Fitur marketplace, wallet, dividen, dan
-        AI masih mengikuti task OpenSpec.
+        Core marketplace tersedia untuk integrasi tim. Uji wallet dan pendapatan
+        di lab; UI final dan acceptance chatbot tetap mengikuti OpenSpec.
       </p>
       <p className="col-span-12 text-xs text-text-3">
         Interface v{INTERFACE_VERSION} · Target demo Sepolia {CHAIN_IDS.demo} ·
-        Belum ada kontrak terdeploy
+        Token simulasi · Deployment mengikuti konfigurasi environment
       </p>
 
       {/* Color System & Gradient Demonstrations */}
@@ -54,16 +54,20 @@ export default function Home() {
           Color System & Action Hierarchy
         </h2>
 
+        <p className="mb-4 text-sm text-text-2">
+          Contoh komponen visual; tombol di bawah tidak terhubung ke wallet atau
+          transaksi. Gunakan Marketplace lab untuk alur fungsional.
+        </p>
         {/* Core Buttons */}
         <div className="flex flex-wrap items-center gap-4 mb-6">
           <Button variant="primary" size="md">
-            Deposit USDT (Core Action)
+            Deposit DemoUSD (contoh UI)
           </Button>
           <Button variant="accent" size="md" leadingIcon="wallet">
-            Connect Wallet (Entry & AI)
+            Connect Wallet (contoh UI)
           </Button>
           <Button variant="outline" size="md">
-            Explore Marketplace
+            Explore Marketplace (contoh UI)
           </Button>
           <Button variant="ghost" size="md">
             Hi
@@ -91,7 +95,7 @@ export default function Home() {
             Expiry Approaching
           </span>
           <span className="px-2.5 py-1 rounded-full bg-raised text-danger border border-danger/30">
-            Liquidated / Expired
+            Expired (contoh UI)
           </span>
         </div>
       </section>
@@ -126,15 +130,25 @@ export default function Home() {
         </h2>
         <p className="text-sm text-text-2 leading-relaxed mb-4">
           Baca README, AGENTS.md, dan task OpenSpec sebelum coding. Gunakan
-          schema serta interface bersama; pembagian tugas ditentukan saat meet.
+          schema serta interface bersama; ownership aktif ada di execution plan.
         </p>
+        <a
+          href="/lab"
+          className="mr-4 text-green-text underline underline-offset-4"
+        >
+          Buka functional wallet lab →
+        </a>
         <a
           href="/api/health"
           className="text-green-text text-sm underline underline-offset-4 hover:text-green-1"
         >
           Periksa status proses web <span aria-hidden="true">↗</span>
         </a>
-        <PasswordInput label="Hi" />
+        <PasswordInput
+          id="password-example"
+          label="Contoh password (hanya UI)"
+          autoComplete="off"
+        />
       </section>
     </main>
   );

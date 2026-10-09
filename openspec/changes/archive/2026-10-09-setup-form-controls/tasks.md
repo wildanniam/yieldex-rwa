@@ -1,7 +1,0 @@
-- [x] 1. Define shared field class/helper utilities and accessibility conventions for labels, descriptions, errors, focus, and disabled state without duplicating color tokens.
-- [x] 2. Implement `components/ui/input.tsx` with text, password, and amount variants, including eye toggle, DemoUSD/MAX, simulated USD, and Sepolia status metadata.
-- [x] 3. Implement `components/ui/select.tsx`, `slider.tsx`, and `segmented-control.tsx` with native/ARIA semantics and the specified active affordances.
-- [x] 4. Implement `components/ui/checkbox.tsx`, `toggle.tsx`, `otp-input.tsx`, and `search-field.tsx`, including keyboard behavior and shared icon usage.
-- [x] 5. Add web-local re-exports only where required by the existing alias boundary; do not create duplicate implementations or icon registries.
-- [x] 6. Add focused tests for all 10 controls across default, focus contract, filled values, error helper replacement, disabled behavior, and control-specific interactions.
-- [x] 7. Run relevant typecheck, lint, tests, build, and strict OpenSpec validation; document any workspace-wide pre-existing check blockers.

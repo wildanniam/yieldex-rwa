@@ -10,21 +10,22 @@
     "typecheck": "next typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@copilotkit/react-core": "1.77.2",
+    "@copilotkit/runtime": "1.77.2",
     "@rwa/shared": "workspace:*",
     "@supabase/ssr": "0.7.0",
     "@supabase/supabase-js": "2.100.0",
     "@tailwindcss/postcss": "4.3.3",
     "clsx": "2.1.1",
-    "framer-motion": "14.0.0",
-    "lucide-react": "1.52.0",
     "next": "16.4.0",
-    "postgres": "3.4.7",
     "postcss": "8.5.29",
+    "postgres": "3.4.7",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "viem": "2.38.5",
     "tailwind-merge": "3.7.0",
-    "tailwindcss": "4.3.3"
+    "tailwindcss": "4.3.3",
+    "viem": "2.38.5",
+    "zod": "3.25.76"
   },
   "devDependencies": {
     "@types/react": "19.3.0",

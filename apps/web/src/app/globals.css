@@ -101,32 +101,34 @@ body {
   box-shadow: none;
 }
 
-input:not([type='checkbox']):not([type='radio']):not([type='range']):not(
-    [type='color']
-  ),
-select,
-textarea {
-  border: 1px solid var(--input-border);
-  border-radius: 12px;
-  color: inherit;
-  background-color: var(--card);
-}
+@layer base {
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not(
+      [type='color']
+    ),
+  select,
+  textarea {
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    color: inherit;
+    background-color: var(--card);
+  }
 
-input:not([type='checkbox']):not([type='radio']):not([type='range']):not(
-    [type='color']
-  ):focus,
-select:focus,
-textarea:focus {
-  border-color: var(--green-2);
-}
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not(
+      [type='color']
+    ):focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--green-2);
+  }
 
-input:not([type='checkbox']):not([type='radio']):not([type='range']):not(
-    [type='color']
-  ):focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-  outline: 2px solid var(--green-2);
-  outline-offset: 2px;
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not(
+      [type='color']
+    ):focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--green-2);
+    outline-offset: 2px;
+  }
 }
 
 /* -------------------------------------------------------------

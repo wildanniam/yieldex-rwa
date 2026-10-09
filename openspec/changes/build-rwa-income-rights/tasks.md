@@ -55,6 +55,8 @@ Checklist membedakan bagian terverifikasi dan acceptance produk yang masih terbu
 
 ## 6. AI dan quote recommendations
 
+Integrasi awal PR #2 dibahas dalam [chatbot integration](../../../docs/chatbot-integration.md). Status acceptance tetap terbuka sampai seluruh skenario masing-masing task terbukti; popup yang berjalan tidak menutup saved history, wallet handoff, atau final UI.
+
 - [ ] 6.1 Pin CopilotKit v2/OpenAI runtime and demonstrate one server tool → validated card. Depends: 1.3. Scope: apps/web. Acceptance: one orchestration loop, server keys private, loading/failure/completion states work; version compatibility tested. Refs: ai-assistant.
 - [ ] 6.2 Implement listing search, position context and explanation tools over canonical APIs. Depends: 4.3, 6.1. Acceptance: no invented listings/dividends/guaranteed return; prompt injection payload cannot expand authority.
 - [x] 6.3 Implement read-only quote provider adapter for curated chains/tokens and exact-in/out. Depends: 1.4, 1.3. Acceptance: official live amount quote or explicit blocked/unavailable; captured provider schema maps fixtures; zero wallet signing/approval/send path. Refs: quote-recommendations. Evidence: docs/core-verification.md.
