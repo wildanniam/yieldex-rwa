@@ -1,8 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Icon, type IconName } from '@/components/ui/icon';
+import { Icon } from '@/components/ui/icon';
 import {
-  AskAssistant,
   IncomeCalculator,
   LandingNav,
   LinkAction,
@@ -12,19 +11,13 @@ import {
 import deployment from '../../../../../deployments/sepolia.json';
 import s from './landing.module.css';
 import { HeroMotion } from './hero-motion';
+import { ConceptCards } from './concept-cards';
 const repo = 'https://github.com/wildanniam/yieldex-rwa';
 const assetNames: Record<string, string> = {
   demoAAPL: 'Apple-linked simulation',
   demoMSFT: 'Microsoft-linked simulation',
   demoSPY: 'S&P 500-linked simulation',
 };
-function FeatureIcon({ name }: { name: IconName }) {
-  return (
-    <span className={s.featureIcon}>
-      <Icon name={name} alt="" inheritColor />
-    </span>
-  );
-}
 function HeroArt() {
   // Retain the intrinsic SVG geometry from the Figma export. Wrappers compose the artwork.
   return (
@@ -172,188 +165,7 @@ export function YieldexLanding() {
               each one its own place.
             </p>
           </div>
-          <div className={s.bento}>
-            <article
-              data-landing-reveal
-              className={`${s.feature} ${s.principalFeature}`}
-            >
-              <FeatureIcon name="vault" />
-              <h3>
-                Sell income.
-                <br />
-                Keep your principal.
-              </h3>
-              <p>
-                Get paid upfront for a defined share of future income. Your
-                underlying token backing stays yours, locked for the term.
-              </p>
-              <div className={s.ownershipVisual}>
-                <div>
-                  <span>Alice owns</span>
-                  <strong>
-                    100 <small>demoAAPL</small>
-                  </strong>
-                  <span className={s.ownershipBadge}>
-                    <Icon name="lock" size={14} alt="" inheritColor /> Principal
-                    retained
-                  </span>
-                </div>
-                <div className={s.ownershipDivider} />
-                <div>
-                  <span>Buyer holds</span>
-                  <strong>
-                    50<small>% income</small>
-                  </strong>
-                  <span className={s.mutedPill}>6-month example</span>
-                </div>
-              </div>
-              <span className={s.cardFootnote}>
-                A sale of rights. No debt. No principal repayment.
-              </span>
-            </article>
-            <article
-              data-landing-reveal
-              className={`${s.feature} ${s.listFeature}`}
-            >
-              <FeatureIcon name="layers" />
-              <h3>
-                Your terms.
-                <br />
-                One clear offer.
-              </h3>
-              <p>
-                Choose the backing, income share, price and period. Receive
-                payment when a buyer accepts.
-              </p>
-              <div className={s.lifecycle}>
-                <div>
-                  <Icon name="vault" alt="" inheritColor />
-                  <span>Lock</span>
-                </div>
-                <i />
-                <div>
-                  <Icon name="receipt" alt="" inheritColor />
-                  <span>List</span>
-                </div>
-                <i />
-                <div>
-                  <Icon name="coins" alt="" inheritColor />
-                  <span>Get paid</span>
-                </div>
-              </div>
-              <Link href="/lab" className={s.textLink}>
-                Create an offer in the demo{' '}
-                <Icon name="arrow-up-right" alt="" inheritColor />
-              </Link>
-            </article>
-            <article
-              data-landing-reveal
-              className={`${s.feature} ${s.resaleFeature}`}
-            >
-              <div className={s.featureTitle}>
-                <h3>
-                  A position that
-                  <br />
-                  can change hands.
-                </h3>
-                <FeatureIcon name="swap" />
-              </div>
-              <p>
-                Sell the whole position to another buyer while it’s active. The
-                original deadline stays. Already-earned claims remain yours.
-              </p>
-              <div className={s.transferVisual}>
-                <div>
-                  <span>B</span>
-                  <small>Bob</small>
-                </div>
-                <div>
-                  <i />
-                  <Icon name="arrow-right" alt="" inheritColor />
-                  <i />
-                  <small>Whole position</small>
-                </div>
-                <div>
-                  <span>C</span>
-                  <small>Carol</small>
-                </div>
-              </div>
-              <span className={s.mutedPill}>
-                <Icon name="clock" size={14} alt="" inheritColor /> Same
-                deadline. New owner.
-              </span>
-            </article>
-            <article
-              id="assistant"
-              data-landing-reveal
-              className={`${s.feature} ${s.aiFeature}`}
-            >
-              <div className={s.featureTitle}>
-                <h3>
-                  A little clarity.
-                  <br />
-                  Before every decision.
-                </h3>
-                <FeatureIcon name="sparkles" />
-              </div>
-              <p>
-                Find offers, understand the terms, and compare token quotes. You
-                decide. Your wallet confirms.
-              </p>
-              <div
-                className={s.aiExample}
-                aria-label="Illustrative assistant question"
-              >
-                <span>YOU</span>
-                <p>“What am I actually buying?”</p>
-                <div>
-                  <Icon name="sparkles" alt="" inheritColor />
-                  <p>
-                    A share of future income for a fixed period. The principal
-                    stays with the seller.
-                  </p>
-                </div>
-              </div>
-              <AskAssistant>Ask Yieldex</AskAssistant>
-              <small className={s.aiCaption}>
-                Read-only quotes. No automatic swaps.
-              </small>
-            </article>
-            <article
-              data-landing-reveal
-              className={`${s.feature} ${s.chainFeature}`}
-            >
-              <div>
-                <FeatureIcon name="shield-check" />
-                <h3>
-                  Recorded onchain.
-                  <br />
-                  Open to inspect.
-                </h3>
-                <p>
-                  Backing, positions and claims are recorded in smart contracts.
-                  Inspect the demo deployment yourself.
-                </p>
-              </div>
-              <a
-                href={`https://sepolia.etherscan.io/address/${deployment.market}`}
-                target="_blank"
-                rel="noreferrer"
-                className={s.contractLink}
-              >
-                <span>
-                  <i /> ETHEREUM SEPOLIA
-                </span>
-                <code>
-                  {deployment.market.slice(0, 8)}…{deployment.market.slice(-4)}
-                </code>
-                <span>
-                  View market contract{' '}
-                  <Icon name="external-link" alt="" inheritColor size={16} />
-                </span>
-              </a>
-            </article>
-          </div>
+          <ConceptCards />
         </section>
         <section
           id="how-it-works"

@@ -146,7 +146,6 @@
 }
 .networkBadge i,
 .previewTop i,
-.contractLink i,
 .footerNetwork i {
   width: 5px;
   height: 5px;
@@ -666,311 +665,6 @@
   line-height: 1.85;
   color: var(--text-2);
   padding-bottom: 4px;
-}
-.bento {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 18px;
-}
-.feature {
-  min-width: 0;
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  padding: 34px;
-  background: #080f10;
-  position: relative;
-  overflow: clip;
-}
-.feature h3 {
-  font-size: 27px;
-  line-height: 1.22;
-  letter-spacing: -0.035em;
-  font-weight: 450;
-  margin-top: 20px;
-}
-.feature > p {
-  font-size: 13px;
-  line-height: 1.85;
-  color: #a4aea8;
-  max-width: 410px;
-  margin-top: 13px;
-}
-.featureIcon {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border: 1px solid #9dcea22c;
-  border-radius: 12px;
-  background: #15231b;
-  color: var(--mint);
-  flex-shrink: 0;
-}
-.principalFeature {
-  grid-column: span 7;
-  background: linear-gradient(120deg, #16251b, #0d1711 70%);
-  border-color: #40533f;
-}
-.ownershipVisual {
-  display: flex;
-  gap: 28px;
-  margin-top: 32px;
-  padding: 22px 24px;
-  border: 1px solid #8bb99525;
-  border-radius: 16px;
-  background: #030b0760;
-}
-.ownershipVisual > div {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 9px;
-}
-.ownershipVisual > div > span:first-child {
-  font-size: 10px;
-  color: #a1b4a6;
-}
-.ownershipVisual strong {
-  font-size: 28px;
-  font-weight: 450;
-  letter-spacing: -0.04em;
-}
-.ownershipVisual small {
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-}
-.ownershipVisual .ownershipDivider {
-  width: 1px;
-  flex: none;
-  background: #638b673d;
-}
-.ownershipBadge,
-.mutedPill {
-  display: inline-flex;
-  gap: 5px;
-  align-items: center;
-  padding: 5px 8px;
-  border-radius: 5px;
-  font-size: 9px;
-  color: #b0cdb6;
-  background: #243b2a80;
-}
-.cardFootnote {
-  display: block;
-  color: #9cb2a2;
-  font-size: 10px;
-  margin-top: 17px;
-}
-.listFeature {
-  grid-column: span 5;
-}
-.lifecycle {
-  display: flex;
-  align-items: center;
-  margin: 31px 0 26px;
-}
-.lifecycle > div {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 10px;
-  width: 76px;
-  padding: 16px 8px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: #111c16;
-  color: var(--mint);
-}
-.lifecycle > div > span:last-child {
-  font-size: 10px;
-  color: #b6c6ba;
-}
-.lifecycle > i {
-  height: 1px;
-  background: #475c4b;
-  flex: 1;
-}
-.textLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--mint);
-  font-size: 11px;
-  transition: gap 0.2s;
-}
-.textLink:hover {
-  gap: 13px;
-}
-.resaleFeature {
-  grid-column: span 5;
-}
-.featureTitle {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-.featureTitle h3 {
-  margin-top: 0;
-}
-.transferVisual {
-  display: flex;
-  align-items: flex-start;
-  margin: 27px 0 23px;
-  gap: 16px;
-  max-width: 310px;
-}
-.transferVisual > div:first-child,
-.transferVisual > div:last-child {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-.transferVisual > div > span:first-child {
-  display: grid;
-  place-items: center;
-  width: 45px;
-  height: 45px;
-  background: #192820;
-  color: #c5dbca;
-  border: 1px solid #3b5141;
-  border-radius: 50%;
-  font-size: 15px;
-}
-.transferVisual small {
-  font-size: 10px;
-  color: #a7b5ab;
-}
-.transferVisual > div:nth-child(2) {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex: 1;
-  flex-wrap: wrap;
-  padding-top: 14px;
-  color: var(--mint);
-}
-.transferVisual i {
-  height: 1px;
-  flex: 1;
-  background: #56745e;
-}
-.transferVisual > div:nth-child(2) > small {
-  width: 100%;
-  text-align: center;
-  padding-top: 12px;
-}
-.aiFeature {
-  grid-column: span 7;
-  border-color: #403c5a;
-  background: linear-gradient(125deg, #181623, #101018 75%);
-}
-.aiFeature .featureIcon {
-  color: #c4bdff;
-  background: #282440;
-  border-color: #7466b55c;
-}
-.aiFeature > p {
-  max-width: 420px;
-  color: #aaa6b8;
-}
-.aiExample {
-  border: 1px solid #71649644;
-  border-radius: 13px;
-  padding: 16px 18px;
-  margin: 22px 0 19px;
-  background: #06080c60;
-}
-.aiExample > span {
-  font-size: 8px;
-  letter-spacing: 0.12em;
-  color: #a8a0c3;
-}
-.aiExample > p {
-  font-size: 13px;
-  color: #d8d4e7;
-  margin-top: 5px;
-}
-.aiExample > div {
-  display: flex;
-  gap: 9px;
-  align-items: flex-start;
-  margin-top: 15px;
-  color: #b3a7f3;
-}
-.aiExample > div > p {
-  font-size: 11px;
-  line-height: 1.75;
-  color: #a9a4b8;
-}
-.aiCaption {
-  font-size: 9px;
-  color: #aaa2be;
-  margin-left: 12px;
-  display: inline-block;
-}
-.chainFeature {
-  grid-column: span 12;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 36px;
-  padding-block: 28px;
-}
-.chainFeature > div {
-  display: grid;
-  grid-template-columns: 42px 230px 1fr;
-  gap: 20px;
-  align-items: center;
-}
-.chainFeature h3 {
-  font-size: 21px;
-  margin: 0;
-}
-.chainFeature p {
-  font-size: 12px;
-  line-height: 1.8;
-  color: var(--text-2);
-  max-width: 260px;
-}
-.contractLink {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-  padding: 15px 20px;
-  border: 1px solid #344638;
-  border-radius: 12px;
-  background: #132017;
-  transition:
-    border-color 0.2s,
-    background 0.2s;
-}
-.contractLink:hover {
-  border-color: #749c7b;
-  background: #1a2b1f;
-}
-.contractLink > span:first-child {
-  display: flex;
-  gap: 7px;
-  align-items: center;
-  font-size: 8px;
-  letter-spacing: 0.1em;
-  color: #b0c9b5;
-}
-.contractLink > code {
-  font-size: 17px;
-  color: #d1e4d4;
-}
-.contractLink > span:last-child {
-  display: flex;
-  gap: 9px;
-  font-size: 9px;
-  align-items: center;
-  color: #a6b5aa;
 }
 .process {
   display: grid;
@@ -1549,16 +1243,6 @@
   .ethSmallRight {
     display: none;
   }
-  .feature {
-    padding: 27px;
-  }
-  .chainFeature > div {
-    grid-template-columns: 42px 1fr;
-  }
-  .chainFeature p {
-    grid-column: 2;
-    max-width: 400px;
-  }
   .mathSection {
     gap: 60px;
   }
@@ -1663,37 +1347,6 @@
   .sectionHeading > p {
     max-width: 245px;
     font-size: 12px;
-  }
-  .feature h3 {
-    font-size: 24px;
-  }
-  .principalFeature,
-  .listFeature,
-  .resaleFeature,
-  .aiFeature {
-    grid-column: span 6;
-  }
-  .ownershipVisual {
-    gap: 12px;
-    padding: 16px;
-    flex-direction: column;
-  }
-  .ownershipVisual > div {
-    width: 100%;
-  }
-  .ownershipVisual .ownershipDivider {
-    height: 1px;
-    width: 100%;
-  }
-  .ownershipVisual strong {
-    font-size: 24px;
-  }
-  .featureTitle {
-    flex-direction: column-reverse;
-  }
-  .aiCaption {
-    display: block;
-    margin: 12px 0 0;
   }
   .process {
     gap: 26px;
@@ -1922,73 +1575,6 @@
   .landing h2 {
     font-size: 33px;
   }
-  .bento {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .feature {
-    padding: 25px;
-    border-radius: 20px;
-  }
-  .feature h3 {
-    font-size: 26px;
-  }
-  .feature > p {
-    font-size: 12px;
-  }
-  .ownershipVisual {
-    flex-direction: row;
-    padding: 18px 14px;
-    gap: 14px;
-    margin-top: 25px;
-  }
-  .ownershipVisual .ownershipDivider {
-    width: 1px;
-    height: auto;
-  }
-  .ownershipVisual > div {
-    width: auto;
-  }
-  .ownershipVisual strong {
-    font-size: 23px;
-  }
-  .ownershipVisual small {
-    font-size: 10px;
-  }
-  .ownershipBadge,
-  .mutedPill {
-    font-size: 8px;
-    padding-inline: 6px;
-  }
-  .featureTitle {
-    flex-direction: row;
-  }
-  .transferVisual {
-    max-width: none;
-  }
-  .aiCaption {
-    display: inline-block;
-    margin: 0 0 0 10px;
-    font-size: 8px;
-  }
-  .chainFeature {
-    align-items: stretch;
-    flex-direction: column;
-    gap: 23px;
-  }
-  .chainFeature > div {
-    gap: 15px;
-  }
-  .chainFeature h3 {
-    font-size: 23px;
-  }
-  .chainFeature p {
-    grid-column: 1/-1;
-  }
-  .contractLink {
-    width: 100%;
-  }
   .process {
     grid-template-columns: 1fr;
     gap: 27px;
@@ -2159,20 +1745,6 @@
   .previewSteps button {
     font-size: 8px;
   }
-  .ownershipVisual {
-    flex-direction: column;
-  }
-  .ownershipVisual .ownershipDivider {
-    height: 1px;
-    width: 100%;
-  }
-  .featureTitle {
-    flex-direction: column-reverse;
-  }
-  .aiCaption {
-    display: block;
-    margin: 12px 0 0;
-  }
   .calculator {
     padding: 20px;
   }
@@ -2307,17 +1879,6 @@
 .landing a[data-action]:active {
   scale: 0.975;
 }
-.feature {
-  transition:
-    border-color 0.25s,
-    box-shadow 0.25s;
-}
-.featureIcon {
-  transition:
-    transform 0.3s,
-    border-color 0.3s,
-    background-color 0.3s;
-}
 .assetCardTop > span:first-child {
   transition: transform 0.3s;
 }
@@ -2338,18 +1899,6 @@
   }
   .landing a[data-action='outline']:hover > :last-child {
     transform: translateX(3px);
-  }
-  .feature:hover {
-    border-color: #9bd5a866;
-    box-shadow: inset 0 1px 0 #b6f4c016;
-  }
-  .feature:hover .featureIcon {
-    transform: translateY(-3px) rotate(-5deg);
-    border-color: #9bd5a866;
-    background-color: #243b2b;
-  }
-  .aiFeature:hover .featureIcon {
-    background-color: #38315b;
   }
   .assetCard:hover .assetCardTop > span:first-child {
     transform: rotate(-6deg) scale(1.05);
@@ -2390,7 +1939,6 @@
     scroll-behavior: auto !important;
   }
   .assetCard:hover,
-  .feature:hover .featureIcon,
   .assetCard:hover .assetCardTop > span,
   .landing a[data-action]:hover > :last-child {
     transform: none;
