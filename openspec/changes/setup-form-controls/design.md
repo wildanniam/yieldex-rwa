@@ -19,7 +19,7 @@ The design sheet defines 10 controls across Default, Focus, Filled, Error, and D
 
 ### 1. Shared control contract
 
-Controls use 48px height and 12px radius where a field surface applies, `bg-card`, `border-input-border`, `focus:border-green-2`, `text-text-2` labels at 12px/14px, `text-text-3` helper copy at 12px, `text-danger` error copy, and `disabled:opacity-40 disabled:cursor-not-allowed`. Focus must remain visibly distinguishable with a green-2 ring/border.
+Controls use 48px height and 12px radius where a field surface applies, `bg-card`, `border-input-border`, `focus:border-green-2`, `text-text-1` labels at 14px/20px (500), `text-text-2` helper copy at 12px/16px, `text-danger` error copy, and `disabled:opacity-40 disabled:cursor-not-allowed`. Focus must remain visibly distinguishable with a green-2 ring/border.
 
 All field-like controls expose `label`, `helperText`, `error`, `disabled`, and `className` as appropriate. When `error` is present, error text replaces helper text rather than rendering both.
 
@@ -49,3 +49,5 @@ AmountInput treats numeric strings as display input and does not use JavaScript 
 - Native controls provide robust semantics but custom visual affordances need careful keyboard and forced-colors testing.
 - OTP focus management is more interactive than the other controls and requires focused tests for typing, deletion, paste, and disabled/error states.
 - Existing broad global selectors may overlap component classes; implementation should narrow or override them deliberately without changing unrelated controls.
+
+Figma alignment (issue #9): fields generate label/message IDs; adornments belong to the control wrapper. Native radio semantics handle segmented keyboard navigation. OTP UI state uses a space for an empty interior slot and omits empty trailing slots; consumers must only submit a complete digits-only code. This is not an auth API.

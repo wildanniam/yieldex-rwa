@@ -1,6 +1,8 @@
 import { CHAIN_IDS, INTERFACE_VERSION } from '@rwa/shared';
 import { Button } from '@/components/ui/button';
 import { PasswordInput } from '@/components/ui/input';
+import { GradientSamples } from '@/components/ui/gradient-samples';
+import Link from 'next/link';
 
 const modules = [
   [
@@ -70,21 +72,17 @@ export default function Home() {
             Explore Marketplace (contoh UI)
           </Button>
           <Button variant="ghost" size="md">
-            Hi
+            Lihat detail
           </Button>
         </div>
 
-        {/* Gradients Showcase */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex flex-wrap items-center justify-between gap-2 rounded-inner bg-primary-gradient p-4 text-sm font-semibold text-canvas">
-            <span>Primary Gradient (Top-to-Bottom)</span>
-            <span className="text-xs opacity-80">Core Transactions</span>
-          </div>
-          <div className="flex flex-wrap items-center justify-between gap-2 rounded-inner bg-accent-gradient p-4 text-sm font-semibold text-white">
-            <span>Accent Gradient (Top-to-Bottom)</span>
-            <span className="text-xs opacity-80">Entry & Intelligence</span>
-          </div>
-        </div>
+        <GradientSamples />
+        <Link
+          href="/design-system"
+          className="mt-6 inline-flex text-sm text-green-text underline underline-offset-4"
+        >
+          Lihat semua komponen dan state →
+        </Link>
 
         {/* Semantic Feedback Badges */}
         <div className="mt-4 flex flex-wrap items-center gap-3 border-t border-border pt-4 text-xs">

@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { cn, FieldMessage } from './field';
+import { cn, FieldMessage, useField } from './field';
 export interface Segment {
   label: string;
   value: string;
@@ -30,41 +30,54 @@ export function SegmentedControl({
   const [internal, setInternal] = React.useState(
     defaultValue ?? options[0]?.value,
   );
+  const field = useField(undefined, helperText, error);
   const selected = value ?? internal;
   return (
-    <div className="grid gap-2">
+    <div className={cn('grid gap-2', disabled && 'opacity-40')}>
       {label && (
-        <span className="text-xs leading-[14px] text-text-2">{label}</span>
+        <span
+          id={`${field.fieldId}-label`}
+          className="text-sm font-medium leading-5 text-text-1"
+        >
+          {label}
+        </span>
       )}
       <div
         role="radiogroup"
+        aria-labelledby={label ? `${field.fieldId}-label` : undefined}
+        aria-describedby={field.describedBy}
+        aria-invalid={Boolean(error)}
         className={cn(
-          'flex h-12 rounded-[12px] border border-input-border bg-card p-1',
+          'flex h-12 rounded-[12px] border border-input-border bg-card p-1 gap-1',
           error && 'border-danger',
           className,
         )}
       >
         {options.map((option) => (
-          <button
-            key={option.value}
-            type="button"
-            role="radio"
-            aria-checked={selected === option.value}
-            disabled={disabled}
-            onClick={() => {
-              setInternal(option.value);
-              onChange?.(option.value);
-            }}
-            className={cn(
-              'flex-1 rounded-full text-xs text-text-2 disabled:cursor-not-allowed disabled:opacity-40',
-              selected === option.value && 'bg-tint text-green-text',
-            )}
-          >
-            {option.label}
-          </button>
+          <label key={option.value} className="relative min-w-0 flex-1">
+            <input
+              type="radio"
+              name={field.fieldId}
+              value={option.value}
+              checked={selected === option.value}
+              disabled={disabled}
+              onChange={() => {
+                if (value === undefined) setInternal(option.value);
+                onChange?.(option.value);
+              }}
+              className="peer absolute inset-0 m-0 w-full h-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
+            />
+            <span className="pointer-events-none flex h-full items-center justify-center rounded-full px-2 text-xs text-text-2 peer-checked:bg-tint peer-checked:text-green-text peer-focus-visible:ring-2 peer-focus-visible:ring-green-2">
+              {option.label}
+            </span>
+          </label>
         ))}
       </div>
-      <FieldMessage helperText={helperText} error={error} />
+      <FieldMessage
+        id={field.messageId}
+        helperText={helperText}
+        error={error}
+      />
     </div>
   );
 }

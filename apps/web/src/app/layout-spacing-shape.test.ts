@@ -30,7 +30,7 @@ describe('layout spacing and shape contracts', () => {
     expect(tailwindSource).toContain("input: '12px'");
     expect(pageSource).toContain('surface-card');
     expect(pageSource).toContain('rounded-card');
-    expect(pageSource).toContain('rounded-inner');
+    expect(pageSource).toContain('<GradientSamples />');
     expect(stylesSource).toContain('border: 1px solid var(--border)');
     expect(stylesSource).toContain('box-shadow: none');
     expect(stylesSource).toContain('border: 1px solid var(--input-border)');
