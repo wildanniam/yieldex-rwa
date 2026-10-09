@@ -1,0 +1,9 @@
+{
+  "source": "User-supplied background-1.png",
+  "asset": "apps/web/public/backgrounds/platform.png",
+  "width": 2880,
+  "height": 1800,
+  "sha256": "e23a2dcb3776d535a2d67ab5a8725440c6296706359395c936c21ac4536f22c0",
+  "modifications": "None; original PNG. Next Image handles responsive delivery.",
+  "usage": "Decorative persistent background for app/(platform)/layout.tsx"
+}

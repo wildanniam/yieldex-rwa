@@ -1,5 +1,5 @@
-import { marketContext } from '../../server/market/context';
-import { MarketLab } from '../../features/marketplace/lab';
+import { marketContext } from '@/server/market/context';
+import { MarketLab } from '@/features/marketplace/lab';
 export const dynamic = 'force-dynamic';
 export default async function LabPage() {
   const context = await marketContext().catch(() => null);

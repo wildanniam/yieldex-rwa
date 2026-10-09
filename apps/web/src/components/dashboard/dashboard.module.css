@@ -1,6 +1,6 @@
 .shell {
   min-height: 100svh;
-  background: var(--canvas);
+  background: transparent;
   color: var(--text-1);
   font-size: 14px;
   line-height: 1.5;

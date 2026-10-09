@@ -27,3 +27,15 @@ The dashboard SHALL reuse local design-system controls, support keyboard tab and
 #### Scenario: Assistant entry
 - **WHEN** a user opens AI from the dashboard
 - **THEN** the existing assistant SHALL handle admission and errors without creating a second runtime or injecting fictional holdings.
+
+
+### Requirement: DASH-003 Persistent application background
+Application pages SHALL share the user-supplied decorative background through the persistent platform layout. The background SHALL remain fixed to the viewport, preserve the source aspect ratio, ignore pointer events and have no accessible text. Content panels SHALL retain readable solid surfaces.
+
+#### Scenario: Navigation and scroll
+- **WHEN** the user scrolls the dashboard or navigates to another route within the platform group
+- **THEN** the same background layer SHALL remain present while page content changes.
+
+#### Scenario: Future product pages
+- **WHEN** a product page is added below app/(platform)
+- **THEN** it SHALL inherit the background without adding a second image layer or changing its public URL.

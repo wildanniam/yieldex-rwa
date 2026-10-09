@@ -8,7 +8,7 @@ This is a UI slice, not a connected portfolio. A visible state selector exposes 
 
 ## Reuse and integration
 
-- Entry: `apps/web/src/app/dashboard/page.tsx`; client presentation: `components/dashboard/dashboard.tsx` and scoped CSS module.
+- Entry: `apps/web/src/app/(platform)/dashboard/page.tsx`; client presentation: `components/dashboard/dashboard.tsx` and scoped CSS module.
 - Reuse `Button`, `buttonVariants`, `Icon`, canonical theme tokens, Inter and local Yieldex logo. Assets are already documented in `design-system-assets.json` and `landing-assets.json`. No new dependency or icon pack.
 - Sidebar/header layout can be extracted to a shared product shell when the next real product route is implemented; it intentionally does not replace the developer WorkspaceShell.
 - Replace presentation examples with canonical API DTO adapters. Do not promote example display strings to another wire model or parse them for accounting. Scope claims per asset; no sum across unlike tokens and no assumed USD price.
@@ -30,3 +30,13 @@ See the PR for tested revision and final results. Coverage includes default empt
 - PASS: production dashboard assets load, logo keeps original611:188 aspect ratio. An initial development image-ratio warning was corrected; no new warning/error observed on production dashboard. Dev Lit warning is not a production failure. HTTP200 for landing/dashboard/lab; dashboard dialog handoff reaches lab.
 - PASS with environment limit: existing assistant unavailable response and retry were exercised with HTTP403 admission on the local runtime without environment credentials. No live AI success is claimed. Lab correctly shows its unconfigured fallback; this proves route preservation only.
 - NOT TESTED: live balances, wallet signing, backend successful admission, persisted transaction outcomes, Safari/Firefox, OS-level reduced motion and full assistive-technology audit. Reduced-motion CSS inspected; no new ambient motion. QA screenshots/logs remain outside Git.
+
+## Shared background — 9 October revision
+
+User-approved artwork is stored unchanged at `public/backgrounds/platform.png`. It is decorative, served through Next Image optimization, and has a dark canvas fallback. `components/platform/background.tsx` owns one fixed, pointer-transparent layer plus a light contrast scrim; panels remain solid. There is no entrance animation or pathname key to restart the image.
+
+The shared nested layout lives at `app/(platform)/layout.tsx`. Dashboard and the existing lab are in this route group with unchanged URLs (`/dashboard`, `/lab`). **Put future product pages—marketplace, positions, claims, listing creation and wallet entry—under this group**, keeping the background in its layout rather than copying it into pages. The group is structural and does not create those future routes. Landing and developer catalog/workspace retain their existing layouts. A single root ChatbotWrapper still owns chat.
+
+Verification for this revision: check background on desktop/mobile, tab changes, scroll and client navigation dashboard -> lab -> back; check solid-panel readability, local image loading and console; rerun route type/build and the required pre-push checks.
+
+Shared-background verification PASS: original/source SHA256 matches; production image loads; exactly one background layer on dashboard and lab and after back navigation; background top stays0 at scrollY382; desktop1440 and mobile390 have no horizontal overflow; tabs and mobile Escape work; production console has no new warnings/errors. Full pnpm check passes (157 Vitest,46 Foundry,9 OpenSpec changes,production build). Live lab still uses the explicitly unconfigured local fallback; no financial runtime claim.

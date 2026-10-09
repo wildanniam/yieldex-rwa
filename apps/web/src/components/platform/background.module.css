@@ -1,0 +1,37 @@
+.platform {
+  isolation: isolate;
+  position: relative;
+  min-height: 100svh;
+  background: var(--canvas);
+}
+.background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+.image {
+  object-fit: cover;
+  object-position: center bottom;
+}
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgb(1 9 17 / 18%),
+    rgb(1 9 17 / 4%) 55%,
+    rgb(1 9 17 / 12%)
+  );
+}
+.content {
+  position: relative;
+  min-height: 100svh;
+}
+@media (max-width: 760px) {
+  .image {
+    object-position: 62% bottom;
+  }
+}

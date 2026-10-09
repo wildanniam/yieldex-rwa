@@ -47,3 +47,7 @@ Verification matrix for this revision: desktop idle/pointer/leave; pause/resume 
 ## Portfolio dashboard slice
 
 References: Figma 60:18962 (empty), 60:18558 (Alice). Product register: compact, scanable personal overview at `/dashboard`, labeled My Portfolio. Preserve sidebar, metric row, portfolio/claims split and activity/assistant row. Use canonical Button/Icon and local logo, 24px panels, 16–24px rhythm and 150–200ms feedback. No hero motion on this working surface. Preview states are explicit examples, not wallet balances; omit unsupported token examples, invented USD prices and fake transaction links. Loading/error mean unknown, not zero. Live account/claim integration remains separate acceptance.
+
+### Shared platform artwork
+
+User-provided city/crypto background is the persistent decorative layer for all product routes under `app/(platform)`. Dashboard and lab currently share it; future product screens must join the same layout. Keep artwork fixed, proportional (cover), noninteractive and without entry motion. Retain solid cards/sidebar so text and amounts remain clear. Next Image serves optimized sizes from the original local PNG. Do not duplicate a background per menu/page.
