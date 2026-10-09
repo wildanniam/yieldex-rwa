@@ -1,87 +1,217 @@
-:root {
-  color-scheme: light;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #182d2b;
-  background: #f4f5f1;
+@import 'tailwindcss';
+@config "../../tailwind.config.ts";
+
+/**
+ * ============================================================================
+ * SEMANTIC USAGE RULES:
+ * - Green executes core actions (primary transactions, investments, claims).
+ * - Purple supports entry and intelligence (wallet connection, AI insights).
+ * - Yellow and Red remain semantic, never decorative (warnings and danger/errors).
+ * ============================================================================
+ */
+
+@theme {
+  /* Surfaces */
+  --color-canvas: #010911;
+  --color-canvas-deep: #000510;
+  --color-card: #070d0e;
+  --color-raised: #101716;
+  --color-tint: #16221d;
+  --color-border: rgba(80, 85, 85, 0.4);
+  --color-input-border: #2a3533;
+
+  /* Typography */
+  --color-text-1: #e5e5e7;
+  --color-text-2: #9da3a8;
+  --color-text-3: #6e7074;
+
+  /* Green (Core Actions) */
+  --color-green-1: #99e39e;
+  --color-green-2: #63c16b;
+  --color-green-3: #55b75e;
+  --color-green-text: #7bc882;
+
+  /* Purple (Entry & Intelligence) */
+  --color-purple-1: #7c72fe;
+  --color-purple-2: #6b62e0;
+  --color-purple-3: #544cbb;
+
+  /* Semantic Feedback */
+  --color-yellow: #ffde8c;
+  --color-danger: #f0605d;
+
+  /* Keyframe mappings */
+  --animate-shimmer: shimmer 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-beam-spin: spin 3.5s linear infinite;
+  --animate-pulse-glow: pulse-glow 3s ease-in-out infinite;
+  --animate-shiny-text: shiny-text 3s linear infinite;
 }
+
+:root {
+  color-scheme: dark;
+
+  /* 18 Named Tokens + Input Border */
+  --canvas: #010911;
+  --canvas-deep: #000510;
+  --card: #070d0e;
+  --raised: #101716;
+  --tint: #16221d;
+  --border: rgba(80, 85, 85, 0.4);
+  --input-border: #2a3533;
+
+  --text-1: #e5e5e7;
+  --text-2: #9da3a8;
+  --text-3: #6e7074;
+
+  --green-1: #99e39e;
+  --green-2: #63c16b;
+  --green-3: #55b75e;
+  --green-text: #7bc882;
+
+  --purple-1: #7c72fe;
+  --purple-2: #6b62e0;
+  --purple-3: #544cbb;
+
+  --yellow: #ffde8c;
+  --danger: #f0605d;
+
+  /* Gradients */
+  --primary-gradient: linear-gradient(to bottom, #99e39e, #63c16b, #55b75e);
+  --accent-gradient: linear-gradient(to bottom, #7c72fe, #6b62e0, #544cbb);
+}
+
 * {
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
+  color: var(--text-1);
+  background-color: var(--canvas);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-main {
-  width: min(960px, 100%);
-  margin: 0 auto;
-  padding: 64px 24px;
+
+.surface-card {
+  border: 1px solid var(--border);
+  box-shadow: none;
 }
-.eyebrow {
-  color: #526660;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-}
-h1 {
-  font-size: clamp(36px, 7vw, 64px);
-  line-height: 1.05;
-  letter-spacing: -0.045em;
-  margin: 28px 0 24px;
-}
-.intro {
-  font-size: 18px;
-  line-height: 1.6;
-  max-width: 660px;
-}
-.meta {
-  font-size: 13px;
-  line-height: 1.6;
-  color: #526660;
-  margin: 24px 0 40px;
-}
-.modules {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
-}
-article {
-  border-top: 1px solid #bfc9c1;
-  padding-top: 16px;
-}
-h2 {
-  font-size: 19px;
-  font-weight: 600;
-  margin: 0 0 12px;
-}
-code {
-  font-size: 13px;
-  overflow-wrap: anywhere;
-}
-p {
-  line-height: 1.6;
-}
-article p,
-.next p {
-  color: #526660;
-  max-width: 640px;
-}
-.next {
-  margin-top: 40px;
-  padding-top: 28px;
-  border-top: 1px solid #bfc9c1;
-}
-a {
-  color: #175342;
-  text-underline-offset: 5px;
-}
-a:focus-visible {
-  outline: 2px solid #175342;
-  outline-offset: 6px;
-}
-@media (max-width: 560px) {
-  main {
-    padding: 36px 20px;
+
+@layer base {
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not(
+      [type='color']
+    ),
+  select,
+  textarea {
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    color: inherit;
+    background-color: var(--card);
   }
-  .modules {
-    grid-template-columns: 1fr;
+
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not(
+      [type='color']
+    ):focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--green-2);
   }
+
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not(
+      [type='color']
+    ):focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--green-2);
+    outline-offset: 2px;
+  }
+}
+
+/* -------------------------------------------------------------
+ * Custom Utility Classes for Gradients
+ * ------------------------------------------------------------- */
+.bg-primary-gradient {
+  background-image: linear-gradient(to bottom, #99e39e, #63c16b, #55b75e);
+}
+
+.bg-accent-gradient {
+  background-image: linear-gradient(to bottom, #7c72fe, #6b62e0, #544cbb);
+}
+
+/* -------------------------------------------------------------
+ * Aceternity UI, Magic UI, and React Bits Animations
+ * ------------------------------------------------------------- */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes shiny-text {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-beam-spin {
+  animation: spin 3.5s linear infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.shiny-text {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: shiny-text 3s linear infinite;
+}
+
+.cursor-magnetic {
+  will-change: transform;
+  transform-style: preserve-3d;
 }
