@@ -1,9 +1,4 @@
 import {
-  BaseError,
-  ContractFunctionRevertedError,
-  RawContractError,
-  RpcRequestError,
-  ExecutionRevertedError,
   decodeErrorResult,
   encodeFunctionData,
   erc20Abi,
@@ -29,48 +24,59 @@ export class PreparationError extends Error {
     super(code);
   }
 }
-/** Extract only recognized, bounded contract errors. Never surface RPC URLs/data. */
+/** Viem may have multiple peer-dependency instances across web/shared bundles.
+ * Walk bounded Error causes by their stable names, not cross-package instanceof.
+ * Only explicit revert envelopes are decoded; transport failures stay failures.
+ */
 export function revertCode(error: unknown): string | null {
-  if (!(error instanceof BaseError)) return null;
-  const revert = error.walk(
-    (e) =>
-      e instanceof ContractFunctionRevertedError ||
-      e instanceof RawContractError,
+  const knownNames = new Set<string>(
+    abi.IncomeRightsMarket.filter((x) => x.type === 'error').map((x) => x.name),
   );
-  if (revert instanceof ContractFunctionRevertedError)
-    return revert.data?.errorName ?? 'SIMULATION_REVERTED';
-  if (revert instanceof RawContractError) {
-    try {
-      return decodeErrorResult({
-        abi: abi.IncomeRightsMarket,
-        data: revert.data as Hex,
-      }).errorName;
-    } catch {
-      return 'SIMULATION_REVERTED';
-    }
-  }
-  const rpc = error.walk((e) => e instanceof RpcRequestError);
-  if (
-    rpc instanceof RpcRequestError &&
-    rpc.code === 3 &&
-    typeof rpc.data === 'string' &&
-    /^0x[0-9a-fA-F]+$/.test(rpc.data)
+  const seen = new Set<unknown>();
+  let node = error,
+    explicitRevert = false;
+  for (
+    let depth = 0;
+    node instanceof Error && depth < 12 && !seen.has(node);
+    depth++
   ) {
-    try {
-      return decodeErrorResult({
-        abi: abi.IncomeRightsMarket,
-        data: rpc.data as Hex,
-      }).errorName;
-    } catch {
-      return 'SIMULATION_REVERTED';
+    seen.add(node);
+    const e = node as Error & {
+      data?: unknown;
+      code?: number;
+      cause?: unknown;
+    };
+    if (e.name === 'ContractFunctionRevertedError') {
+      explicitRevert = true;
+      const name =
+        e.data && typeof e.data === 'object' && 'errorName' in e.data
+          ? e.data.errorName
+          : null;
+      if (typeof name === 'string' && knownNames.has(name)) return name;
     }
+    if (e.name === 'ExecutionRevertedError') explicitRevert = true;
+    if (
+      e.name === 'RawContractError' ||
+      (e.name === 'RpcRequestError' && e.code === 3)
+    ) {
+      explicitRevert = true;
+      if (
+        typeof e.data === 'string' &&
+        /^0x[0-9a-fA-F]{8,8192}$/.test(e.data)
+      ) {
+        try {
+          return decodeErrorResult({
+            abi: abi.IncomeRightsMarket,
+            data: e.data as Hex,
+          }).errorName;
+        } catch {
+          /* Explicit but unknown revert: use a bounded generic code. */
+        }
+      }
+    }
+    node = e.cause;
   }
-  if (
-    error.walk((e) => e instanceof ExecutionRevertedError) instanceof
-    ExecutionRevertedError
-  )
-    return 'SIMULATION_REVERTED';
-  return null;
+  return explicitRevert ? 'SIMULATION_REVERTED' : null;
 }
 export function boundEntity(
   key: string,

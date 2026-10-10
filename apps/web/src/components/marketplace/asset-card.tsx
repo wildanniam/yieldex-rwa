@@ -1,73 +1,78 @@
+'use client';
 import Link from 'next/link';
+import type { ListingDetail } from '@rwa/shared';
 import { AssetMark } from '@/components/landing/asset-mark';
 import { buttonVariants } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import {
-  formatAtomic,
-  incomePercent,
-  termLabel,
-  type PreviewListing,
-} from './preview-data';
+  amount,
+  company,
+  listingHref,
+  remainingTerm,
+  shortAddress,
+} from '@/features/marketplace/data';
 import styles from './marketplace.module.css';
 
 export function AssetCard({
-  listing,
+  listing: d,
   list = false,
 }: {
-  listing: PreviewListing;
+  listing: ListingDetail;
   list?: boolean;
 }) {
+  const { listing, position, asset } = d;
   return (
     <article
       className={`${styles.card} ${list ? styles.listCard : ''}`}
-      data-listing-id={listing.id}
+      data-listing-id={listing.listingKey}
     >
       <div className={styles.cardIdentity}>
-        <span className={styles.assetMark} data-asset={listing.ticker}>
-          <AssetMark symbol={listing.symbol} />
+        <span className={styles.assetMark}>
+          <AssetMark symbol={asset.token.symbol} />
         </span>
         <div>
-          <h2>{listing.company}</h2>
+          <h2>{company(asset.token.symbol)}</h2>
           <p>
-            {listing.symbol} <span>· {listing.id}</span>
+            {asset.token.symbol} <span>· #{listing.listingId}</span>
           </p>
         </div>
         <span
           className={styles.marketTag}
-          data-resale={listing.market === 'SECONDARY'}
+          data-resale={listing.kind === 'SECONDARY'}
         >
-          {listing.market === 'SECONDARY' ? 'Resale' : 'Primary'}
+          {listing.kind === 'SECONDARY' ? 'Resale' : 'Primary'}
         </span>
       </div>
       <div className={styles.cardFigure}>
         <span className={styles.smallLabel}>Income share</span>
         <p>
-          {incomePercent(listing.incomeBps)}
+          {position.incomeBps / 100}
           <span>%</span>
-          <small>{termLabel(listing)}</small>
+          <small>{remainingTerm(d)}</small>
         </p>
         <div className={styles.shareTrack} aria-hidden="true">
-          <span style={{ width: `${listing.incomeBps / 100}%` }} />
+          <span style={{ width: `${position.incomeBps / 100}%` }} />
         </div>
       </div>
       <dl className={styles.cardTerms}>
         <div>
           <dt>Backing</dt>
           <dd>
-            {formatAtomic(listing.backingAtomic, 18, 0)} {listing.ticker}
+            {amount(position.principalTokenAmountAtomic, asset.token.decimals)}{' '}
+            {asset.token.symbol}
           </dd>
         </div>
         <div>
-          <dt>{listing.market === 'SECONDARY' ? 'Rights holder' : 'Seller'}</dt>
-          <dd>{listing.seller}</dd>
+          <dt>Seller</dt>
+          <dd>{shortAddress(listing.seller)}</dd>
         </div>
       </dl>
       <div className={styles.cardBottom}>
         <div>
           <span className={styles.smallLabel}>Fixed price</span>
           <p>
-            {formatAtomic(listing.priceAtomic, 6)}
-            <small>DemoUSD</small>
+            {amount(listing.priceAtomic, listing.paymentToken.decimals)}
+            <small>{listing.paymentToken.symbol}</small>
           </p>
         </div>
         <Link
@@ -76,10 +81,10 @@ export function AssetCard({
             size: 'sm',
             className: styles.offerLink ?? '',
           })}
-          href={`/marketplace/${listing.id}`}
-          aria-label={`View offer ${listing.id}`}
+          href={listingHref(listing.listingKey)}
+          aria-label={`View offer ${listing.listingId}`}
         >
-          <span>View offer</span>
+          View offer
           <Icon name="arrow-up-right" inheritColor alt="" size={16} />
         </Link>
       </div>

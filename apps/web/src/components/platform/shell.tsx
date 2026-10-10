@@ -7,6 +7,9 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Icon, type IconName } from '@/components/ui/icon';
 import s from './shell.module.css';
+import { useOptionalPlatform } from '@/features/marketplace/platform-provider';
+import { WalletControls } from '@/features/marketplace/wallet-access';
+import { shortAddress } from '@/features/marketplace/data';
 
 const destinations: { label: string; href: string; icon: IconName }[] = [
   { label: 'My Portfolio', href: '/dashboard', icon: 'layers' },
@@ -16,6 +19,8 @@ const destinations: { label: string; href: string; icon: IconName }[] = [
 ];
 
 export function PlatformShell({ children }: { children: ReactNode }) {
+  const platform = useOptionalPlatform();
+  const account = platform?.access.identity.wallet;
   const pathname = usePathname();
   const [menuPath, setMenuPath] = useState<string | null>(null);
   const menuOpen = menuPath === pathname;
@@ -99,7 +104,12 @@ export function PlatformShell({ children }: { children: ReactNode }) {
             <Icon name="arrow-up-right" alt="" size={14} />
           </Link>
           <span>
-            <i /> Ethereum Sepolia
+            <i />{' '}
+            {platform
+              ? platform.manifest.chainId === 31337
+                ? 'Local chain'
+                : 'Ethereum Sepolia'
+              : 'Network unavailable'}
           </span>
         </div>
       </aside>
@@ -117,19 +127,43 @@ export function PlatformShell({ children }: { children: ReactNode }) {
             <Icon name={menuOpen ? 'x' : 'layers'} alt="" inheritColor />
           </button>
           <div className={s.headerTitle}>
-            Workspace <span>/ {current?.label ?? 'Yieldex'}</span>
+            Workspace{' '}
+            <span>
+              /{' '}
+              {current?.label ??
+                (pathname === '/wallet'
+                  ? 'Wallet'
+                  : pathname.startsWith('/positions/')
+                    ? 'Position'
+                    : 'Yieldex')}
+            </span>
           </div>
           <div className={s.headerActions}>
             <span className={s.networkLabel}>
-              <i /> Sepolia
+              <i />{' '}
+              {platform?.access.identity.chainId &&
+              platform.access.identity.chainId !== platform.manifest.chainId
+                ? 'Wrong network'
+                : platform?.manifest.chainId === 31337
+                  ? 'Local chain'
+                  : platform
+                    ? 'Sepolia'
+                    : 'Unavailable'}
             </span>
             <Button
               variant="accent"
               size="sm"
               leadingIcon="wallet"
+              disabled={!platform || !platform.access.ready}
               onClick={() => dialog.current?.showModal()}
             >
-              Connect wallet
+              {!platform
+                ? 'Wallet unavailable'
+                : !platform.access.ready
+                  ? 'Checking wallet…'
+                  : account
+                    ? shortAddress(account)
+                    : 'Connect wallet'}
             </Button>
           </div>
         </header>
@@ -158,18 +192,26 @@ export function PlatformShell({ children }: { children: ReactNode }) {
             <Icon name="x" alt="" />
           </Button>
         </div>
-        <h2 id="wallet-handoff-title">Continue with your wallet</h2>
+        <h2 id="wallet-handoff-title">
+          {account ? 'Your wallet' : 'Connect your wallet'}
+        </h2>
         <p id="wallet-handoff-description">
-          Connect your wallet, then sign in to save conversations and review
-          live listings. Every transaction needs a separate confirmation.
-          Nothing is signed here.
+          Read your portfolio with a connected wallet. Verify ownership only
+          when you want to save chats. Transactions always need their own
+          confirmation.
         </p>
+        {platform && (
+          <WalletControls
+            access={platform.access}
+            chainId={platform.manifest.chainId}
+          />
+        )}
         <Link
           href="/wallet"
           className={buttonVariants({ variant: 'accent' })}
           onClick={() => dialog.current?.close()}
         >
-          Continue to wallet{' '}
+          Wallet details{' '}
           <Icon name="arrow-up-right" alt="" inheritColor size={16} />
         </Link>
       </dialog>

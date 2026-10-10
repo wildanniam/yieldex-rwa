@@ -719,3 +719,76 @@
     justify-content: flex-start;
   }
 }
+.claimRows {
+  display: grid;
+  gap: 16px;
+  margin-block: 20px;
+}
+.claimRows > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.claimRows strong {
+  font-size: clamp(20px, 3vw, 32px);
+  overflow-wrap: anywhere;
+}
+.claimRows small {
+  font-size: 14px;
+  font-weight: 400;
+}
+.holdings {
+  display: grid;
+}
+.holdingRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 0;
+  color: var(--text-1);
+  text-decoration: none;
+  border-bottom: 1px solid #50555530;
+}
+.holdingRow:hover {
+  color: var(--green-1);
+}
+.holdingRow small {
+  display: block;
+  color: var(--text-2);
+  font-size: 11px;
+  margin-top: 4px;
+}
+.holdingRow .token svg {
+  width: 22px;
+  height: 22px;
+}
+.holdingAmount {
+  margin-left: auto;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.activityDisclosure {
+  margin-top: 32px;
+}
+.activityDisclosure summary {
+  cursor: pointer;
+  padding-block: 12px;
+  font-weight: 500;
+}
+@media (max-width: 600px) {
+  .holdingRow {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .holdingAmount {
+    font-size: 12px;
+  }
+  .claimRows > div {
+    flex-direction: column;
+  }
+  .intro {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+}

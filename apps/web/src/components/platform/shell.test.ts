@@ -4,6 +4,9 @@ import { describe, expect, it, vi } from 'vitest';
 import { PlatformShell } from './shell';
 
 const route = vi.hoisted(() => ({ pathname: '/marketplace/example-apple' }));
+vi.mock('@/features/marketplace/platform-provider', () => ({
+  useOptionalPlatform: () => null,
+}));
 vi.mock('next/navigation', () => ({ usePathname: () => route.pathname }));
 vi.mock('@/components/ChatbotWrapper', () => ({
   useAssistant: () => ({ open: vi.fn(), busy: false }),
@@ -31,8 +34,8 @@ describe('shared product shell', () => {
     const html = renderToStaticMarkup(
       createElement(PlatformShell, null, 'Portfolio'),
     );
-    expect(html).toContain('Nothing is signed here.');
-    expect(html).toContain('Continue to wallet');
+    expect(html).toContain('Transactions always need their own confirmation.');
+    expect(html).toContain('Wallet details');
     expect(html).not.toContain('Wallet connected');
   });
 });

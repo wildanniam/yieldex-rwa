@@ -1,7 +1,7 @@
 'use client';
-
+// The five-step composition from the teammate now uses registered assets and wallet reads.
 import Link from 'next/link';
-import { useEffect, useReducer, useRef, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { AssetMark } from '@/components/landing/asset-mark';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -9,60 +9,92 @@ import { Icon } from '@/components/ui/icon';
 import { TextInput } from '@/components/ui/input';
 import { SegmentedControl } from '@/components/ui/segmented-control';
 import { Slider } from '@/components/ui/slider';
+import { usePlatform } from '@/features/marketplace/platform-provider';
+import { useAssets, useBalances } from '@/features/marketplace/use-portfolio';
+import { amount, company } from '@/features/marketplace/data';
+import {
+  TransactionPanel,
+  WalletActivity,
+} from '@/features/marketplace/transaction-panel';
 import {
   durationOptions,
   initialSellDraft,
-  sellAssets,
-  sellDraftReducer,
   sellSteps,
   validateSellDraft,
 } from './sell-draft';
 import s from './sell.module.css';
-
-const stepTitles = [
+const titles = [
   'Choose your asset.',
   'Set aside your backing.',
   'Make it your offer.',
   'One last look.',
-  'Your terms are ready.',
+  'Confirm with your wallet.',
 ];
-const stepDescriptions = [
-  'Start with the token whose income you want to offer.',
-  'Choose how much will back the offer. Ownership stays yours.',
-  'Set the income share, upfront price and time period.',
+const descriptions = [
+  'Choose an enabled asset from the registry.',
+  'The backing is locked when the listing is created. Ownership stays yours.',
+  'Set the income share, upfront price and period.',
   'Review what the buyer receives and what stays with you.',
-  'This is a draft preview. No approval, deposit or transaction was sent.',
+  'Approve the backing token first if needed, then review again to create your listing.',
 ];
 
-/** Adapts the teammate's five-step sell slice; this view never creates an intent. */
 export function SellPreview() {
-  const [draft, dispatch] = useReducer(sellDraftReducer, initialSellDraft);
-  const heading = useRef<HTMLHeadingElement>(null);
-  const form = useRef<HTMLFormElement>(null);
-  const asset = sellAssets.find((entry) => entry.symbol === draft.symbol)!;
-  const { errors } = validateSellDraft(draft);
-  const ready = draft.step === 4;
-  const edit = (
-    values: Parameters<typeof sellDraftReducer>[1] & { type: 'edit' },
-  ) => dispatch(values);
-
+  const { access } = usePlatform();
+  // Account/network changes reset the financial draft rather than carrying another wallet's terms.
+  return (
+    <SellFlow key={`${access.identity.wallet}:${access.identity.chainId}`} />
+  );
+}
+function SellFlow() {
+  const { access, manifest } = usePlatform();
+  const assets = useAssets();
+  const balances = useBalances(assets.data?.items ?? []);
+  const [draft, setDraft] = useState(initialSellDraft);
+  const heading = useRef<HTMLHeadingElement>(null),
+    form = useRef<HTMLFormElement>(null);
+  const asset = assets.data?.items.find((a) => a.assetKey === draft.assetKey);
+  const balance = asset ? (balances.amounts[asset.assetKey] ?? null) : null;
+  const validation = validateSellDraft(draft, {
+    decimals: asset?.token.decimals ?? 18,
+    paymentDecimals: manifest.paymentToken.decimals,
+    balance,
+  });
+  const { errors } = validation;
+  const supported =
+    asset &&
+    asset.newPositionsEnabled &&
+    asset.syncStatus === 'SYNCED' &&
+    asset.currentMultiplier !== null;
+  function edit(values: Partial<typeof draft>) {
+    setDraft((old) => ({
+      ...old,
+      ...values,
+      acknowledged: false,
+      showErrors: false,
+    }));
+  }
   useEffect(() => {
-    if (draft.step > 0) heading.current?.focus();
+    if (draft.step) heading.current?.focus();
   }, [draft.step]);
-
   useEffect(() => {
-    if (draft.showErrors) {
+    if (draft.showErrors)
       form.current
         ?.querySelector<HTMLInputElement>('[aria-invalid="true"]')
         ?.focus();
-    }
   }, [draft.showErrors]);
-
-  function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    dispatch({ type: 'advance' });
+  function submit(e: FormEvent) {
+    e.preventDefault();
+    const invalid =
+      !supported ||
+      (draft.step >= 1 && !!errors.amount) ||
+      (draft.step >= 2 && Object.keys(errors).length > 0) ||
+      (draft.step === 3 && !draft.acknowledged);
+    setDraft((old) =>
+      invalid
+        ? { ...old, showErrors: true }
+        : { ...old, step: Math.min(4, old.step + 1), showErrors: false },
+    );
   }
-
   return (
     <div className={s.page}>
       <header className={s.header}>
@@ -71,332 +103,327 @@ export function SellPreview() {
           <h1>Sell income rights</h1>
           <p>Keep the asset. Open up its income.</p>
         </div>
-        <span className={s.previewLabel}>Presentation preview</span>
       </header>
-
-      <nav className={s.steps} aria-label="Listing creation steps">
-        {sellSteps.map((label, index) => (
-          <button
-            key={label}
-            type="button"
-            aria-current={index === draft.step ? 'step' : undefined}
-            disabled={index > draft.step}
-            onClick={() => dispatch({ type: 'back', step: index })}
-          >
-            <span className={index <= draft.step ? s.stepReached : ''}>
-              {index < draft.step ? (
-                <Icon name="check" size={14} alt="" inheritColor />
-              ) : (
-                index + 1
-              )}
-            </span>
-            {label}
-          </button>
-        ))}
-      </nav>
-
-      <div className={s.columns}>
-        <form ref={form} className={s.form} onSubmit={submit} noValidate>
-          <div className={s.stepHeading}>
-            <h2 ref={heading} tabIndex={-1}>
-              {stepTitles[draft.step]}
-            </h2>
-            <p>{stepDescriptions[draft.step]}</p>
+      {!access.identity.wallet ? (
+        <div className={s.explanation}>
+          <Icon name="wallet" alt="" inheritColor />
+          <div>
+            <strong>Connect your wallet to begin</strong>
+            <p>Your registered token balances will appear here.</p>
+            <Link
+              href="/wallet"
+              className={buttonVariants({ variant: 'accent', size: 'sm' })}
+            >
+              Connect wallet
+            </Link>
           </div>
-
-          {draft.step === 0 && (
-            <fieldset className={s.assets}>
-              <legend className="sr-only">Backing asset</legend>
-              {sellAssets.map((option) => (
-                <label className={s.asset} key={option.symbol}>
-                  <input
-                    type="radio"
-                    name="backing-asset"
-                    value={option.symbol}
-                    checked={draft.symbol === option.symbol}
-                    onChange={() =>
-                      edit({ type: 'edit', values: { symbol: option.symbol } })
+        </div>
+      ) : access.identity.chainId !== manifest.chainId ? (
+        <div className={s.explanation}>
+          <Link href="/wallet">
+            Switch to the marketplace network to continue →
+          </Link>
+        </div>
+      ) : (
+        <>
+          <nav className={s.steps} aria-label="Listing creation steps">
+            {sellSteps.map((label, i) => (
+              <button
+                key={label}
+                type="button"
+                aria-current={i === draft.step ? 'step' : undefined}
+                disabled={i > draft.step}
+                onClick={() =>
+                  setDraft((old) => ({ ...old, step: i, showErrors: false }))
+                }
+              >
+                <span className={i <= draft.step ? s.stepReached : ''}>
+                  {i < draft.step ? (
+                    <Icon name="check" size={14} alt="" inheritColor />
+                  ) : (
+                    i + 1
+                  )}
+                </span>
+                {label}
+              </button>
+            ))}
+          </nav>
+          {(assets.error || balances.error) && (
+            <div role="alert" className={s.explanation}>
+              <p>{assets.error || balances.error}</p>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  assets.refresh();
+                  balances.refresh();
+                }}
+              >
+                Retry balances
+              </Button>
+            </div>
+          )}
+          <div className={s.columns}>
+            <form ref={form} className={s.form} onSubmit={submit} noValidate>
+              <div className={s.stepHeading}>
+                <h2 ref={heading} tabIndex={-1}>
+                  {titles[draft.step]}
+                </h2>
+                <p>{descriptions[draft.step]}</p>
+              </div>
+              {draft.step === 0 && (
+                <fieldset className={s.assets}>
+                  <legend className="sr-only">Backing asset</legend>
+                  {assets.loading ? (
+                    <p role="status">Loading registered assets…</p>
+                  ) : (
+                    assets.data?.items.map((a) => (
+                      <label className={s.asset} key={a.assetKey}>
+                        <input
+                          type="radio"
+                          name="backing-asset"
+                          value={a.assetKey}
+                          checked={draft.assetKey === a.assetKey}
+                          disabled={
+                            !a.newPositionsEnabled || a.syncStatus !== 'SYNCED'
+                          }
+                          onChange={() =>
+                            edit({ assetKey: a.assetKey, amount: '' })
+                          }
+                        />
+                        <span className={s.assetBody}>
+                          <span className={s.assetLogo}>
+                            <AssetMark symbol={a.token.symbol} />
+                          </span>
+                          <span className={s.assetName}>
+                            <strong>{company(a.token.symbol)}</strong>
+                            <small>{a.token.symbol}</small>
+                          </span>
+                          <span className={s.assetBalance}>
+                            {amount(
+                              balances.amounts[a.assetKey] ?? null,
+                              a.token.decimals,
+                            )}
+                            <small>
+                              {a.syncStatus !== 'SYNCED'
+                                ? a.syncStatus.toLowerCase()
+                                : balances.loading
+                                  ? 'Reading balance'
+                                  : 'Wallet balance'}
+                            </small>
+                          </span>
+                          <span className={s.radioDot} />
+                        </span>
+                      </label>
+                    ))
+                  )}
+                  {draft.showErrors && !supported && (
+                    <p role="alert">
+                      Choose an enabled asset with available data.
+                    </p>
+                  )}
+                </fieldset>
+              )}
+              {draft.step === 1 && asset && (
+                <div className={s.fields}>
+                  <TextInput
+                    label="Amount to back the offer"
+                    inputMode="decimal"
+                    autoComplete="off"
+                    value={draft.amount}
+                    onChange={(e) => edit({ amount: e.target.value })}
+                    error={draft.showErrors ? (errors.amount ?? '') : ''}
+                    endAdornment={
+                      <span className={s.inputSuffix}>
+                        {asset.token.symbol}
+                      </span>
                     }
                   />
-                  <span className={s.assetBody}>
-                    <span className={s.assetLogo}>
-                      <AssetMark symbol={option.symbol} />
+                  <div className={s.balanceRow}>
+                    <span>
+                      Balance: {amount(balance, asset.token.decimals)}{' '}
+                      {asset.token.symbol}
                     </span>
-                    <span className={s.assetName}>
-                      <strong>{option.name}</strong>
-                      <small>{option.symbol}</small>
-                    </span>
-                    <span className={s.assetBalance}>
-                      {option.balance}
-                      <small>Example balance</small>
-                    </span>
-                    <span className={s.radioDot} />
-                  </span>
-                </label>
-              ))}
-              <p className={s.quiet}>
-                Sepolia tokens · example balances, not your wallet.
-              </p>
-            </fieldset>
-          )}
-
-          {draft.step === 1 && (
-            <div className={s.fields}>
-              <div className={s.amountTitle}>
-                <span className={s.assetLogo}>
-                  <AssetMark symbol={asset.symbol} />
-                </span>
-                <div>
-                  <strong>{asset.name}</strong>
-                  <p>{asset.symbol}</p>
-                </div>
-              </div>
-              <TextInput
-                label="Amount to back the offer"
-                inputMode="decimal"
-                autoComplete="off"
-                value={draft.amount}
-                onChange={(event) =>
-                  edit({ type: 'edit', values: { amount: event.target.value } })
-                }
-                error={draft.showErrors ? (errors.amount ?? '') : ''}
-                endAdornment={
-                  <span className={s.inputSuffix}>{asset.symbol}</span>
-                }
-              />
-              <div className={s.balanceRow}>
-                <span>
-                  Example balance: {asset.balance} {asset.symbol}
-                </span>
-                <button
-                  type="button"
-                  onClick={() =>
-                    edit({ type: 'edit', values: { amount: asset.balance } })
-                  }
-                >
-                  Use max
-                </button>
-              </div>
-              <div className={s.explanation}>
-                <Icon name="vault" alt="" size={20} inheritColor />
-                <div>
-                  <strong>Reserved for this offer</strong>
-                  <p>
-                    In the wallet flow, the backing is locked when the listing
-                    is created. This preview does not move any tokens.
+                    <button
+                      type="button"
+                      disabled={balance === null}
+                      onClick={() =>
+                        edit({ amount: amount(balance, asset.token.decimals) })
+                      }
+                    >
+                      Use max
+                    </button>
+                  </div>
+                  <p className={s.quiet}>
+                    Backing is deposited only after you confirm creation in your
+                    wallet.
                   </p>
                 </div>
-              </div>
-            </div>
-          )}
-
-          {draft.step === 2 && (
-            <div className={s.fields}>
-              <Slider
-                label="Income share offered to the buyer"
-                min={1}
-                max={100}
-                value={draft.incomeShare}
-                onChange={(event) =>
-                  edit({
-                    type: 'edit',
-                    values: { incomeShare: Number(event.target.value) },
-                  })
-                }
-                helperText={`You keep ${100 - draft.incomeShare}% of the income during the term.`}
-                error={draft.showErrors ? (errors.incomeShare ?? '') : ''}
-              />
-              <TextInput
-                label="Fixed upfront price"
-                inputMode="decimal"
-                autoComplete="off"
-                value={draft.price}
-                onChange={(event) =>
-                  edit({ type: 'edit', values: { price: event.target.value } })
-                }
-                endAdornment={<span className={s.inputSuffix}>DemoUSD</span>}
-                error={draft.showErrors ? (errors.price ?? '') : ''}
-                helperText="Paid to you once a buyer accepts."
-              />
-              <SegmentedControl
-                label="Income-right period"
-                options={durationOptions.map((days) => ({
-                  label: `${days} days`,
-                  value: String(days),
-                }))}
-                value={String(draft.durationDays)}
-                onChange={(value) =>
-                  edit({
-                    type: 'edit',
-                    values: { durationDays: Number(value) },
-                  })
-                }
-                helperText="The period begins at purchase. The offer stays open for 7 days."
-                error={draft.showErrors ? (errors.durationDays ?? '') : ''}
-              />
-            </div>
-          )}
-
-          {draft.step === 3 && (
-            <div className={s.fields}>
-              <dl className={s.review}>
+              )}
+              {draft.step === 2 && (
+                <div className={s.fields}>
+                  <Slider
+                    label="Income share offered to the buyer"
+                    min={1}
+                    max={100}
+                    value={draft.incomeShare}
+                    onChange={(e) =>
+                      edit({ incomeShare: Number(e.target.value) })
+                    }
+                    helperText={`You keep ${100 - draft.incomeShare}% during the term.`}
+                  />
+                  <TextInput
+                    label="Fixed upfront price"
+                    inputMode="decimal"
+                    autoComplete="off"
+                    value={draft.price}
+                    onChange={(e) => edit({ price: e.target.value })}
+                    error={draft.showErrors ? (errors.price ?? '') : ''}
+                    endAdornment={
+                      <span className={s.inputSuffix}>
+                        {manifest.paymentToken.symbol}
+                      </span>
+                    }
+                    helperText="Paid when a buyer accepts. No guaranteed income."
+                  />
+                  <SegmentedControl
+                    label="Income-right period"
+                    options={durationOptions.map((days) => ({
+                      label: `${days} days`,
+                      value: String(days),
+                    }))}
+                    value={String(draft.durationDays)}
+                    onChange={(value) => edit({ durationDays: Number(value) })}
+                    helperText="The term starts at purchase. This offer will be valid for 7 days."
+                  />
+                </div>
+              )}
+              {draft.step === 3 && (
+                <div className={s.fields}>
+                  <p>
+                    Lock {draft.amount} {asset?.token.symbol}, offer{' '}
+                    {draft.incomeShare}% of allocated income for{' '}
+                    {draft.durationDays} days and receive {draft.price}{' '}
+                    {manifest.paymentToken.symbol} when purchased.
+                  </p>
+                  <Checkbox
+                    label="I understand backing is locked until cancellation or expiry and safe accounting. Income can be zero."
+                    checked={draft.acknowledged}
+                    onChange={(e) =>
+                      setDraft((old) => ({
+                        ...old,
+                        acknowledged: e.target.checked,
+                      }))
+                    }
+                  />
+                  {draft.showErrors && (
+                    <p role="alert">
+                      Review the terms and acknowledge before continuing.
+                    </p>
+                  )}
+                </div>
+              )}
+              {draft.step < 4 && (
+                <div className={s.formActions}>
+                  {draft.step > 0 && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      onClick={() =>
+                        setDraft((old) => ({ ...old, step: old.step - 1 }))
+                      }
+                    >
+                      Back
+                    </Button>
+                  )}
+                  <Button
+                    type="submit"
+                    disabled={assets.loading || balances.loading}
+                  >
+                    Continue
+                  </Button>
+                </div>
+              )}
+              {draft.step === 4 && (
+                <p className={s.quiet}>
+                  Your review is below. No tokens have moved yet. You can go
+                  back to edit any term.
+                </p>
+              )}
+            </form>
+            <aside className={s.summary}>
+              <p className={s.eyebrow}>YOUR OFFER</p>
+              <h2>{asset ? company(asset.token.symbol) : 'Choose an asset'}</h2>
+              <dl className={s.summaryDetails}>
                 <div>
-                  <dt>Backing to lock</dt>
+                  <dt>Backing</dt>
                   <dd>
-                    {draft.amount} {asset.symbol}
+                    {draft.amount || '—'} {asset?.token.symbol}
                   </dd>
                 </div>
                 <div>
-                  <dt>Income for the buyer</dt>
+                  <dt>Income share</dt>
                   <dd>{draft.incomeShare}%</dd>
                 </div>
                 <div>
-                  <dt>Income you retain</dt>
-                  <dd>{100 - draft.incomeShare}%</dd>
+                  <dt>Term at purchase</dt>
+                  <dd>{draft.durationDays} days</dd>
                 </div>
                 <div>
-                  <dt>Rights period</dt>
-                  <dd>{draft.durationDays} days from purchase</dd>
-                </div>
-                <div>
-                  <dt>Offer availability</dt>
-                  <dd>7 days from listing</dd>
-                </div>
-                <div>
-                  <dt>Income paid in</dt>
-                  <dd>{asset.symbol}</dd>
+                  <dt>Fixed price</dt>
+                  <dd>
+                    {draft.price || '—'} {manifest.paymentToken.symbol}
+                  </dd>
                 </div>
               </dl>
-              <div className={s.explanation}>
-                <Icon name="info" alt="" size={20} inheritColor />
-                <p>
-                  You can cancel an unfilled offer. Releasing backing requires
-                  safe accounting. After purchase, the backing stays locked for
-                  the obligation.
-                </p>
-              </div>
-              <Checkbox
-                checked={draft.acknowledged}
-                onChange={(event) =>
-                  dispatch({ type: 'acknowledge', value: event.target.checked })
-                }
-                label="I understand income can be lower than expected or zero."
-                description="The buyer's upfront payment is not refunded at expiry."
-                error={
-                  draft.showErrors && !draft.acknowledged
-                    ? 'Please acknowledge this before completing the preview.'
-                    : ''
-                }
-              />
-            </div>
-          )}
-
-          {ready && (
-            <div className={s.ready}>
-              <span className={s.readyIcon}>
-                <Icon name="receipt" size={30} alt="" inheritColor />
-              </span>
-              <h3>A clear offer. A deliberate next step.</h3>
-              <p>
-                Your draft offers {draft.incomeShare}% of the income from{' '}
-                {draft.amount} {asset.symbol} for {draft.durationDays} days, at{' '}
-                {draft.price} DemoUSD.
+              <p className={s.quiet}>
+                Principal ownership stays yours. Backing release requires safe
+                event accounting.
               </p>
-              <div className={s.explanation}>
-                <Icon name="wallet" size={20} alt="" inheritColor />
-                <p>
-                  To create an onchain listing, open the wallet flow and enter
-                  your terms there. This draft is not transferred or published.
-                </p>
-              </div>
-              <Link href="/lab" className={buttonVariants({ size: 'lg' })}>
-                Open wallet flow{' '}
-                <Icon name="arrow-up-right" alt="" size={18} inheritColor />
-              </Link>
-              <Button
-                variant="ghost"
-                onClick={() => dispatch({ type: 'reset' })}
-              >
-                Start another draft
-              </Button>
-            </div>
+            </aside>
+          </div>
+          {draft.step === 4 && asset && (
+            <TransactionPanel
+              label="Create listing"
+              buildRequest={async () => {
+                if (
+                  !access.wallet ||
+                  !validation.amountAtomic ||
+                  !validation.priceAtomic ||
+                  Object.keys(errors).length
+                )
+                  throw new Error('Review your amount and balance again.');
+                const snapshot = await access.wallet.reader.snapshot('latest');
+                const fresh = await access.wallet.reader.asset(
+                  asset.assetId,
+                  snapshot,
+                );
+                if (fresh.currentMultiplier === null)
+                  throw new Error('Token conversion is unavailable.');
+                const min =
+                  (BigInt(validation.amountAtomic) *
+                    BigInt(fresh.multiplierScale)) /
+                  BigInt(fresh.currentMultiplier);
+                if (min <= 0n)
+                  throw new Error(
+                    'Amount is too small to receive backing shares.',
+                  );
+                return {
+                  action: 'CREATE_PRIMARY_LISTING',
+                  assetKey: fresh.assetKey,
+                  depositTokenAmountAtomic: validation.amountAtomic,
+                  minReceivedShares: min.toString(),
+                  incomeBps: draft.incomeShare * 100,
+                  durationSeconds: draft.durationDays * 86400,
+                  priceAtomic: validation.priceAtomic,
+                  listingExpiresAt: snapshot.blockTimestamp + 7 * 86400,
+                };
+              }}
+            />
           )}
-
-          {draft.showErrors && (
-            <p role="alert" className={s.errorSummary}>
-              Check the highlighted field to continue.
-            </p>
-          )}
-
-          {!ready && (
-            <div className={s.formActions}>
-              {draft.step > 0 ? (
-                <Button
-                  variant="ghost"
-                  leadingIcon="arrow-left"
-                  onClick={() =>
-                    dispatch({ type: 'back', step: draft.step - 1 })
-                  }
-                >
-                  Back
-                </Button>
-              ) : (
-                <span />
-              )}
-              <Button type="submit" trailingIcon="arrow-right">
-                {draft.step === 3 ? 'Finish preview' : 'Continue'}
-              </Button>
-            </div>
-          )}
-        </form>
-
-        <aside className={s.summary} aria-label="Draft offer summary">
-          <div className={s.summaryTop}>
-            <span>Your offer</span>
-            <span className={s.draftTag}>Unpublished</span>
-          </div>
-          <div className={s.summaryAsset}>
-            <span className={s.assetLogo}>
-              <AssetMark symbol={asset.symbol} />
-            </span>
-            <div>
-              <h2>{asset.name}</h2>
-              <p>{asset.symbol}</p>
-            </div>
-          </div>
-          <div className={s.price}>
-            <span>Fixed upfront price</span>
-            <strong>
-              {errors.price ? '—' : draft.price}
-              <small>DemoUSD</small>
-            </strong>
-          </div>
-          <dl className={s.summaryDetails}>
-            <div>
-              <dt>Backing</dt>
-              <dd>
-                {errors.amount ? '—' : draft.amount} {asset.symbol}
-              </dd>
-            </div>
-            <div>
-              <dt>Buyer income share</dt>
-              <dd>{draft.incomeShare}%</dd>
-            </div>
-            <div>
-              <dt>Period at purchase</dt>
-              <dd>{draft.durationDays} days</dd>
-            </div>
-          </dl>
-          <div className={s.ownership}>
-            <Icon name="lock" size={16} alt="" inheritColor />
-            <span>The principal stays yours.</span>
-          </div>
-          <p className={s.quiet}>
-            Your draft is only kept on this page. No tokens are locked and no
-            listing is created.
-          </p>
-        </aside>
-      </div>
+          <WalletActivity />
+        </>
+      )}
     </div>
   );
 }
