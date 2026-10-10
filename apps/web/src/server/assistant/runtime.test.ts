@@ -7,6 +7,8 @@ import type { AssistantMessage } from './state';
 const harness = vi.hoisted(() => ({
   cookie: '',
   frames: [] as Record<string, unknown>[],
+  keepOpen: false,
+  failBeforeStream: false,
   forwarded: null as Record<string, unknown> | null,
   stored: [] as unknown[],
   saved: false,
@@ -48,13 +50,14 @@ vi.mock('@copilotkit/runtime/v2', () => ({
   },
   createCopilotRuntimeHandler: () => async (request: Request) => {
     harness.forwarded = await request.json();
+    if (harness.failBeforeStream) throw new Error('Private provider details');
     const body = new ReadableStream<Uint8Array>({
       start(c) {
         for (const event of harness.frames)
           c.enqueue(
             new TextEncoder().encode(`data: ${JSON.stringify(event)}\n\n`),
           );
-        c.close();
+        if (!harness.keepOpen) c.close();
       },
     });
     return new Response(body, {
@@ -74,6 +77,8 @@ beforeEach(() => {
   harness.stored = [];
   harness.saved = false;
   harness.forwarded = null;
+  harness.keepOpen = false;
+  harness.failBeforeStream = false;
   harness.state.get.mockImplementation(async () => ({
     id: threadId,
     principal: 'guest',
@@ -358,4 +363,136 @@ it('streams canonical quote cards while discarding false model prose from the wi
   );
   const snapshot = JSON.parse((await restored.text()).slice(6));
   expect(snapshot.messages).toEqual(harness.stored);
+});
+
+it('closes a stopped no-tool turn in persisted context before forwarding the next user question', async () => {
+  vi.useFakeTimers();
+  try {
+    const stoppedRun = randomUUID();
+    const oldUser = {
+      id: randomUUID(),
+      role: 'user',
+      content: 'Explain the whole platform in five long paragraphs.',
+    };
+    const nextUser = {
+      id: randomUUID(),
+      role: 'user',
+      content: 'One sentence only: is incomeBps APY?',
+    };
+    harness.keepOpen = true;
+    harness.frames = [
+      { type: 'RUN_STARTED', threadId, runId: stoppedRun },
+      { type: 'TEXT_MESSAGE_START', messageId: 'incomplete' },
+      {
+        type: 'TEXT_MESSAGE_CONTENT',
+        messageId: 'incomplete',
+        delta: 'Unfinished speculative answer',
+      },
+    ];
+    const response = await handleAssistant(
+      request({
+        method: 'agent/run',
+        params: { agentId: 'default' },
+        body: { threadId, runId: stoppedRun, messages: [oldUser] },
+      }),
+    );
+    const result = response.text();
+    harness.state.stop.mockImplementation(async () => {
+      harness.state.heartbeat.mockResolvedValue(true);
+      return true;
+    });
+    const stop = await handleAssistant(
+      request({
+        method: 'agent/stop',
+        params: { agentId: 'default', threadId },
+        body: { runId: stoppedRun },
+      }),
+    );
+    expect(await stop.json()).toEqual({ stopped: true });
+    await vi.advanceTimersByTimeAsync(2000);
+    const wire = await result;
+    expect(wire).toContain('STOPPED');
+    expect(wire).not.toContain('Unfinished speculative answer');
+    const marker = (harness.stored as AssistantMessage[])[1];
+    expect(marker).toMatchObject({
+      id: `grounded-${stoppedRun}`,
+      role: 'assistant',
+    });
+    expect(marker?.content).toMatch(/terhenti/);
+    expect(marker?.content).toMatch(/tidak dilanjutkan/);
+    expect(wire).toContain(String(marker?.content));
+    expect(harness.stored).toHaveLength(2);
+    expect(
+      historyResult(threadId, harness.stored as AssistantMessage[], 1).text,
+    ).toBe(marker?.content);
+
+    harness.keepOpen = false;
+    harness.state.heartbeat.mockResolvedValue(false);
+    harness.frames = [
+      { type: 'TEXT_MESSAGE_START', messageId: 'new-answer' },
+      {
+        type: 'TEXT_MESSAGE_CONTENT',
+        messageId: 'new-answer',
+        delta: 'IncomeBps is a share of income, not APY.',
+      },
+      { type: 'TEXT_MESSAGE_END', messageId: 'new-answer' },
+      { type: 'RUN_FINISHED' },
+    ];
+    const next = await handleAssistant(
+      request({
+        method: 'agent/run',
+        params: { agentId: 'default' },
+        body: { threadId, runId: randomUUID(), messages: [nextUser] },
+      }),
+    );
+    await next.text();
+    expect(harness.forwarded).toMatchObject({
+      body: { messages: [oldUser, marker, nextUser] },
+    });
+    expect(
+      (harness.stored as AssistantMessage[]).map((message) => message.role),
+    ).toEqual(['user', 'assistant', 'user', 'assistant']);
+    expect(harness.state.finish).toHaveBeenCalledTimes(2);
+  } finally {
+    vi.useRealTimers();
+  }
+});
+
+it('also closes a user turn when the provider fails before creating its stream', async () => {
+  const runId = randomUUID();
+  harness.failBeforeStream = true;
+  const response = await handleAssistant(
+    request({
+      method: 'agent/run',
+      params: { agentId: 'default' },
+      body: {
+        threadId,
+        runId,
+        messages: [
+          {
+            id: randomUUID(),
+            role: 'user',
+            content: 'Old interrupted question',
+          },
+        ],
+      },
+    }),
+  );
+  expect(response.status).toBeGreaterThanOrEqual(500);
+  expect(await response.text()).not.toContain('Private provider details');
+  expect(harness.state.finish).toHaveBeenCalledOnce();
+  expect(harness.stored).toHaveLength(2);
+  expect(harness.stored[1]).toMatchObject({
+    id: `grounded-${runId}`,
+    role: 'assistant',
+    content: expect.stringContaining('terhenti'),
+  });
+  const restored = await handleAssistant(
+    request({
+      method: 'agent/connect',
+      params: { agentId: 'default' },
+      body: { threadId },
+    }),
+  );
+  expect(await restored.text()).toContain('tidak dilanjutkan');
 });

@@ -207,7 +207,30 @@ it('releases ordinary no-tool answers only after completion and strips raw/snaps
   expect(output.finish(true)).toEqual(ordinary);
   const aborted = new GroundedOutput('ordinary-stop');
   feed(aborted, textEvents('partial', 'Speculative unfinished answer'));
-  expect(text(aborted.finish(false))).not.toContain('Speculative unfinished');
+  const stopped = aborted.finish(false);
+  expect(text(stopped)).not.toContain('Speculative unfinished');
+  expect(text(stopped)).toMatch(/dihentikan|terhenti|interrupted|stop/i);
+  expect(stopped.map((event) => event.type)).toEqual([
+    'TEXT_MESSAGE_START',
+    'TEXT_MESSAGE_CONTENT',
+    'TEXT_MESSAGE_END',
+  ]);
+  expect(stopped[0]?.messageId).toBe('grounded-ordinary-stop');
+  expect(new GroundedOutput('ordinary-stop').finish(false)).toEqual(stopped);
+  expect(aborted.finish(false)).toEqual([]);
+  expect(aborted.finish(true)).toEqual([]);
+  const collector = new Transcript([
+    { id: 'stopped-question', role: 'user', content: 'Explain everything.' },
+  ]);
+  for (const event of stopped) collector.accept(event);
+  expect(collector.snapshot()).toEqual([
+    { id: 'stopped-question', role: 'user', content: 'Explain everything.' },
+    {
+      id: 'grounded-ordinary-stop',
+      role: 'assistant',
+      content: text(stopped),
+    },
+  ]);
 });
 
 it('uses distinct deterministic generated-message identity for successive runs', () => {

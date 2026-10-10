@@ -175,13 +175,14 @@ export class GroundedOutput {
   finish(completed: boolean): Event[] {
     if (this.flushed) return [];
     this.flushed = true;
-    if (!this.usedTools) return completed ? this.prose : [];
-    const text =
-      ([...this.explanations].join('\n\n') ||
-        'Permintaan berakhir sebelum data selesai diverifikasi. Belum ada hasil yang dapat digunakan.') +
-      (!completed
-        ? '\n\nPermintaan terhenti; hanya hasil yang sudah diverifikasi ditampilkan.'
-        : '');
+    if (!this.usedTools && completed) return this.prose;
+    const text = !this.usedTools
+      ? 'Permintaan ini terhenti. Jawaban yang belum selesai tidak dilanjutkan; kirim pertanyaan baru atau minta ulang jika ingin mencoba lagi.'
+      : ([...this.explanations].join('\n\n') ||
+          'Permintaan berakhir sebelum data selesai diverifikasi. Belum ada hasil yang dapat digunakan.') +
+        (!completed
+          ? '\n\nPermintaan terhenti; hanya hasil yang sudah diverifikasi ditampilkan.'
+          : '');
     const messageId = `grounded-${this.runId}`;
     return [
       { type: 'TEXT_MESSAGE_START', messageId, role: 'assistant' },
