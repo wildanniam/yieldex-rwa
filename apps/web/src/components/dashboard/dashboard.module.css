@@ -466,7 +466,8 @@
   box-shadow:
     0 12px 40px -22px #8877ffbb,
     inset 0 1px #ffffff22;
-  text-align: center;
+  text-align: left;
+  color: #fff;
   scroll-margin-top: 90px;
 }
 .incomeLabel {
@@ -494,7 +495,10 @@
 .incomeActions {
   display: flex;
   gap: 12px;
-  justify-content: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding-top: 22px;
+  border-top: 1px solid #ffffff26;
   margin-top: 26px;
 }
 .incomeActions :is(button, a) {
@@ -721,22 +725,69 @@
 }
 .claimRows {
   display: grid;
-  gap: 16px;
-  margin-block: 20px;
+  gap: 24px;
+  margin-block: 24px;
 }
-.claimRows > div {
+.claimRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 24px;
+  min-width: 0;
 }
-.claimRows strong {
-  font-size: clamp(20px, 3vw, 32px);
+.claimRow + .claimRow {
+  padding-top: 24px;
+  border-top: 1px solid #ffffff26;
+}
+.claimBalance {
+  min-width: 0;
+}
+.claimAsset {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #eeeaff;
+  font-size: 13px;
+}
+.claimAsset svg {
+  width: 20px;
+  height: 20px;
+}
+.claimValue {
+  display: block;
+  margin-top: 8px;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
 }
-.claimRows small {
-  font-size: 14px;
-  font-weight: 400;
+.claimExact {
+  margin-top: 12px;
+  color: #eeeaff;
+  font-size: 12px;
+}
+.claimExact summary {
+  cursor: pointer;
+  width: fit-content;
+}
+.claimExact p {
+  padding-top: 8px;
+  overflow-wrap: anywhere;
+}
+.incomeCard .claimButton {
+  flex-shrink: 0;
+  background: #fff;
+  color: #433895;
+  border-color: #fff;
+  min-height: 44px;
+  padding-inline: 24px;
+  font-weight: 600;
+}
+.incomeCard .claimButton:hover {
+  background: #f0ecff;
+  border-color: #f0ecff;
 }
 .holdings {
   display: grid;
@@ -784,8 +835,12 @@
   .holdingAmount {
     font-size: 12px;
   }
-  .claimRows > div {
+  .claimRow {
     flex-direction: column;
+    align-items: stretch;
+  }
+  .incomeCard .claimButton {
+    width: 100%;
   }
   .intro {
     align-items: flex-start;

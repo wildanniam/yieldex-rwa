@@ -17,6 +17,7 @@ import {
   WalletActivity,
 } from '@/features/marketplace/transaction-panel';
 import s from './dashboard.module.css';
+import { claimAmount } from './claim-amount';
 
 const tabs = ['positions', 'listings', 'vault'] as const;
 type Tab = (typeof tabs)[number];
@@ -123,16 +124,34 @@ export function PortfolioDashboard() {
                 (a) => a.assetKey === c.assetKey,
               );
               return (
-                <div key={c.assetKey}>
-                  <strong>
-                    {a
-                      ? amount(c.claimTokenAmountAtomic, a.token.decimals)
-                      : 'Unavailable'}{' '}
-                    <small>{a?.token.symbol ?? 'Asset'}</small>
-                  </strong>
+                <div key={c.assetKey} className={s.claimRow}>
+                  <div className={s.claimBalance}>
+                    <span className={s.claimAsset}>
+                      {a && <AssetMark symbol={a.token.symbol} />}
+                      {a?.token.symbol ?? 'Asset'}
+                    </span>
+                    <strong className={s.claimValue}>
+                      {a
+                        ? claimAmount(
+                            c.claimTokenAmountAtomic,
+                            a.token.decimals,
+                          )
+                        : 'Unavailable'}
+                    </strong>
+                    {a && c.claimTokenAmountAtomic !== null && (
+                      <details className={s.claimExact}>
+                        <summary>Exact amount</summary>
+                        <p>
+                          {amount(c.claimTokenAmountAtomic, a.token.decimals)}{' '}
+                          {a.token.symbol}
+                        </p>
+                      </details>
+                    )}
+                  </div>
                   <Button
                     variant="outline"
                     size="sm"
+                    className={s.claimButton}
                     onClick={() => setClaimKey(c.assetKey)}
                   >
                     Review claim
