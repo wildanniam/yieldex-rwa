@@ -69,9 +69,10 @@ export function issueTicket(
   principal: string,
   secret: string,
   now = Date.now(),
+  threadId: string = randomUUID(),
 ) {
   const ticket = {
-    id: randomUUID(),
+    id: threadId,
     browser,
     principal,
     expiresAt: now + 1800000,

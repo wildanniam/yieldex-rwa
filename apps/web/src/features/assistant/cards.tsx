@@ -1,9 +1,17 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import type { AssistantCard, ListingDetail, TokenRef } from '@rwa/shared';
 import { validateData } from '@rwa/shared/validation';
 import { formatUnits } from 'viem';
 import styles from './chat.module.css';
+import Link from 'next/link';
+import { AssetMark } from '@/components/landing/asset-mark';
+import { Icon } from '@/components/ui/icon';
+import { liveListingHref } from './session';
+
+export const ToolActivityContext = createContext<boolean | undefined>(
+  undefined,
+);
 
 export const amount = (
   atomic: string | null,
@@ -28,45 +36,68 @@ export function parseCard(threadId: string, toolCallId: string, raw: string) {
     return null;
   }
 }
+// Rafi's comparison-card hierarchy, backed by the canonical ListingDetail.
 function ListingView({ data }: { data: ListingDetail }) {
   const { listing: l, position: p, asset: a } = data;
   return (
-    <div className={styles.row}>
-      <strong>
-        {a.token.symbol} · {l.kind} · #{l.listingId}
-      </strong>
+    <article className={styles.row}>
+      <div className={styles.assetHeading}>
+        <span className={styles.assetMark}>
+          <AssetMark symbol={a.token.symbol} />
+        </span>
+        <div>
+          <strong>{a.token.symbol}</strong>
+          <small>
+            Penawaran #{l.listingId} ·{' '}
+            {l.kind === 'PRIMARY' ? 'Primary' : 'Resale'}
+          </small>
+        </div>
+        <span className={styles.statusBadge}>{l.displayStatus}</span>
+      </div>
+      <div className={styles.price}>
+        <span>Harga hak pendapatan</span>
+        <b>{amount(l.priceAtomic, l.paymentToken)}</b>
+      </div>
+      <dl className={styles.metrics}>
+        <div>
+          <dt>Bagian pendapatan</dt>
+          <dd>{formatUnits(BigInt(p.incomeBps), 2)}%</dd>
+        </div>
+        <div>
+          <dt>{l.kind === 'PRIMARY' ? 'Sejak dibeli' : 'Tenggat asli'}</dt>
+          <dd>
+            {l.kind === 'PRIMARY'
+              ? `${p.durationSeconds / 86400} hari`
+              : p.endAt === null
+                ? 'Belum tersedia'
+                : time(p.endAt)}
+          </dd>
+        </div>
+      </dl>
       <p>
-        Harga hak: <b>{amount(l.priceAtomic, l.paymentToken)}</b>
+        Backing {amount(p.principalTokenAmountAtomic, a.token)} tetap milik
+        penjual. Bagian pendapatan bukan APY.
       </p>
-      <p>
-        Bagian pendapatan: {formatUnits(BigInt(p.incomeBps), 2)}% (bukan APY).
-      </p>
-      <p>
-        Backing: {amount(p.principalTokenAmountAtomic, a.token)} ·{' '}
-        {p.principalShares} shares
-      </p>
-      <p>
-        {l.kind === 'PRIMARY'
-          ? `Durasi sejak dibeli: ${p.durationSeconds} detik`
-          : `Hak berakhir: ${p.endAt === null ? 'Belum tersedia' : time(p.endAt)}`}
-      </p>
-      <p>
-        Batas penawaran: {time(l.expiresAt)} · {l.displayStatus}
-      </p>
-      <p>
-        {a.safetyState} · {a.syncStatus} · metadata {a.metadataStatus} · posisi
-        baru {a.newPositionsEnabled ? 'aktif' : 'ditutup'}
-      </p>
-      <small>
-        Block {l.snapshot.blockNumber} · {l.snapshot.finality} ·{' '}
-        {l.snapshot.indexerStatus}
-      </small>
       <details>
-        <summary>Identitas listing</summary>
+        <summary>Data sumber & ketentuan</summary>
+        <p>
+          Batas penawaran: {time(l.expiresAt)}. {p.principalShares} shares
+          backing.
+        </p>
+        <p>
+          {a.safetyState} · {a.syncStatus} · metadata {a.metadataStatus} ·
+          posisi baru {a.newPositionsEnabled ? 'aktif' : 'ditutup'}
+        </p>
+        <small>
+          Block {l.snapshot.blockNumber} · {l.snapshot.finality} ·{' '}
+          {l.snapshot.indexerStatus}
+        </small>
         <code>{l.listingKey}</code>
       </details>
-      <a href="/lab">Buka marketplace untuk detail dan pembelian</a>
-    </div>
+      <Link className={styles.cardLink} href={liveListingHref(l.listingKey)}>
+        Lihat penawaran <Icon name="arrow-up-right" alt="" size={15} />
+      </Link>
+    </article>
   );
 }
 export function CardView({ card }: { card: AssistantCard }) {
@@ -87,7 +118,7 @@ export function CardView({ card }: { card: AssistantCard }) {
         >
           <h4>Penawaran hak pendapatan</h4>
           <p>
-            Token simulasi · Harga dalam DemoUSD · Snapshot block{' '}
+            Data marketplace · Snapshot block{' '}
             {card.payload.snapshot.blockNumber}
           </p>
           {card.payload.items.length === 0 && (
@@ -152,7 +183,7 @@ export function CardView({ card }: { card: AssistantCard }) {
           data-card-kind={card.kind}
           data-card-id={card.cardId}
         >
-          <h4>Perbandingan quote mainnet</h4>
+          <h4>Perbandingan harga token</h4>
           <p>
             {d.request.mode} · {d.request.comparisonScope} · {d.rankingBasis}
           </p>
@@ -226,7 +257,7 @@ export function CardView({ card }: { card: AssistantCard }) {
           data-card-kind={card.kind}
           data-card-id={card.cardId}
         >
-          <h4>Preview pembelian hak</h4>
+          <h4>Review pembelian hak</h4>
           <p>
             {now >= d.expiresAt ? 'EXPIRED' : d.state} · Chain {d.chainId}
           </p>
@@ -248,8 +279,8 @@ export function CardView({ card }: { card: AssistantCard }) {
             ))}
           </ul>
           <p>
-            Belum ada transaksi dikirim. Pilih listing yang sama di marketplace
-            untuk preview baru dan persetujuan wallet.
+            Belum ada transaksi dikirim. Buka penawaran yang sama untuk
+            pemeriksaan terbaru dan persetujuan wallet.
           </p>
         </section>
       );
@@ -271,7 +302,19 @@ export function ToolResult({
   status: string;
   result?: string | undefined;
 }) {
-  if (status !== 'complete') return <p role="status">Mengambil data {name}…</p>;
+  const running = useContext(ToolActivityContext);
+  if (status !== 'complete' && running === false)
+    return (
+      <p className={styles.toolStatus}>
+        Pengambilan data belum selesai. Kamu bisa meminta data ini lagi.
+      </p>
+    );
+  if (status !== 'complete')
+    return (
+      <p className={styles.toolStatus} role="status">
+        Mengambil data {name}…
+      </p>
+    );
   const card = parseCard(threadId, toolCallId, result ?? '');
   if (card) return <CardView card={card} />;
   let value: unknown;

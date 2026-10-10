@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { WalletSessionGuard } from '@/features/marketplace/use-wallet-session';
 import { ChatbotWrapper } from '@/components/ChatbotWrapper';
 export const metadata: Metadata = {
   title: {
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <WalletSessionGuard />
         <ChatbotWrapper>{children}</ChatbotWrapper>
       </body>
     </html>

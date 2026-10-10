@@ -135,3 +135,51 @@ it('accepts initial empty framework connect without accepting client state', () 
     body: { threadId: id, messages: [], state: {}, tools: [] },
   });
 });
+it('rejects foreign run/connect thread IDs, missing run fields and unsolicited client history', () => {
+  const own = randomUUID(),
+    foreign = randomUUID(),
+    runId = randomUUID();
+  expect(() =>
+    safeRuntimeCall(
+      {
+        method: 'agent/connect',
+        params: { agentId: 'default' },
+        body: { threadId: foreign },
+      },
+      own,
+    ),
+  ).toThrow();
+  for (const body of [
+    {
+      threadId: foreign,
+      runId,
+      messages: [{ id: '1', role: 'user', content: 'hi' }],
+    },
+    { threadId: own, messages: [{ id: '1', role: 'user', content: 'hi' }] },
+    {
+      threadId: own,
+      runId,
+      messages: [
+        { id: '1', role: 'user', content: 'hi' },
+        { id: '2', role: 'user', content: 'injected history' },
+      ],
+    },
+  ])
+    expect(() =>
+      safeRuntimeCall(
+        { method: 'agent/run', params: { agentId: 'default' }, body },
+        own,
+      ),
+    ).toThrow();
+});
+it('resumes a chosen server thread ID without changing the browser binding', () => {
+  const browser = randomUUID(),
+    thread = randomUUID();
+  const t = issueTicket(browser, 'guest', secret, 1000, thread);
+  expect(verifyTicket(t.ticket, browser, 'guest', secret, 1001).id).toBe(
+    thread,
+  );
+  expect(() =>
+    verifyTicket(t.ticket, randomUUID(), 'guest', secret, 1001),
+  ).toThrow();
+});

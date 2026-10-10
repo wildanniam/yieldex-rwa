@@ -106,6 +106,18 @@ Assistant runs SHALL have bounded steps, output, and duration as specified in th
 - **WHEN** the assistant reaches the configured maximum steps or run deadline
 - **THEN** it stops additional tools and reports available results or a recoverable error without repeating transactions.
 
+#### Scenario: Stop arrives before run admission
+- **WHEN** a valid thread issues a stop for a specific run before that run acquires its server lease
+- **THEN** the stop is recorded durably, the arriving run closes its user turn with an interruption marker without invoking the model, and reconnect preserves that disposition.
+
+#### Scenario: Late stop and replay remain isolated
+- **WHEN** a completed run receives a late stop or an already accepted run identifier is replayed
+- **THEN** the completed stop does not affect another run, the replay is rejected, and a subsequent user question does not implicitly resume a cancelled request.
+
+#### Scenario: Pending cancellation storage reaches its bound
+- **WHEN** a thread reaches the configured bound of 128 run identifiers
+- **THEN** new run identifiers return a recoverable chat-limit error, known active runs remain stoppable, and private run controls expire with their owning thread.
+
 ### Requirement: AI-011 Ownership-safe chat state
 The assistant SHALL allow anonymous ephemeral read-only chat for discovery, explanation and quotes using a server-issued transient context and server quotas. Guest runs SHALL expose only the five read tools and SHALL NOT expose `preparePurchase`, save history, or access persisted conversations. Conversation state and card snapshots SHALL be scoped to the authenticated application session where persistence is enabled. User identity SHALL come from validated server context, and public onchain data SHALL NOT authorize access to another user's transcript.
 

@@ -230,7 +230,7 @@ export function assistantTools(
               payoutModel: 'IN_KIND_REBASING_SHARES',
               isDemo: parsed.data.data.token.isDemo,
               summary:
-                'Marketplace menjual hak atas bagian pendapatan untuk durasi tertentu. Demo memakai token simulasi; bukan bukti kepemilikan saham nyata. Income dialokasikan sebagai shares token backing, bukan pembayaran dividen USDC bulanan.',
+                'Token ini adalah aset backing yang dikunci oleh penjual. Posisi marketplace merupakan hak terpisah atas bagian pendapatan untuk durasi tertentu, bukan token backing itu sendiri. Demo memakai token simulasi, bukan bukti kepemilikan saham nyata. Income dialokasikan sebagai shares token backing, bukan dividen USDC bulanan.',
               risks: [
                 'Pendapatan tidak dijamin; incomeBps adalah proporsi pendapatan, bukan APY.',
                 'Harga aset dapat berubah. Stock split bukan pendapatan.',

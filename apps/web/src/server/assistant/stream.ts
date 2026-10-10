@@ -2,7 +2,11 @@
 export function guardedStream(
   source: ReadableStream<Uint8Array>,
   signal: AbortSignal,
-  finish: () => void,
+  finish: () => void | Promise<void>,
+  onEvent?: (
+    event: Record<string, unknown>,
+  ) => Record<string, unknown>[] | void,
+  onEnd?: (completed: boolean) => Record<string, unknown>[],
 ) {
   const reader = source.getReader();
   const encoder = new TextEncoder(),
@@ -10,6 +14,18 @@ export function guardedStream(
   let ended = false,
     buffered = '',
     bytes = 0;
+  let terminal: Uint8Array | undefined;
+  let completed = false;
+  let flushed: Record<string, unknown>[] | undefined;
+  const flushOnce = () =>
+    (flushed ??= onEnd?.(completed && !signal.aborted) ?? []);
+  let cancelled = false;
+  let finishing: Promise<void> | undefined;
+  let detach = () => {};
+  const finishOnce = () =>
+    (finishing ??= (async () => {
+      await finish();
+    })());
   const failure = () =>
     encoder.encode(
       'data: ' +
@@ -26,19 +42,43 @@ export function guardedStream(
     );
   return new ReadableStream<Uint8Array>({
     start(target) {
-      const end = () => {
+      const end = async () => {
         if (ended) return;
         ended = true;
         signal.removeEventListener('abort', abort);
-        finish();
-        target.close();
+        try {
+          for (const event of flushOnce())
+            if (!cancelled)
+              target.enqueue(
+                encoder.encode('data: ' + JSON.stringify(event) + '\n\n'),
+              );
+          await finishOnce();
+          if (!cancelled && terminal) target.enqueue(terminal);
+        } catch {
+          if (!cancelled)
+            target.enqueue(
+              encoder.encode(
+                'data: ' +
+                  JSON.stringify({
+                    type: 'RUN_ERROR',
+                    code: 'AI_STATE_UNAVAILABLE',
+                    message:
+                      'Jawaban belum tersimpan. Pulihkan chat sebelum mengirim lagi.',
+                  }) +
+                  '\n\n',
+              ),
+            );
+        }
+        if (!cancelled) target.close();
       };
       const abort = () => {
         if (ended) return;
-        target.enqueue(failure());
+        completed = false;
+        terminal = failure();
         void reader.cancel().catch(() => {});
         end();
       };
+      detach = () => signal.removeEventListener('abort', abort);
       signal.addEventListener('abort', abort, { once: true });
       if (signal.aborted) {
         abort();
@@ -50,6 +90,7 @@ export function guardedStream(
             const part = await reader.read();
             if (ended) return;
             if (part.done) {
+              terminal ??= failure();
               end();
               return;
             }
@@ -76,12 +117,24 @@ export function guardedStream(
               }
               try {
                 const event = JSON.parse(data);
-                if (event.type === 'RUN_ERROR') target.enqueue(failure());
-                else {
-                  delete event.rawEvent;
-                  target.enqueue(
-                    encoder.encode('data: ' + JSON.stringify(event) + '\n\n'),
+                delete event.rawEvent;
+                const output = onEvent?.(event) ?? [event];
+                for (const next of output) {
+                  if (next.type === 'RUN_ERROR') {
+                    terminal = failure();
+                    completed = false;
+                    void reader.cancel().catch(() => {});
+                    end();
+                    return;
+                  }
+                  delete next.rawEvent;
+                  const frame = encoder.encode(
+                    'data: ' + JSON.stringify(next) + '\n\n',
                   );
+                  if (next.type === 'RUN_FINISHED') {
+                    terminal = frame;
+                    completed = true;
+                  } else target.enqueue(frame);
                 }
               } catch {
                 abort();
@@ -91,18 +144,20 @@ export function guardedStream(
           }
         } catch {
           if (!ended) {
-            target.enqueue(failure());
+            completed = false;
+            terminal = failure();
             end();
           }
         }
       })();
     },
     async cancel() {
-      if (!ended) {
-        ended = true;
-        finish();
-      }
-      await reader.cancel();
+      cancelled = true;
+      ended = true;
+      detach();
+      await reader.cancel().catch(() => {});
+      flushOnce();
+      await finishOnce();
     },
   });
 }

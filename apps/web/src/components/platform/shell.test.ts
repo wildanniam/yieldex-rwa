@@ -26,13 +26,13 @@ describe('shared product shell', () => {
     expect(html).toContain('aria-expanded="false"');
     expect(html).not.toContain('href="/settings"');
   });
-  it('keeps connection a transparent console handoff without claiming a session', () => {
+  it('keeps connection an explicit wallet handoff without claiming a session', () => {
     route.pathname = '/dashboard';
     const html = renderToStaticMarkup(
       createElement(PlatformShell, null, 'Portfolio'),
     );
     expect(html).toContain('Nothing is signed here.');
-    expect(html).toContain('Open wallet console');
+    expect(html).toContain('Continue to wallet');
     expect(html).not.toContain('Wallet connected');
   });
 });
