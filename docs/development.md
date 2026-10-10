@@ -95,3 +95,9 @@ Versi dependency aktual dipin dalam package.json dan pnpm-lock.yaml. TypeScript 
 ## Hosted staging
 
 Runbook rollout: [hosted rollout](hosted-rollout.md). Remote PostgreSQL memerlukan `DATABASE_SSL_CA` berisi PEM CA resmi; web dan worker memverifikasi sertifikat. `DEPLOYMENT_MANIFEST_JSON` pada web menggantikan kebutuhan file lokal di Vercel, tetap melalui validator manifest yang sama. Worker memakai file manifest release. Tidak ada key signer pada web/Vercel.
+
+## Marketplace latest-state reads (2026-10-11)
+
+`LiveMarket` overlays finalized discovery with recent onchain ListingCreated logs and rereads all discovered listings at a single latest block. The finalized worker and database remain unchanged. List, detail and portfolio positions use the same reader; purchases still use existing latest-state review and simulation. RPC errors fail visibly; no silent finalized fallback. A numbered cursor is hash-verified before/after reading; callers restart pagination when the finalized base overtakes it. The first marketplace page polls ten seconds after each completed request, without overlapping requests or clearing cards between successful polls. Later pages remain pinned until explicit refresh.
+
+Verification scope: new confirmed listing visibility, filled/cancelled states, filters/order/pagination, chain reorg and provider failure/recovery. Deterministic tests use mocks; a read-only Sepolia smoke test does not prove a newly broadcast create/buy journey. No test transactions are sent from user wallets automatically.

@@ -14,7 +14,7 @@ import { normalizeAddress } from '@rwa/shared/config';
 import { validateData, type SchemaName } from '@rwa/shared/validation';
 import { ApiFailure } from '../http';
 import { Cursors, queryHash, type PageCursor } from './cursor';
-type Payload = {
+export type Payload = {
   assets: Asset[];
   positions: Position[];
   listings: Listing[];
@@ -45,6 +45,10 @@ export class MarketReads {
     readonly manifest: DeploymentManifest,
     private cursors: Cursors,
     private now = () => Math.floor(Date.now() / 1000),
+    private live?: (
+      base: { payload: Payload; snapshot: ChainSnapshot },
+      cursor: PageCursor | null,
+    ) => Promise<{ payload: Payload; snapshot: ChainSnapshot }>,
   ) {}
   async read(
     path: string[],
@@ -164,7 +168,16 @@ export class MarketReads {
       cursor = q.get('cursor')
         ? this.cursors.decode(q.get('cursor')!, hash)
         : null;
-    const { payload: p, snapshot: s } = await this.load(cursor);
+    const liveRead =
+      !!this.live &&
+      !registry &&
+      (kind === 'listings' ||
+        kind === 'positions' ||
+        (kind === 'accounts' && path[6] === 'positions'));
+    const base = await this.load(liveRead ? null : cursor);
+    const { payload: p, snapshot: s } = liveRead
+      ? await this.live!(base, cursor)
+      : base;
     const assetByKey = new Map(p.assets.map((a) => [a.assetKey, a])),
       positionByKey = new Map(p.positions.map((a) => [a.positionKey, a]));
     const detail = (l: Listing): ListingDetail => {

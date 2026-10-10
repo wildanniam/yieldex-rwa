@@ -6,6 +6,7 @@ import { validateDeploymentManifest } from '@rwa/shared/config';
 import { ChainReader } from '@rwa/shared/chain';
 import { Cursors } from './cursor';
 import { MarketReads } from './reads';
+import { LiveMarket } from './live';
 import { ApiFailure } from '../http';
 let pending:
   | Promise<{
@@ -50,7 +51,13 @@ export function marketContext() {
     return {
       reader,
       db,
-      reads: new MarketReads(db, manifest, new Cursors(CURSOR_SECRET)),
+      reads: new MarketReads(
+        db,
+        manifest,
+        new Cursors(CURSOR_SECRET),
+        undefined,
+        new LiveMarket(reader).load,
+      ),
     };
   })().catch((e) => {
     pending = undefined;

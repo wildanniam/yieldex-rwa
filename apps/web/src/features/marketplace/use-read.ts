@@ -9,6 +9,7 @@ export function useRead<T>(
   path: string | null,
   schema: SchemaName,
   revision = 0,
+  pollMs = 0,
 ) {
   const [retry, setRetry] = useState(0);
   const [state, setState] = useState<{
@@ -25,23 +26,34 @@ export function useRead<T>(
     }
     const controller = new AbortController();
     setState({ path, data: null, error: '', loading: true });
-    void marketRequest(path, { signal: controller.signal })
-      .then((value) => {
-        const data = checkedResponse<T>(schema, value);
-        if (!controller.signal.aborted)
-          setState({ path, data, error: '', loading: false });
-      })
-      .catch((error) => {
-        if (!controller.signal.aborted)
-          setState({
-            path,
-            data: null,
-            error: walletError(error),
-            loading: false,
-          });
-      });
-    return () => controller.abort();
-  }, [path, schema, retry, revision]);
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const read = () => {
+      void marketRequest(path, { signal: controller.signal })
+        .then((value) => {
+          const data = checkedResponse<T>(schema, value);
+          if (!controller.signal.aborted)
+            setState({ path, data, error: '', loading: false });
+        })
+        .catch((error) => {
+          if (!controller.signal.aborted)
+            setState({
+              path,
+              data: null,
+              error: walletError(error),
+              loading: false,
+            });
+        })
+        .finally(() => {
+          if (pollMs > 0 && !controller.signal.aborted)
+            timer = setTimeout(read, pollMs);
+        });
+    };
+    read();
+    return () => {
+      controller.abort();
+      clearTimeout(timer);
+    };
+  }, [path, schema, retry, revision, pollMs]);
   const current =
     state.path === path ? state : { data: null, error: '', loading: !!path };
   return { ...current, refresh };

@@ -6,7 +6,7 @@ Sumber asli, urutan bagian, dan SHA-256 tercantum di bawah. Link relatif di bagi
 File ini menyertakan kontrak data dan fixtures; beberapa fixture sengaja invalid untuk pengujian. Jangan menganggap fixture sebagai transaksi/provider data nyata.
 UI visual mengikuti Afer; chatbot Rafi; core/backend/contracts/quote Wildan/Codex. Lihat execution plan untuk scope dan gate. Jangan menambah swap execution/NFT/training ML di luar scope.
 
-Bundle source digest: `f0c187f27b20583a04737ad7e5922a90367ff263251ac6292c08da53fb664ae9`
+Bundle source digest: `9576ab94a215ccbdf499e5de74db6bbf5e9bd58e5ab4e5e540619621530dcf80`
 
 ## Source Manifest
 
@@ -21,7 +21,7 @@ Bundle source digest: `f0c187f27b20583a04737ad7e5922a90367ff263251ac6292c08da53f
 | `openspec/changes/build-rwa-income-rights/proposal.md` | `33ba944e0e5494948d5a4e73ceedccd29f31912e476e1cc26f1c541a6acd65d8` |
 | `openspec/changes/build-rwa-income-rights/design.md` | `7449d76bd4b9530a725e7393da0c9659ea443761deadf5d5dcd8fb23c8d759c7` |
 | `docs/repository-import.md` | `6beb2752dc2c2bb83fc73cb75cc5f1ccdac4af517f9c426bcb96d7d7c8d724e3` |
-| `docs/development.md` | `61ad66ba7bb5cba59caf336513f2ead7dd289c3513645ddf5ce9cc4eca40c743` |
+| `docs/development.md` | `9d8cbc8b0cb2eb67443dbdb7bcebfa07fde0320e4d89eb209f678d0ebfd49a97` |
 | `docs/local-core.md` | `68c7570cb7b2dfd0433ec255f0c9cede6ec5c058a53d6718ed976f7ef992bfc8` |
 | `docs/core-verification.md` | `7b46c203119719e645159a890b2bd0e0da5194c45751c05d710cfb51753dd893` |
 | `docs/presepolia-remediation.md` | `61c562667f87498c4b39e548165358cb2bedc10026ae84da882188c7b37b0509` |
@@ -35,7 +35,7 @@ Bundle source digest: `f0c187f27b20583a04737ad7e5922a90367ff263251ac6292c08da53f
 | `openspec/changes/build-rwa-income-rights/specs/wallet-transactions/spec.md` | `49f6c09a22b8312b04dfb12f74407335af8d91dbceb1ec2ead9a914c71357129` |
 | `docs/spec/accounting-and-finality.md` | `14f1e66b2bdce2e6283bf1540ebb6f20ee9a5a68d838fc63084516b4a09fbca8` |
 | `docs/spec/ai-and-quotes.md` | `f71d5b19faeb756f777e0f061675ed9b916599d8ea70494742afdbbb457b5b32` |
-| `docs/spec/api-contract.md` | `c8d3e0920459f07ff309306c821951aba1270c371368b15e9c57f1d205607f51` |
+| `docs/spec/api-contract.md` | `f817d50c1fdbb058d94ae82e8231ab8ec2a368e5632539edea942769d7a57e2b` |
 | `docs/spec/contract-interface.md` | `af73a698537a83c1c85b86ea1e94990d948268883bb9966d969c2667ee3875d3` |
 | `docs/spec/coverage.md` | `f471c0366f0044292a51010f38c64fcaa4e3956e3943c9b05f712684b2f1ad8e` |
 | `docs/spec/data-contracts.md` | `5b9157d30122d02bf2521b462a5a9b0afd48ec55f9c6354af51731c63d7bca40` |
@@ -1312,6 +1312,12 @@ Versi dependency aktual dipin dalam package.json dan pnpm-lock.yaml. TypeScript 
 ## Hosted staging
 
 Runbook rollout: [hosted rollout](hosted-rollout.md). Remote PostgreSQL memerlukan `DATABASE_SSL_CA` berisi PEM CA resmi; web dan worker memverifikasi sertifikat. `DEPLOYMENT_MANIFEST_JSON` pada web menggantikan kebutuhan file lokal di Vercel, tetap melalui validator manifest yang sama. Worker memakai file manifest release. Tidak ada key signer pada web/Vercel.
+
+## Marketplace latest-state reads (2026-10-11)
+
+`LiveMarket` overlays finalized discovery with recent onchain ListingCreated logs and rereads all discovered listings at a single latest block. The finalized worker and database remain unchanged. List, detail and portfolio positions use the same reader; purchases still use existing latest-state review and simulation. RPC errors fail visibly; no silent finalized fallback. A numbered cursor is hash-verified before/after reading; callers restart pagination when the finalized base overtakes it. The first marketplace page polls ten seconds after each completed request, without overlapping requests or clearing cards between successful polls. Later pages remain pinned until explicit refresh.
+
+Verification scope: new confirmed listing visibility, filled/cancelled states, filters/order/pagination, chain reorg and provider failure/recovery. Deterministic tests use mocks; a read-only Sepolia smoke test does not prove a newly broadcast create/buy journey. No test transactions are sent from user wallets automatically.
 
 ---
 
@@ -3200,7 +3206,8 @@ Status: kontrak target; public read dan quote routes mempunyai implementasi loka
 - `chainId` path/query adalah decimal integer aman; local ID adalah uint decimal string. Address dinormalisasi setelah validasi. Tanpa chain/contract yang diizinkan -> `UNSUPPORTED_DEPLOYMENT`; jangan memanggil RPC URL dari input user.
 - Response object: `{meta:{schemaVersion,requestId,observedAt},data:DTO}`. Response list: `{meta,items:DTO[],pagination:{nextCursor,hasMore},snapshot}`. `nextCursor=null` iff `hasMore=false`.
 - Error: `{schemaVersion,requestId,error:{code,message,retryable,retryAfterSeconds,details:[{field,code}]}}`. `message` aman ditampilkan; tidak mengandung private stack, key, SQL, JWT, atau raw provider request. UI logic memakai `code`, bukan pencocokan bahasa message.
-- Public GET dapat di-cache maksimal 10 detik untuk indeks finalized; user/private response dan seluruh intent `Cache-Control: no-store`. API quote POST read-only maksimal 10 detik cache internal, tidak diklaim executable.
+- Marketplace listings, listing detail, position detail, dan account positions dibaca pada satu pinned latest block (`LATEST`/`CONFIRMED`), memakai ID indeks finalized ditambah event `ListingCreated` sesudahnya. View sementara ini tidak ditulis ke database finalized. Rentang discovery dibatasi 513 block, batch log maksimal 10 block; jika tertinggal lebih jauh, gagal eksplisit tanpa mengembalikan daftar parsial. Cursor mengunci block/hash dan ditolak jika reorg atau basis finalized sudah melampauinya. Semua public GET saat ini `Cache-Control: no-store`.
+- Public GET boleh di-cache maksimal 10 detik hanya bila menyajikan indeks finalized; user/private response dan seluruh intent `Cache-Control: no-store`. API quote POST read-only maksimal 10 detik cache internal, tidak diklaim executable.
 - Batas umum: request JSON 64 KiB; maximum search limit 20, asset/event/account list 100; normalized query dibatasi sesuai tabel. Rate limit awal public read 60/min/IP, quote 10/min/IP, private prepare 20/min/user; configurable deployment budget. `429` + `Retry-After` bukan quote fiktif atau silent fallback.
 - Semua write data privat yang persisten membutuhkan same-origin check + verified session; guest chat hanya transient read-only sesuai bagian 5. CORS tidak menerima arbitrary origin. API provider keys server-only.
 

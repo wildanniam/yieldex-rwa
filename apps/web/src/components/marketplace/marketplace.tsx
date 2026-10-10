@@ -33,6 +33,7 @@ export function Marketplace() {
     `/chains/${m.chainId}/markets/${m.market}/listings?${query}`,
     'api.ListingsPage',
     revision,
+    cursors.length === 1 ? 10000 : 0,
   );
   function reset() {
     setMarket('ANY');
@@ -193,7 +194,7 @@ export function Marketplace() {
           <p>
             {assetId || market !== 'ANY'
               ? 'Try another asset or listing type.'
-              : 'There are no open offers in the latest indexed snapshot.'}
+              : 'There are no open offers at the latest checked block.'}
           </p>
           {assetId || market !== 'ANY' ? (
             <Button variant="outline" onClick={reset}>
@@ -230,9 +231,11 @@ export function Marketplace() {
       {data.data && (
         <p className={styles.previewNote}>
           Block #{data.data.snapshot.blockNumber} ·{' '}
-          {data.data.snapshot.finality.toLowerCase()} ·{' '}
-          {data.data.snapshot.indexerStatus.toLowerCase()}. Offers are checked
-          again before purchase.
+          {data.data.snapshot.finality === 'FINALIZED'
+            ? 'Finalized'
+            : 'Live on-chain · awaiting finality'}
+          . Offers update automatically on the first page and are checked again
+          before purchase.
         </p>
       )}
     </div>

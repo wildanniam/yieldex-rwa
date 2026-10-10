@@ -47,7 +47,7 @@ export async function GET(
       id,
     );
     return Response.json(result, {
-      headers: { 'Cache-Control': 'public, max-age=10' },
+      headers: { 'Cache-Control': 'no-store' },
     });
   } catch (e) {
     return apiError(e, id);
