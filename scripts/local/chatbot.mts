@@ -475,7 +475,12 @@ try {
     'History and durable run admission/completion roll back atomically on controlled callback failure',
   );
   await assert.rejects(() => stateB.get(thread.id, carol.session.userId));
-  assert.equal(await stateB.stop(thread.id, principal, randomUUID()), false);
+  assert.equal(await stateB.stop(thread.id, principal, randomUUID()), true);
+  assert.equal(
+    await stateA.heartbeat(thread.id, runId, owned.value.version),
+    false,
+    'A stop request for another run must not cancel the current run',
+  );
   assert.equal(await stateB.stop(thread.id, principal, runId), true);
   assert.equal(
     await stateA.heartbeat(thread.id, runId, owned.value.version),
@@ -537,6 +542,174 @@ try {
   await assert.rejects(() => stateB.get(thread.id, principal));
   checks.push(
     'Two service instances share run lease, cross-user isolation, stop flag, replay protection, stale-worker fence, restored messages, expiry and atomic quota',
+  );
+  const earlyThread = await stateA.create(principal);
+  threadIds.push(earlyThread.id);
+  const earlyRun = randomUUID();
+  assert.equal(await stateB.stop(earlyThread.id, principal), false);
+  assert.equal(
+    await stateB.stop(earlyThread.id, carol.session.userId, earlyRun),
+    false,
+  );
+  assert.equal(await stateB.stop(earlyThread.id, principal, earlyRun), true);
+  assert.equal(await stateB.stop(earlyThread.id, principal, earlyRun), true);
+  const early = await stateA.acquire(earlyThread.id, principal, earlyRun, {
+    id: randomUUID(),
+    role: 'user',
+    content: 'Cancelled before admission',
+  });
+  assert.equal(early.cancelled, true);
+  assert.equal(
+    await stateA.heartbeat(earlyThread.id, earlyRun, early.version),
+    true,
+  );
+  assert.equal(early.messages.length, 1);
+  const [earlyCount] =
+    await db`select count(*)::int as total from app_private.assistant_run_controls where thread_id=${earlyThread.id}`;
+  assert.equal(earlyCount?.total, 1, 'Repeated Stop must reuse one run record');
+  await assert.rejects(
+    () =>
+      stateB.acquire(earlyThread.id, principal, earlyRun, {
+        ...msg,
+        id: randomUUID(),
+      }),
+    { code: 'RUN_ACTIVE' },
+  );
+  const cancelledMessages: AssistantMessage[] = [
+    ...early.messages,
+    {
+      id: `grounded-${earlyRun}`,
+      role: 'assistant',
+      content: 'Permintaan ini terhenti.',
+    },
+  ];
+  assert.equal(
+    await stateA.finish(
+      earlyThread.id,
+      earlyRun,
+      early.version,
+      cancelledMessages,
+    ),
+    true,
+  );
+  assert.equal(await stateB.stop(earlyThread.id, principal, earlyRun), false);
+  await assert.rejects(
+    () =>
+      stateA.acquire(earlyThread.id, principal, earlyRun, {
+        ...msg,
+        id: randomUUID(),
+      }),
+    { code: 'RUN_REPLAY' },
+  );
+  const nextRun = randomUUID();
+  const next = await stateA.acquire(earlyThread.id, principal, nextRun, {
+    ...msg,
+    id: randomUUID(),
+    content: 'A distinct next question',
+  });
+  assert.equal(next.cancelled, false);
+  assert.equal(await stateB.stop(earlyThread.id, principal, earlyRun), false);
+  assert.equal(
+    await stateB.stop(earlyThread.id, principal, randomUUID()),
+    true,
+  );
+  assert.equal(
+    await stateA.heartbeat(earlyThread.id, nextRun, next.version),
+    false,
+    'Delayed completed-run Stop and unrelated pending Stop must not cancel a newer run',
+  );
+  assert.deepEqual(next.messages.slice(0, 2), cancelledMessages);
+  await stateA.finish(earlyThread.id, nextRun, next.version, next.messages);
+  checks.push(
+    'Before-admission Stop survives duplicate requests, cancels only its exact run, rejects same-run replay and preserves the next question',
+  );
+  for (let i = 0; i < 8; i++) {
+    const concurrentThread = await stateA.create(principal);
+    threadIds.push(concurrentThread.id);
+    const concurrentRun = randomUUID();
+    const [lease, stop] = await Promise.all([
+      stateA.acquire(concurrentThread.id, principal, concurrentRun, {
+        ...msg,
+        id: randomUUID(),
+      }),
+      stateB.stop(concurrentThread.id, principal, concurrentRun),
+    ]);
+    assert.equal(stop, true);
+    assert.equal(
+      await stateA.heartbeat(concurrentThread.id, concurrentRun, lease.version),
+      true,
+      'Both possible transaction orders must preserve cancellation',
+    );
+    assert.equal(lease.messages.length, 1);
+    await stateA.finish(
+      concurrentThread.id,
+      concurrentRun,
+      lease.version,
+      lease.messages,
+    );
+  }
+  checks.push(
+    'Concurrent Stop and admission across two service instances preserve cancellation and one user message',
+  );
+  const boundedThread = await stateA.create(principal);
+  threadIds.push(boundedThread.id);
+  const boundedRun = randomUUID();
+  const boundedLease = await stateA.acquire(
+    boundedThread.id,
+    principal,
+    boundedRun,
+    { ...msg, id: randomUUID() },
+  );
+  const pendingIds = Array.from({ length: 127 }, () => randomUUID());
+  const pendingStops = await Promise.all(
+    pendingIds.map((id) => stateB.stop(boundedThread.id, principal, id)),
+  );
+  assert.ok(pendingStops.every(Boolean));
+  await assert.rejects(
+    () => stateB.stop(boundedThread.id, principal, randomUUID()),
+    { code: 'CHAT_LIMIT' },
+  );
+  assert.equal(
+    await stateB.stop(boundedThread.id, principal, boundedRun),
+    true,
+    'A full ledger must still allow stopping its active run',
+  );
+  await stateA.finish(
+    boundedThread.id,
+    boundedRun,
+    boundedLease.version,
+    boundedLease.messages,
+  );
+  await assert.rejects(
+    () =>
+      stateA.acquire(boundedThread.id, principal, randomUUID(), {
+        ...msg,
+        id: randomUUID(),
+      }),
+    { code: 'CHAT_LIMIT' },
+  );
+  const knownPending = await stateA.acquire(
+    boundedThread.id,
+    principal,
+    pendingIds[0]!,
+    { ...msg, id: randomUUID() },
+  );
+  assert.equal(knownPending.cancelled, true);
+  await stateA.finish(
+    boundedThread.id,
+    pendingIds[0]!,
+    knownPending.version,
+    knownPending.messages,
+  );
+  const [boundedCount] =
+    await db`select count(*)::int as total from app_private.assistant_run_controls where thread_id=${boundedThread.id}`;
+  assert.equal(boundedCount?.total, 128);
+  await db`delete from app_private.assistant_threads where id=${boundedThread.id}`;
+  const [deletedCount] =
+    await db`select count(*)::int as total from app_private.assistant_run_controls where thread_id=${boundedThread.id}`;
+  assert.equal(deletedCount?.total, 0);
+  checks.push(
+    'Run-control records are bounded under concurrent pending stops, retain active/known-run cancellation at capacity and cascade on thread deletion',
   );
   const evidence = {
     source: 'ISOLATED_LOCAL_ANVIL_SUPABASE_REAL_SERVICES_NO_LLM',

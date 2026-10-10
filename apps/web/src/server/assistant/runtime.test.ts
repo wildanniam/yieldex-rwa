@@ -496,3 +496,40 @@ it('also closes a user turn when the provider fails before creating its stream',
   );
   expect(await restored.text()).toContain('tidak dilanjutkan');
 });
+
+it('honors a stop accepted before lease admission without invoking the model', async () => {
+  const runId = randomUUID();
+  const message = {
+    id: randomUUID(),
+    role: 'user',
+    content: 'Cancel before the provider begins',
+  };
+  harness.state.acquire.mockResolvedValueOnce({
+    messages: [message],
+    version: '1',
+    conversationId: null,
+    cancelled: true,
+  });
+  const response = await handleAssistant(
+    request({
+      method: 'agent/run',
+      params: { agentId: 'default' },
+      body: { threadId, runId, messages: [message] },
+    }),
+  );
+  const wire = await response.text();
+  expect(response.status).toBe(200);
+  expect(wire).toContain('RUN_STARTED');
+  expect(wire).toContain('STOPPED');
+  expect(wire).not.toContain('RUN_FINISHED');
+  expect(harness.forwarded).toBeNull();
+  expect(harness.state.finish).toHaveBeenCalledOnce();
+  expect(harness.stored).toEqual([
+    message,
+    {
+      id: `grounded-${runId}`,
+      role: 'assistant',
+      content: expect.stringContaining('tidak dilanjutkan'),
+    },
+  ]);
+});

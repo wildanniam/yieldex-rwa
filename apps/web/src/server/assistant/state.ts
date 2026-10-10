@@ -30,6 +30,17 @@ const running = () =>
     'RUN_ACTIVE',
     'Jawaban masih diproses. Tunggu atau hentikan dahulu.',
   );
+// All callers hold the parent thread row lock, so the bound is race-safe.
+async function requireRunSlot(sql: postgres.TransactionSql, threadId: string) {
+  const [row] =
+    await sql`select count(*)::int as total from app_private.assistant_run_controls where thread_id=${threadId}`;
+  if (Number(row?.total) >= 128)
+    throw new ApiFailure(
+      409,
+      'CHAT_LIMIT',
+      'Percakapan penuh. Mulai chat baru.',
+    );
+}
 const map = (r: Record<string, unknown>): ThreadState => ({
   id: String(r.id),
   principal: String(r.principal),
@@ -82,6 +93,16 @@ export class AssistantState {
         where id=${id} and principal=${principal} and expires_at>now() for update`;
       if (!row) throw denied();
       if (row.running) throw running();
+      const [control] =
+        await sql`select * from app_private.assistant_run_controls where thread_id=${id} and run_id=${runId}`;
+      if (control?.accepted)
+        throw new ApiFailure(
+          409,
+          'RUN_REPLAY',
+          'Permintaan sudah diterima. Pulihkan percakapan sebelum mencoba lagi.',
+        );
+      if (!control) await requireRunSlot(sql, id);
+      const cancelled = Boolean(control?.stop_requested);
       const messages = row.messages as AssistantMessage[];
       const duplicate = messages.find((m) => m.id === message.id);
       if (duplicate)
@@ -98,13 +119,16 @@ export class AssistantState {
         );
       if (beforeAccept) await beforeAccept(sql);
       const next = [...messages, message];
+      await sql`insert into app_private.assistant_run_controls(thread_id,run_id,accepted,stop_requested)
+        values(${id},${runId},true,${cancelled}) on conflict(thread_id,run_id) do update set accepted=true`;
       const [changed] =
         await sql`update app_private.assistant_threads set messages=${sql.json(JSON.parse(JSON.stringify(next)))},
-        run_id=${runId},lease_until=now()+interval '15 seconds',stop_requested=false,version=version+1,expires_at=now()+interval '30 minutes'
+        run_id=${runId},lease_until=now()+interval '15 seconds',stop_requested=${cancelled},version=version+1,expires_at=now()+interval '30 minutes'
         where id=${id} returning version`;
       return {
         messages: next,
         version: String(changed!.version),
+        cancelled,
         conversationId: row.conversation_id
           ? String(row.conversation_id)
           : null,
@@ -118,11 +142,25 @@ export class AssistantState {
     return !row || Boolean(row.stop_requested);
   }
   async stop(id: string, principal: string, runId?: string) {
-    const rows = await this
-      .db`update app_private.assistant_threads set stop_requested=true
-      where id=${id} and principal=${principal} and expires_at>now() and lease_until>now()
-        ${runId ? this.db`and run_id=${runId}` : this.db`and run_id is not null`} returning id`;
-    return rows.length > 0;
+    return this.db.begin(async (sql) => {
+      const [thread] =
+        await sql`select run_id,lease_until>now() as active from app_private.assistant_threads
+        where id=${id} and principal=${principal} and expires_at>now() for update`;
+      if (!thread) return false;
+      const target =
+        runId ?? (thread.active ? (thread.run_id as string) : undefined);
+      if (!target) return false;
+      const [control] =
+        await sql`select finished from app_private.assistant_run_controls where thread_id=${id} and run_id=${target}`;
+      if (control?.finished) return false;
+      if (!control) await requireRunSlot(sql, id);
+      await sql`insert into app_private.assistant_run_controls(thread_id,run_id,accepted,stop_requested)
+        values(${id},${target},${thread.run_id === target},true)
+        on conflict(thread_id,run_id) do update set stop_requested=true`;
+      await sql`update app_private.assistant_threads set stop_requested=true
+        where id=${id} and run_id=${target} and lease_until>now()`;
+      return true;
+    });
   }
   async finish(
     id: string,
@@ -143,6 +181,9 @@ export class AssistantState {
           'Percakapan melewati batas penyimpanan.',
         );
       if (beforeRelease) await beforeRelease(sql);
+      await sql`insert into app_private.assistant_run_controls(thread_id,run_id,accepted,finished)
+        values(${id},${runId},true,true)
+        on conflict(thread_id,run_id) do update set finished=true`;
       await sql`update app_private.assistant_threads set messages=${sql.json(JSON.parse(JSON.stringify(messages)))},run_id=null,lease_until=null,stop_requested=false where id=${id}`;
       return true;
     });

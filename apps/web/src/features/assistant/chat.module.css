@@ -627,6 +627,7 @@
   line-height: 1.65;
   max-width: 88%;
   overflow-wrap: anywhere;
+  white-space: pre-wrap;
 }
 .welcome {
   flex: 1;

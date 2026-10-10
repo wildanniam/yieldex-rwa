@@ -28,13 +28,13 @@ Halaman account tambahan yang ada di sumber PR18 berisi fixture untuk positions/
 - HMAC ticket terikat browser cookie HttpOnly, principal terverifikasi, thread UUID dan expiry. Ticket hanya di header, tidak di query URL/log.
 - Browser hanya boleh mengirim satu pesan user baru. Riwayat assistant, tool result, context, owner dan wallet tidak berasal dari body browser.
 - Checkpoint sementara di `app_private.assistant_threads` memiliki TTL 30 menit; tidak tersedia sebagai saved history atau PostgREST guest. Cleanup berjalan pada pembuatan sesi berikutnya.
-- Lease dan version fence di PostgreSQL membatasi satu run per thread lintas instance. Stop adalah flag server. Run lama tidak dapat menimpa run yang telah mengambil alih.
+- Lease dan version fence di PostgreSQL membatasi satu run per thread lintas instance. Permintaan stop dicatat per run, termasuk bila tiba sebelum run diterima server. Pembatalan awal menutup pesan user dengan penanda pembatalan tanpa memanggil model; stop terlambat tidak menghentikan run berikutnya. Catatan kontrol dibatasi 128 run per thread dan ikut dihapus saat thread kedaluwarsa. Run lama tidak dapat menimpa run yang telah mengambil alih.
 - Penyimpanan user/assistant ke saved history dan checkpoint memakai transaksi yang sama. Terminal sukses stream diteruskan setelah commit; error tidak dipoles menjadi jawaban selesai.
 - Account/network switch dan logout membersihkan tampilan chat lama; perubahan cookie diserialisasi, termasuk respons login yang terlambat. Model tidak memiliki private key, calldata bebas, approval atau tool broadcast.
 
 ## Migrasi dan konfigurasi
 
-Terapkan `supabase/migrations/202610100001_assistant_state.sql` setelah migrasi existing, **sebelum** merilis runtime ini. Tabel assistant tidak berisi saldo/pokok/hak onchain dan tidak mengubah kontrak. Bila migrasi/config tidak tersedia, chat gagal dengan error tersanitasi; tidak memakai fallback state per-process yang menyesatkan.
+Terapkan `supabase/migrations/202610100001_assistant_state.sql` dan `supabase/migrations/202610100002_assistant_run_controls.sql` secara berurutan setelah migrasi existing, **sebelum** merilis runtime ini. Tabel assistant tidak berisi saldo/pokok/hak onchain dan tidak mengubah kontrak. Bila migrasi/config tidak tersedia, chat gagal dengan error tersanitasi; tidak memakai fallback state per-process yang menyesatkan.
 
 Runtime memerlukan konfigurasi existing `DATABASE_URL`, CA PostgreSQL jika remote, `CURSOR_SECRET`, `APP_ORIGIN`, `OPENAI_API_KEY`, `AI_MODEL`, manifest dan RPC marketplace. `ZEROX_API_KEY` diperlukan untuk quote provider. Tidak ada dependency baru atau signer baru pada web.
 

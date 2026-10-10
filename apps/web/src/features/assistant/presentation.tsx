@@ -35,11 +35,22 @@ function AssistantBubble(props: CopilotChatAssistantMessageProps) {
     </div>
   );
 }
+function UserMessageText({
+  content,
+}: ComponentProps<typeof CopilotChatUserMessage.MessageRenderer>) {
+  return <div className={s.userBubble}>{content}</div>;
+}
 function UserBubble(props: CopilotChatUserMessageProps) {
   return (
-    <CopilotChatUserMessage {...props} className={s.userMessage}>
+    <CopilotChatUserMessage {...props} messageRenderer={UserMessageText}>
       {({ messageRenderer }) => (
-        <div className={s.userBubble}>{messageRenderer}</div>
+        <div
+          className={s.userMessage}
+          data-testid="copilot-user-message"
+          data-message-id={props.message.id}
+        >
+          {messageRenderer}
+        </div>
       )}
     </CopilotChatUserMessage>
   );

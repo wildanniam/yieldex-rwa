@@ -193,6 +193,35 @@ export async function handleAssistant(request: Request): Promise<Response> {
             'Jawaban dihentikan. Pulihkan chat.',
           );
       };
+      if (lease.cancelled) {
+        // A scoped stop can arrive before this request acquires its lease.
+        // Accept/close the user turn durably, without invoking the model.
+        controller.abort('USER_STOP');
+        const events = [
+          { type: 'RUN_STARTED', threadId: ticket.id, runId },
+          ...narration.finish(false),
+          {
+            type: 'RUN_ERROR',
+            code: 'STOPPED',
+            message: 'Permintaan dihentikan.',
+          },
+        ];
+        events.forEach((event) => collector!.accept(event));
+        await cleanup();
+        cleanup = undefined;
+        return new Response(
+          events
+            .map((event) => 'data: ' + JSON.stringify(event) + '\n\n')
+            .join(''),
+          {
+            headers: {
+              'Content-Type': 'text/event-stream',
+              'Cache-Control': 'no-store',
+              'X-Accel-Buffering': 'no',
+            },
+          },
+        );
+      }
       if (request.signal.aborted) controller.abort('CLIENT_DISCONNECTED');
     }
     const assets =
