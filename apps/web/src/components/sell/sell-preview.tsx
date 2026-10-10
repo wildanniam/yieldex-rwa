@@ -12,10 +12,8 @@ import { Slider } from '@/components/ui/slider';
 import { usePlatform } from '@/features/marketplace/platform-provider';
 import { useAssets, useBalances } from '@/features/marketplace/use-portfolio';
 import { amount, company } from '@/features/marketplace/data';
-import {
-  TransactionPanel,
-  WalletActivity,
-} from '@/features/marketplace/transaction-panel';
+import { WalletActivity } from '@/features/marketplace/transaction-panel';
+import { ListingCheckout } from '@/features/marketplace/listing-checkout';
 import {
   durationOptions,
   initialSellDraft,
@@ -35,7 +33,7 @@ const descriptions = [
   'The backing is locked when the listing is created. Ownership stays yours.',
   'Set the income share, upfront price and period.',
   'Review what the buyer receives and what stays with you.',
-  'Approve the backing token first if needed, then review again to create your listing.',
+  'Complete both steps below to publish your offer. Keep this page open until creation is confirmed.',
 ];
 
 export function SellPreview() {
@@ -50,6 +48,7 @@ function SellFlow() {
   const assets = useAssets();
   const balances = useBalances(assets.data?.items ?? []);
   const [draft, setDraft] = useState(initialSellDraft);
+  const [checkoutBusy, setCheckoutBusy] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null),
     form = useRef<HTMLFormElement>(null);
   const asset = assets.data?.items.find((a) => a.assetKey === draft.assetKey);
@@ -132,7 +131,7 @@ function SellFlow() {
                 key={label}
                 type="button"
                 aria-current={i === draft.step ? 'step' : undefined}
-                disabled={i > draft.step}
+                disabled={i > draft.step || checkoutBusy}
                 onClick={() =>
                   setDraft((old) => ({ ...old, step: i, showErrors: false }))
                 }
@@ -344,12 +343,45 @@ function SellFlow() {
                   </Button>
                 </div>
               )}
-              {draft.step === 4 && (
-                <p className={s.quiet}>
-                  Review the terms below before confirming. After submission,
-                  follow the receipt in Recent transactions and open your
-                  position.
-                </p>
+              {draft.step === 4 && asset && (
+                <ListingCheckout
+                  onBusyChange={setCheckoutBusy}
+                  buildRequest={async () => {
+                    if (
+                      !access.wallet ||
+                      !validation.amountAtomic ||
+                      !validation.priceAtomic ||
+                      Object.keys(errors).length
+                    )
+                      throw new Error('Review your amount and balance again.');
+                    const snapshot =
+                      await access.wallet.reader.snapshot('latest');
+                    const fresh = await access.wallet.reader.asset(
+                      asset.assetId,
+                      snapshot,
+                    );
+                    if (fresh.currentMultiplier === null)
+                      throw new Error('Token conversion is unavailable.');
+                    const min =
+                      (BigInt(validation.amountAtomic) *
+                        BigInt(fresh.multiplierScale)) /
+                      BigInt(fresh.currentMultiplier);
+                    if (min <= 0n)
+                      throw new Error(
+                        'Amount is too small to receive backing shares.',
+                      );
+                    return {
+                      action: 'CREATE_PRIMARY_LISTING',
+                      assetKey: fresh.assetKey,
+                      depositTokenAmountAtomic: validation.amountAtomic,
+                      minReceivedShares: min.toString(),
+                      incomeBps: draft.incomeShare * 100,
+                      durationSeconds: draft.durationDays * 86400,
+                      priceAtomic: validation.priceAtomic,
+                      listingExpiresAt: snapshot.blockTimestamp + 7 * 86400,
+                    };
+                  }}
+                />
               )}
             </form>
             <aside className={s.summary}>
@@ -383,45 +415,6 @@ function SellFlow() {
               </p>
             </aside>
           </div>
-          {draft.step === 4 && asset && (
-            <TransactionPanel
-              label="Create listing"
-              buildRequest={async () => {
-                if (
-                  !access.wallet ||
-                  !validation.amountAtomic ||
-                  !validation.priceAtomic ||
-                  Object.keys(errors).length
-                )
-                  throw new Error('Review your amount and balance again.');
-                const snapshot = await access.wallet.reader.snapshot('latest');
-                const fresh = await access.wallet.reader.asset(
-                  asset.assetId,
-                  snapshot,
-                );
-                if (fresh.currentMultiplier === null)
-                  throw new Error('Token conversion is unavailable.');
-                const min =
-                  (BigInt(validation.amountAtomic) *
-                    BigInt(fresh.multiplierScale)) /
-                  BigInt(fresh.currentMultiplier);
-                if (min <= 0n)
-                  throw new Error(
-                    'Amount is too small to receive backing shares.',
-                  );
-                return {
-                  action: 'CREATE_PRIMARY_LISTING',
-                  assetKey: fresh.assetKey,
-                  depositTokenAmountAtomic: validation.amountAtomic,
-                  minReceivedShares: min.toString(),
-                  incomeBps: draft.incomeShare * 100,
-                  durationSeconds: draft.durationDays * 86400,
-                  priceAtomic: validation.priceAtomic,
-                  listingExpiresAt: snapshot.blockTimestamp + 7 * 86400,
-                };
-              }}
-            />
-          )}
           <WalletActivity />
         </>
       )}
