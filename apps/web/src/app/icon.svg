@@ -1,1 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#175342"/><path d="M9 23V9h8a5 5 0 0 1 0 10h-5v4zm3-7h5a2 2 0 0 0 0-4h-5zm5 2 6 5h-5l-5-5z" fill="#f4f5f1"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <defs>
+    <linearGradient id="left" x1="22" y1="22" x2="94" y2="104" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#064d12"/>
+      <stop offset="1" stop-color="#4eaa57"/>
+    </linearGradient>
+    <linearGradient id="right" x1="134" y1="22" x2="104" y2="157" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8dc996"/>
+      <stop offset="1" stop-color="#1c4c28"/>
+    </linearGradient>
+    <linearGradient id="front" x1="96" y1="22" x2="65" y2="170" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#89e28b"/>
+      <stop offset="0.55" stop-color="#41974b"/>
+      <stop offset="1" stop-color="#80c587"/>
+    </linearGradient>
+  </defs>
+  <path d="M22 22H96L139 96L96 170L16 33Q10 22 22 22Z" fill="url(#left)"/>
+  <path d="M96 22H169Q183 22 176 35L105 159Q99 170 86 170H61L139 96Z" fill="url(#right)"/>
+  <path d="M96 22L139 96L96 170H17Q10 170 15 161Z" fill="url(#front)"/>
+</svg>
