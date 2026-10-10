@@ -17,10 +17,10 @@ describe('API failure diagnostics', () => {
           },
         },
       );
-      const response = apiError(error, 'test-request');
+      const response = apiError(error, '00000000-0000-4000-8000-000000000000');
       expect(response.status).toBe(503);
       expect(log).toHaveBeenCalledWith('market_api_failure', {
-        requestId: 'test-request',
+        requestId: '00000000-0000-4000-8000-000000000000',
         causes: [
           { name: 'ContractFunctionExecutionError' },
           { name: 'HttpRequestError', status: 429 },
