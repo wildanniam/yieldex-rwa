@@ -24,7 +24,7 @@ describe('landing server-rendered content', () => {
       'risks',
     ])
       expect(html).toContain(`id="${anchor}"`);
-    for (const route of ['/lab', '/workspace', '/design-system'])
+    for (const route of ['/dashboard', '/workspace', '/design-system'])
       expect(html).toContain(`href="${route}"`);
     expect(html).toContain('<noscript>');
     expect(html).toContain('Enable JavaScript to change scenarios.');

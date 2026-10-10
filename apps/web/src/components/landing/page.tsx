@@ -129,7 +129,7 @@ export function YieldexLanding() {
               fixed term. Keep the principal.
             </p>
             <div className={s.heroActions}>
-              <LinkAction href="/lab">Explore Yieldex</LinkAction>
+              <LinkAction href="/dashboard">Explore Yieldex</LinkAction>
               <LinkAction href="#how-it-works" outline>
                 See how it works
               </LinkAction>

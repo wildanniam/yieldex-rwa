@@ -53,3 +53,7 @@ Reuse issue14/PR15. Test empty/example/loading/error, disabled unknown claims, t
 - PASS: replacement WebP image loads on dashboard/lab, one fixed background layer at scroll; no background on landing. Desktop sidebar is transparent; mobile disclosure remains readable with a translucent dark surface. Source PNG1880213bytes -> WebP14964bytes at2600x1560.
 - PASS with limit: assistant entry reaches the existing unavailable fallback on local admission403. No new production console warnings/errors. Prior dev-only Lit warning remains in the browser log from port3010.
 - NOT TESTED: live wallet/financial actions, live AI success, Safari/Firefox and full assistive technology audit. No change to economic or API behavior.
+
+## Platform integration preview — superseding navigation update
+
+Issue #19 extracts the approved shell into `components/platform/shell.tsx` and shares it across the product route group. The portfolio layout and preview states remain, while Marketplace and Create listing now navigate to actual preview pages. Landing entry links target `/dashboard`. Wallet/claim actions still hand off to `/lab`; this change does not complete baseline live wallet/API acceptance. Earlier verification entries above remain historical.

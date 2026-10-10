@@ -292,7 +292,7 @@ export function ClosingInvitation() {
           Put your assets to work. On your terms.
         </p>
         <div className={s.invitationActions}>
-          <LinkAction href="/lab">Start exploring</LinkAction>
+          <LinkAction href="/dashboard">Start exploring</LinkAction>
           <a href="#how-it-works">
             Revisit the flow{' '}
             <Icon name="arrow-up-right" alt="" inheritColor size={15} />

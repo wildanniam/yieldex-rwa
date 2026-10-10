@@ -166,7 +166,7 @@ export function LandingNav() {
         </nav>
         <div className={s.navActions}>
           <Link
-            href="/lab"
+            href="/dashboard"
             data-action="primary"
             className={buttonVariants({ size: 'sm' })}
           >
@@ -190,7 +190,7 @@ export function LandingNav() {
         <nav className={s.noScriptNav}>
           <a href="#how-it-works">How it works</a>
           <a href="#calculator">The numbers</a>
-          <a href="/lab">Open demo</a>
+          <a href="/dashboard">Open Yieldex</a>
         </nav>
       </noscript>
     </header>

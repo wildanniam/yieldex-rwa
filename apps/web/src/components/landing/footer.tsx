@@ -37,7 +37,7 @@ export function LandingFooter() {
           </div>
           <nav className={s.links} aria-label="Footer product navigation">
             <h2>Explore</h2>
-            <Link href="/lab">Enter Yieldex</Link>
+            <Link href="/dashboard">Enter Yieldex</Link>
             <a href="#how-it-works">How it works</a>
             <a href="#calculator">Income scenarios</a>
             <a href="#assistant">AI assistant</a>

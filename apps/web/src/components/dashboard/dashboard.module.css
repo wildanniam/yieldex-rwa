@@ -1,5 +1,4 @@
 .shell {
-  min-height: 100svh;
   background: transparent;
   color: var(--text-1);
   font-size: 14px;
@@ -19,147 +18,6 @@
 }
 .shell :is(h1, h2, h3, p) {
   margin: 0;
-}
-.skip {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  z-index: 80;
-  transform: translateY(-200%);
-  padding: 12px 20px;
-  border-radius: 12px;
-  background: var(--green-1);
-  color: var(--primary-label);
-}
-.skip:focus {
-  transform: translateY(0);
-}
-.sidebar {
-  width: 248px;
-  position: fixed;
-  inset: 0 auto 0 0;
-  background: transparent;
-  border-right: 1px solid #50555540;
-  padding: 24px 16px;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  z-index: 30;
-}
-.brand {
-  display: flex;
-  align-items: center;
-  height: 44px;
-  padding: 0 16px;
-  margin-bottom: 32px;
-}
-.brand img {
-  object-fit: contain;
-  width: 132px;
-  height: auto;
-}
-.navItem {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  width: 100%;
-  min-height: 44px;
-  padding: 10px 16px;
-  border-radius: 12px;
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--text-2);
-  font: inherit;
-  font-size: 13px;
-  text-align: left;
-  text-decoration: none;
-  cursor: pointer;
-  margin-bottom: 4px;
-  transition:
-    background 0.18s,
-    color 0.18s;
-}
-.navItem:hover {
-  background: #16221d80;
-  color: var(--text-1);
-}
-.navItem > :last-child:not(:first-child) {
-  flex-shrink: 0;
-}
-.navActive {
-  background: linear-gradient(90deg, transparent, #b6eabd12);
-  color: var(--text-1);
-  border-color: transparent;
-  border-right: 3px solid var(--green-1);
-  border-radius: 0;
-}
-.activeDot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--green-text);
-  margin-left: auto;
-}
-.sidebarFoot {
-  margin-top: auto;
-  padding: 32px 10px 4px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 11px;
-  color: var(--text-2);
-}
-.sidebarFoot small {
-  display: block;
-  font-size: 10px;
-  color: var(--text-2);
-  margin-top: 3px;
-}
-.sidebarFoot > :last-child {
-  margin-left: auto;
-  color: var(--green-text);
-}
-.workspace {
-  margin-left: 248px;
-  min-width: 0;
-}
-.header {
-  height: 92px;
-  border-bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 32px;
-  gap: 16px;
-}
-.headerTitle {
-  color: var(--text-2);
-  font-size: 13px;
-}
-.headerTitle span {
-  color: var(--text-1);
-  margin-left: 12px;
-}
-.headerActions {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-.networkLabel {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--text-2);
-}
-.menuToggle {
-  display: none;
-}
-.main {
-  max-width: 960px;
-  margin: auto;
-  padding: 24px 48px 88px;
-  outline: none;
 }
 .intro {
   display: flex;
@@ -639,45 +497,18 @@
   justify-content: center;
   margin-top: 26px;
 }
-.incomeActions button {
+.incomeActions :is(button, a) {
   background: #ffffff16;
   border: 1px solid #ffffff26;
   color: white;
   min-width: 164px;
 }
-.incomeActions button:hover:enabled {
+.incomeActions :is(button, a):hover:enabled {
   background: #ffffff28;
   border-color: #ffffff66;
 }
-.incomeActions button:disabled {
+.incomeActions :is(button, a):disabled {
   opacity: 0.45;
-}
-.sidebarFoot {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 24px 16px 8px;
-}
-.sidebarFoot a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-2);
-  text-decoration: none;
-  font-size: 12px;
-}
-.sidebarFoot > span:last-child {
-  margin: 0;
-  color: var(--text-2);
-  font-size: 10px;
-}
-.sidebar nav {
-  margin-top: 24px;
-}
-.navItem {
-  min-height: 48px;
-  margin-bottom: 8px;
 }
 .activityDisclosure {
   border-top: 1px solid #ffffff12;
@@ -741,25 +572,7 @@
   flex-wrap: wrap;
   justify-content: flex-end;
 }
-@media (min-width: 1700px) {
-  .main {
-    padding-top: 44px;
-  }
-}
 @media (max-width: 1200px) {
-  .sidebar {
-    width: 210px;
-    padding-inline: 12px;
-  }
-  .workspace {
-    margin-left: 210px;
-  }
-  .main {
-    padding-inline: 24px;
-  }
-  .header {
-    padding-inline: 24px;
-  }
   .grid {
     grid-template-columns: minmax(0, 1fr);
     gap: 16px;
@@ -781,74 +594,8 @@
   .intro > button {
     margin-top: 14px;
   }
-  .headerTitle span {
-    display: none;
-  }
-  .headerActions {
-    gap: 16px;
-  }
 }
 @media (max-width: 760px) {
-  .sidebar {
-    position: fixed;
-    width: 100%;
-    top: 68px;
-    bottom: auto;
-    max-height: calc(100svh - 68px);
-    display: none;
-    padding: 12px 20px 24px;
-    background: rgb(2 8 18 / 94%);
-    backdrop-filter: blur(16px);
-    box-shadow: 0 30px 40px #000a;
-    border-bottom: 1px solid var(--input-border);
-  }
-  .sidebarOpen {
-    display: flex;
-  }
-  .sidebar .brand {
-    display: none;
-  }
-  .sidebarFoot {
-    padding-top: 18px;
-  }
-  .workspace {
-    margin-left: 0;
-  }
-  .header {
-    height: 68px;
-    padding: 0 20px;
-    position: sticky;
-    top: 0;
-    background: rgb(2 8 18 / 80%);
-    backdrop-filter: blur(14px);
-    z-index: 40;
-    gap: 12px;
-  }
-  .menuToggle {
-    display: grid;
-    place-items: center;
-    flex-shrink: 0;
-    width: 32px;
-    height: 32px;
-    border: 1px solid var(--input-border);
-    background: var(--card);
-    color: var(--text-1);
-    border-radius: 8px;
-  }
-  .headerTitle {
-    margin-right: auto;
-    font-size: 12px;
-    color: var(--text-1);
-  }
-  .networkLabel {
-    display: none;
-  }
-  .headerActions {
-    gap: 0;
-  }
-  .main {
-    padding: 26px 20px 112px;
-  }
   .intro {
     margin-bottom: 22px;
   }
@@ -913,16 +660,6 @@
   }
 }
 @media (max-width: 360px) {
-  .main {
-    padding-inline: 14px;
-  }
-  .header {
-    padding-inline: 14px;
-  }
-  .headerActions button {
-    font-size: 11px;
-    padding-inline: 12px;
-  }
   .intro {
     flex-direction: column;
     gap: 12px;
@@ -969,7 +706,7 @@
   .incomeActions {
     gap: 8px;
   }
-  .incomeActions button {
+  .incomeActions :is(button, a) {
     min-width: 0;
     flex: 1;
     padding-inline: 8px;

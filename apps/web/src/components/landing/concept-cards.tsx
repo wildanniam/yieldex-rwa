@@ -368,7 +368,7 @@ export function ConceptCards() {
           </p>
         </div>
         <OfferArtwork />
-        <Link className={s.textLink} href="/lab">
+        <Link className={s.textLink} href="/dashboard">
           Create an offer{' '}
           <Icon name="arrow-up-right" size={16} alt="" inheritColor />
         </Link>
