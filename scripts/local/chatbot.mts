@@ -627,7 +627,10 @@ try {
     const concurrentThread = await stateA.create(principal);
     threadIds.push(concurrentThread.id);
     const concurrentRun = randomUUID();
-    const [lease, stop] = await Promise.all([
+    const [lease, stop]: [
+      Awaited<ReturnType<AssistantState['acquire']>>,
+      boolean,
+    ] = await Promise.all([
       stateA.acquire(concurrentThread.id, principal, concurrentRun, {
         ...msg,
         id: randomUUID(),
