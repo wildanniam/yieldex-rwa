@@ -130,7 +130,7 @@ export const NumbersScene: React.FC = () => {
                 {Math.round(bob)}
               </div>
               <div style={{ fontSize: 24, color: C.text2 }}>
-                DemoUSD-equivalent
+                USDC-equivalent
               </div>
             </div>
           </AllocationDial>
@@ -142,7 +142,7 @@ export const NumbersScene: React.FC = () => {
             show={pop(f, N.paid)}
             kicker="Bob paid upfront"
             value={`${PRICE}`}
-            unit="DemoUSD · fixed"
+            unit="USDC · fixed"
             note="Not refunded at expiry"
           />
           <SideCard

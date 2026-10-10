@@ -1,6 +1,7 @@
 import type React from 'react';
 import { C, FONT, primaryGradient } from '../theme';
 import { IncomeRing } from './IncomeRing';
+import { TokenBrand } from './TokenBrand';
 
 type OfferTicketProps = {
   readonly width?: number;
@@ -107,7 +108,7 @@ export const ResaleCard: React.FC<ResaleCardProps> = ({
             marginTop: 4,
           }}
         >
-          RESALE · demoAAPL
+          RESALE · AAPLx
         </div>
       </div>
       <div
@@ -135,7 +136,7 @@ export const ResaleCard: React.FC<ResaleCardProps> = ({
         {[
           ['Income', '50%'],
           ['Left', '118 days'],
-          ['Price', '45 DemoUSD'],
+          ['Price', '45 USDC'],
         ].map(([k, v]) => (
           <div key={k}>
             <div style={{ fontSize: 18, color: '#9aae9e' }}>{k}</div>
@@ -206,7 +207,14 @@ export const OfferTicket: React.FC<OfferTicketProps> = ({
     }}
   >
     <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-      <IncomeRing size={60} spin={spin} glow={0.5} ticks={0} />
+      <div
+        style={{ position: 'relative', width: 60, height: 60, flexShrink: 0 }}
+      >
+        <IncomeRing size={60} spin={spin} glow={0.5} ticks={0} />
+        <div style={{ position: 'absolute', inset: 18 }}>
+          <TokenBrand brand="AAPLx" size={24} />
+        </div>
+      </div>
       <div style={{ flex: 1 }}>
         <div
           style={{
@@ -216,7 +224,7 @@ export const OfferTicket: React.FC<OfferTicketProps> = ({
             letterSpacing: '-0.02em',
           }}
         >
-          demoAAPL
+          AAPLx
         </div>
         <div
           style={{
@@ -271,7 +279,7 @@ export const OfferTicket: React.FC<OfferTicketProps> = ({
       </Row>
       <Row label="Fixed price" show={rows[2]}>
         {Math.round(price)}
-        <Unit>DemoUSD</Unit>
+        <Unit>USDC</Unit>
       </Row>
       <Row label="Offer valid" show={rows[3]}>
         {validity}

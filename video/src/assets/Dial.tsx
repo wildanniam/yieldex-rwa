@@ -5,7 +5,7 @@ import { C, FONT } from '../theme';
 
 type DialProps = {
   readonly size?: number;
-  /** Income in the period, DemoUSD-equivalent; 200 fills the ring. */
+  /** Income in the period, USDC-equivalent; 200 fills the ring. */
   readonly income: number;
   /** Buyer's share 0..1. */
   readonly share: number;

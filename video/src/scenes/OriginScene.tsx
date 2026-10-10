@@ -226,8 +226,8 @@ export const OriginScene: React.FC = () => {
                     left: '50%',
                     translate: '-50% 0',
                     fontFamily: FONT,
-                    fontSize: 24,
-                    color: C.text3,
+                    fontSize: 27,
+                    color: '#afc4b8',
                     fontWeight: 500,
                   }}
                 >

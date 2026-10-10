@@ -6,6 +6,8 @@ Film explainer Yieldex v2: **94,4 detik, 1920×1080, 30 fps, dengan voice-over b
 
 [Unduh MP4 preview 720p](exports/yieldex-film-preview-720p.mp4): **1280×720, 30 fps, 94,4 detik, sekitar 8,2 MB**, lengkap dengan voice-over, musik, dan SFX hasil polish. File ini disimpan langsung di Git biasa, sehingga ikut terunduh saat clone atau pull branch `feat/product-film-video` tanpa Git LFS atau render ulang.
 
+**Status preview:** MP4 yang tersimpan masih hasil polish pada `932cf71`. Revisi identitas Apple/AAPLx, Microsoft/MSFTx, NVIDIA/NVDAx dan USDC sudah tersedia di source; render versi ini dilakukan secara lokal dengan perintah di bawah.
+
 Dari root repository di Mac:
 
 ```sh
@@ -31,6 +33,14 @@ pnpm stills YieldexFilmSilent 300,900,1500 out/stills
 pnpm typecheck
 ```
 
+Untuk preview 720p versi terbaru (dari folder `video`):
+
+```sh
+pnpm audio
+pnpm exec remotion render src/index.ts YieldexFilm out/yieldex-film-preview-720p.mp4 --scale=0.6666666667 --crf=26
+open out/yieldex-film-preview-720p.mp4
+```
+
 `public/audio/mix.wav` dan `out/` adalah hasil build dan tidak di-commit. `pnpm audio` deterministik: menjalankannya ulang menghasilkan file yang identik (MD5 sama). Komposisi `YieldexFilmSilent` sama persis dengan film utama tanpa track audio, berguna untuk render cepat dan still.
 
 ## 1. Riset singkat
@@ -52,11 +62,11 @@ Penonton harus paham **apa yang berpindah, apa yang tetap, dan siapa yang mengon
 
 | Objek                                | Arti                    | Aturan visual                                                         |
 | ------------------------------------ | ----------------------- | --------------------------------------------------------------------- |
-| Koin hijau 3D `demoAAPL`             | Token saham / principal | Tetap milik Alice; tidak pernah berpindah ke pembeli                  |
+| Koin hijau 3D `AAPLx`                | Token saham / principal | Tetap milik Alice; tidak pernah berpindah ke pembeli                  |
 | Cincin cahaya                        | Hak pendapatan          | Lepas dari koin, dilipat jadi tiket, berpindah utuh ke Bob lalu Carol |
 | Lintasan luar cincin + pin di jam 12 | Jam tenor dan expiry    | Mulai saat pembelian; tidak reset saat resale                         |
 | Vault kaca                           | Backing yang dikunci    | Tidak bergerak sepanjang panggung                                     |
-| Koin perak `$`                       | DemoUSD (pembayaran)    | Netral, tidak pernah hijau; selalu berlawanan arah dengan hak         |
+| Koin perak `$`                       | USDC (pembayaran)       | Netral, tidak pernah hijau; selalu berlawanan arah dengan hak         |
 | Tetes hijau kecil                    | Pendapatan in-kind      | Keluar dari vault, terbelah sesuai persentase                         |
 | Kapsul hijau                         | Satu transaksi atomik   | "Both happen, or neither"                                             |
 | Orb ungu                             | Yieldex AI              | Ungu hanya untuk AI (sesuai color-system spec)                        |
@@ -68,7 +78,7 @@ Kuning hanya dipakai untuk peringatan ("Income can be lower, or zero"); merah ti
 Versi kedua sengaja keluar dari gaya landing page. Efeknya ada di `src/fx/`:
 
 - **Kamera**: drift handheld halus ditambah shake yang dipicu dari cue suara yang sama (`src/cues.ts`), sehingga hentakan visual dan audio selalu jatuh di frame yang sama. Panggung marketplace dimiringkan 9° dalam perspektif 3D, lengkap dengan refleksi lantai dan contact shadow.
-- **Cahaya**: anamorphic flare, god ray saat dividen jatuh, light sweep untuk time-lapse, bloom saat transisi, light leak yang bergerak, dan bokeh di latar depan dengan parallax yang lebih cepat dari dunia.
+- **Cahaya**: bokeh tipis di tepi frame agar objek dan teks terbaca, anamorphic flare, god ray saat dividen jatuh, light sweep untuk time-lapse, bloom saat transisi, light leak yang bergerak, dan bokeh di latar depan dengan parallax yang lebih cepat dari dunia.
 - **Gerak**: motion smear (ghost sample di sepanjang lintasan objek) untuk semua token yang terbang; burst partikel, shockwave, dan motes untuk lock, settle, dividen, klaim, dan logo.
 - **Transisi**: kamera menembus cincin pendapatan ke panggung (portal); bloom ungu ke AI; zoom-through ke angka; teks pada dial memudar sebelum cincin membesar secara seragam, membuka scene ledger melalui aperture bundar; blok ledger menyatu menjadi logo.
 - **Pembuka**: close-up makro dengan focus pull dan flare, lalu pull-back.
@@ -81,10 +91,10 @@ Semua timing berasal dari satu file, `src/timeline.ts`. Beat visual, penempatan 
 | ----------- | ------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
 | 0:00–0:08   | Hook/masalah  | Close-up koin → timeline pendapatan M1–M6 → koin "dijual" (smear) menyisakan slot kosong "TODAY"          | "Your tokenized stocks earn income. Slowly… Selling means giving up the asset." |
 | 0:08–0:17   | Ide/definisi  | Cincin pendapatan terlepas (burst, shockwave), Principal vs Income right, logo + definisi, portal         | "So what if you could sell, just the income? Meet Yieldex…"                     |
-| 0:17–0:28   | Lock & list   | Koin masuk vault, gembok + shockwave; cincin dilipat jadi tiket 50% · 6 bulan · 90 DemoUSD · valid 7 hari | "Alice locks her shares… half the income, for six months, at ninety DemoUSD."   |
-| 0:28–0:36   | Beli          | Kursor Bob, kapsul atomik, 90 DemoUSD → Alice, cincin → Bob, "Settled"; "Day 1 of 180"                    | "Bob buys it… Both happen, or neither. His six-month clock starts now."         |
-| 0:37–0:47   | Pendapatan    | Light sweep time-lapse → hari 62; god ray, +1 demoAAPL terbelah 0,50/0,50 ke tray klaim                   | "When a dividend lands, the contract splits it… whenever they like."            |
-| 0:47–0:57   | Resale        | Kartu "Whole position · 45 DemoUSD", cincin pindah ke Carol, flare di pin expiry, klaim Bob tetap         | "Bob resells the whole right to Carol. New owner. Same deadline…"               |
+| 0:17–0:28   | Lock & list   | Koin masuk vault, gembok + shockwave; cincin dilipat jadi tiket 50% · 6 bulan · 90 USDC · valid 7 hari    | "Alice locks her shares… half the income, for six months, at ninety USDC."      |
+| 0:28–0:36   | Beli          | Kursor Bob, kapsul atomik, 90 USDC → Alice, cincin → Bob, "Settled"; "Day 1 of 180"                       | "Bob buys it… Both happen, or neither. His six-month clock starts now."         |
+| 0:37–0:47   | Pendapatan    | Light sweep time-lapse → hari 62; god ray, +1 AAPLx terbelah 0,50/0,50 ke tray klaim                      | "When a dividend lands, the contract splits it… whenever they like."            |
+| 0:47–0:57   | Resale        | Kartu "Whole position · 45 USDC", cincin pindah ke Carol, flare di pin expiry, klaim Bob tetap            | "Bob resells the whole right to Carol. New owner. Same deadline…"               |
 | 0:57–1:02   | Ringkasan     | Wide shot; event kedua → Alice 1,00 · Bob 0,50 · Carol 0,50                                               | "Every share of income, accounted for."                                         |
 | 1:02–1:12   | AI            | Bloom ungu, orb + ripple, prompt diketik, 3 listing ilustratif, kartu risiko, preview "Confirm in wallet" | "Ask Yieldex AI… Your wallet always has the final say."                         |
 | 1:12–1:21   | Angka jujur   | Dial: 200 → +10 (+11,11%), 100 → −40, 0 → −90; partikel mengalir/terkuras                                 | "The price is fixed. The income isn't. Higher. Lower. Or nothing at all."       |
@@ -120,8 +130,8 @@ Jika satu baris menjadi lebih panjang, geser `VOICE` atau beat terkait di `src/t
 
 ## 5. Batas klaim (dicek terhadap spec)
 
-- Semua angka adalah contoh hipotetis dari PRD §4 (90 DemoUSD, 50%, 6 bulan, 200/100/0, resale 45 DemoUSD). Film menyebutnya "Hypothetical… Not a forecast · Not a loan".
-- Token adalah `demo*` dan DemoUSD simulasi; tidak ada klaim backing saham nyata. Tidak memakai logo emiten.
+- Semua angka adalah contoh hipotetis dari PRD §4 (90 USDC, 50%, 6 bulan, 200/100/0, resale 45 USDC). Film menyebutnya "Hypothetical… Not a forecast · Not a loan".
+- Identitas aset dalam film memakai Apple/AAPLx, Microsoft/MSFTx, NVIDIA/NVDAx dan USDC. Nama dan logo adalah ilustrasi presentasi; kontrak dan aset pengujian Sepolia tidak diubah. Penanda Sepolia dan angka hipotetis tetap tampil.
 - Tidak ada NFT, transfer parsial, atau hadiah: resale ditampilkan sebagai "Whole position".
 - AI ditampilkan read-only: tidak swap, tidak tanda tangan; wallet pengguna yang mengonfirmasi (AI-001/AI-006). Listing di chat diberi label ilustratif.
 - Pembayaran dan hak berpindah atomik (MKT-005); tenor mulai saat pembelian (MKT-003); resale mempertahankan expiry dan klaim lama (MKT-006). VO menyebut pembagian "by the agreed share", bukan "otomatis", karena klasifikasi event melewati finalizer.
@@ -171,3 +181,24 @@ Verifikasi pada baseline `e224163` + working diff polish:
 - NOT RUN: review dengar oleh manusia, browser selain Chromium. Screenshot dan cuplikan audio QA disimpan sebagai output ignored.
 
 Akses API GitHub pada environment ini mengembalikan Forbidden, sehingga issue/PR remote belum dapat diperiksa atau diperbarui.
+
+## 9. Identitas aset dan polish lanjutan — 10 Oktober 2026
+
+Baseline `932cf71`, branch `feat/product-film-video`.
+
+- Koin utama dan pendapatan memakai logo Apple dengan ticker AAPLx. Listing AI memakai logo Apple, Microsoft, NVIDIA dengan nama perusahaan serta ticker AAPLx, MSFTx, NVDAx.
+- Label saldo, pembayaran, listing dan angka memakai USDC. VO `set_terms` dibuat ulang dengan Kokoro `af_heart`; penyebutan “U S D C” menggantikan nama sebelumnya. Jeda penutup 0,65 detik dipertahankan.
+- Bokeh dikurangi dan ditempatkan di tepi layar. Ticker koin dan label bulan dibuat lebih jelas; metadata purchase preview diringkas agar tidak berdesakan dengan tombol wallet.
+- CTA menjadi “Explore Yieldex”. Seluruh teks layar dan naskah VO memakai identitas yang sama; durasi tetap 2832 frame / 94,4 detik.
+- Preview yang didistribusikan tetap `exports/yieldex-film-preview-720p.mp4`, disimpan di Git biasa agar dapat diunduh atau diambil dengan `git pull`.
+
+Logo Apple dan NVIDIA berasal dari [Simple Icons 13.9.0](https://github.com/simple-icons/simple-icons/tree/13.9.0) (CC0); path SVG di-inline dalam `src/assets/TokenBrand.tsx` agar tajam dan tidak memerlukan request jaringan saat render. Logo Microsoft memakai empat bidang vektor berwarna. Nama/logo merek tetap milik pemiliknya masing-masing.
+
+Verifikasi revisi identitas pada baseline `932cf71` + working diff:
+
+- PASS `pnpm check`: format, lint, typecheck, 158 Vitest, 46 Foundry, generated parity, 10 OpenSpec items, dokumen dan production build.
+- PASS pemeriksaan frame 115, 820, 1210, 2005, 2140, 2310, 2458, 2510, 2795: ikon merek, listing/risiko/purchase preview, label harga dan penutup terbaca tanpa overlap.
+- PASS playback Chromium dari AI melalui penutup dan loop pembuka; tidak ada error aplikasi. Request pengecekan versi Remotion diblokir jaringan dan tidak memengaruhi playback.
+- PASS `pnpm audio`: 94,4 detik, 23 VO, 114 cue, −15,0 LUFS, peak −1,0 dBFS. Baris harga baru berdurasi 5,921 detik dan lolos pemeriksaan jarak antar-VO; tidak ada perubahan sumber suara penutup.
+- PASS pencarian source: tidak ada label/naskah dengan kata “demo” di `src/`.
+- Render penuh revisi identitas di cloud dihentikan sesuai permintaan pengguna untuk melanjutkan di lokal. Preview MP4 yang dilacak Git tetap versi `932cf71`; render frame untuk QA dan mix audio baru sudah selesai, sedangkan encode MP4 final revisi ini belum selesai/diverifikasi.

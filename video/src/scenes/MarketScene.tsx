@@ -338,8 +338,8 @@ export const MarketScene: React.FC = () => {
                 size={26}
               >
                 {f < T.lock
-                  ? 'Backing · 100 demoAAPL'
-                  : 'Backing · 100 demoAAPL · locked'}
+                  ? 'Backing · 100 AAPLx'
+                  : 'Backing · 100 AAPLx · locked'}
               </Chip>
             </Place>
             <Place p={{ x: VAULT.x, y: 300 }}>
@@ -362,7 +362,7 @@ export const MarketScene: React.FC = () => {
                 tone="green"
                 size={28}
               >
-                Dividend event · +1 demoAAPL
+                Dividend event · +1 AAPLx
               </Chip>
             </Place>
 
@@ -578,7 +578,7 @@ export const MarketScene: React.FC = () => {
               draw={tween(f, T.capsule, T.capsule + 30, 0, 1, easeInOut)}
               done={tween(f, T.settled, T.settled + 4)}
               label="One transaction · both happen, or neither"
-              doneLabel="Settled · right → Bob, 90 DemoUSD → Alice"
+              doneLabel="Settled · right → Bob, 90 USDC → Alice"
               opacity={1 - tween(f, T.termStart + 30, T.termStart + 54)}
             />
             <Burst
@@ -620,7 +620,7 @@ export const MarketScene: React.FC = () => {
               </Place>
             ) : null}
 
-            {/* payments: neutral DemoUSD, always opposite to the right */}
+            {/* payments: neutral USDC, always opposite to the right */}
             {f >= T.xfer && f <= T.xferEnd + 12 ? (
               <>
                 <Trail
@@ -643,7 +643,7 @@ export const MarketScene: React.FC = () => {
                   }
                   opacity={1 - tween(f, T.xferEnd - 2, T.xferEnd + 8)}
                   render={(x) => (
-                    <PayCoin size={96} label="90 DemoUSD" spin={x * 6} />
+                    <PayCoin size={96} label="90 USDC" spin={x * 6} />
                   )}
                 />
               </>
@@ -670,7 +670,7 @@ export const MarketScene: React.FC = () => {
                   }
                   opacity={1 - tween(f, T.resaleEnd - 2, T.resaleEnd + 8)}
                   render={(x) => (
-                    <PayCoin size={90} label="45 DemoUSD" spin={x * 6} />
+                    <PayCoin size={90} label="45 USDC" spin={x * 6} />
                   )}
                 />
               </>

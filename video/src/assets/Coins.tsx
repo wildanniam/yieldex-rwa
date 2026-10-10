@@ -1,6 +1,7 @@
 import type React from 'react';
 import { useId } from 'react';
 import { svgId } from '../lib/anim';
+import { TokenBrand } from './TokenBrand';
 
 type CoinVariant = 'stock' | 'pay';
 
@@ -32,11 +33,11 @@ type CoinFaceProps = {
   readonly sheen?: number;
 };
 
-/** Flat coin face. Stock coins carry a ticker monogram, pay coins a $ glyph. */
+/** Engraved brand face for the stock; neutral silver for payment. */
 export const CoinFace: React.FC<CoinFaceProps> = ({
   variant = 'stock',
-  glyph = variant === 'stock' ? 'A' : '$',
-  ticker = variant === 'stock' ? 'demoAAPL' : 'DemoUSD',
+  glyph,
+  ticker = variant === 'stock' ? 'AAPLx' : 'USDC',
   sheen = -1,
 }) => {
   const id = svgId(useId(), 'coin');
@@ -87,27 +88,37 @@ export const CoinFace: React.FC<CoinFaceProps> = ({
         strokeWidth="1.4"
         strokeDasharray="1.5 5"
       />
-      <text
-        x="100"
-        y={variant === 'stock' ? 121 : 124}
-        textAnchor="middle"
-        fontFamily="Inter"
-        fontWeight={600}
-        fontSize={variant === 'stock' ? 66 : 72}
-        fill={p.glyph}
-      >
-        {glyph}
-      </text>
+      {variant === 'stock' && !glyph ? (
+        <TokenBrand
+          brand="AAPLx"
+          size={68}
+          x={66}
+          y={58}
+          monochrome="#f3fff5"
+        />
+      ) : (
+        <text
+          x="100"
+          y={variant === 'stock' ? 121 : 124}
+          textAnchor="middle"
+          fontFamily="Inter"
+          fontWeight={600}
+          fontSize={variant === 'stock' ? 66 : 72}
+          fill={p.glyph}
+        >
+          {glyph ?? '$'}
+        </text>
+      )}
       <text
         x="100"
         y="152"
         textAnchor="middle"
         fontFamily="Inter"
         fontWeight={500}
-        fontSize="12.5"
-        letterSpacing="1.6"
+        fontSize="16"
+        letterSpacing="1.2"
         fill={p.glyph}
-        fillOpacity="0.7"
+        fillOpacity="0.92"
       >
         {ticker}
       </text>
@@ -275,7 +286,7 @@ const tokenLabel = (label: string, size: number, color: string) => (
   </div>
 );
 
-/** DemoUSD payment token: neutral silver, never green. */
+/** USDC payment token: neutral silver, never green. */
 export const PayCoin: React.FC<TokenProps> = ({
   size = 100,
   label,

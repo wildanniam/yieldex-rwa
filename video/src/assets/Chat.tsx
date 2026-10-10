@@ -1,3 +1,4 @@
+import { STOCK_NAMES, TokenBrand, type StockBrand } from './TokenBrand';
 import type React from 'react';
 import { C, FONT, primaryGradient } from '../theme';
 
@@ -165,8 +166,7 @@ export const TypingDots: React.FC<{
 );
 
 type ListingProps = {
-  readonly glyph: string;
-  readonly ticker: string;
+  readonly ticker: StockBrand;
   readonly kind: 'Primary' | 'Resale';
   readonly share: string;
   readonly term: string;
@@ -176,7 +176,6 @@ type ListingProps = {
 };
 
 export const ListingRow: React.FC<ListingProps> = ({
-  glyph,
   ticker,
   kind,
   share,
@@ -209,14 +208,14 @@ export const ListingRow: React.FC<ListingProps> = ({
         borderRadius: '50%',
         display: 'grid',
         placeItems: 'center',
-        background: '#2d4a37',
-        border: '1.5px solid rgba(159,206,174,0.5)',
+        background: 'linear-gradient(145deg, #26342d, #101a17)',
+        border: '1.5px solid rgba(159,206,174,0.3)',
         color: '#dcf3de',
         fontSize: 26,
         fontWeight: 600,
       }}
     >
-      {glyph}
+      <TokenBrand brand={ticker} size={30} />
     </div>
     <div>
       <div
@@ -231,13 +230,13 @@ export const ListingRow: React.FC<ListingProps> = ({
       </div>
       <div
         style={{
-          fontSize: 17,
-          letterSpacing: '0.14em',
-          color: '#9cab9f',
+          fontSize: 18,
+          letterSpacing: '0.01em',
+          color: '#b2c2b6',
           marginTop: 4,
         }}
       >
-        {kind.toUpperCase()}
+        {STOCK_NAMES[ticker]} · {kind}
       </div>
     </div>
     <Stat label="Income" value={share} />
@@ -350,7 +349,7 @@ export const PreviewCard: React.FC<{
           whiteSpace: 'nowrap',
         }}
       >
-        demoAAPL · 50% · 6 months
+        AAPLx · 50% · 6 months
       </div>
       <div
         style={{
@@ -360,7 +359,7 @@ export const PreviewCard: React.FC<{
           whiteSpace: 'nowrap',
         }}
       >
-        90 DemoUSD · listing re-checked · nothing sent yet
+        90 USDC · Rechecked before signing
       </div>
     </div>
     <div

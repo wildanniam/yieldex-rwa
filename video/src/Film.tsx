@@ -165,7 +165,7 @@ export const YieldexFilm: React.FC<{ readonly audio?: boolean }> = ({
         camX={cam.x * stage}
         camY={cam.y * stage}
         purple={purple}
-        amount={0.8}
+        amount={0.38}
       />
       <FilmFinish />
       {audio ? (

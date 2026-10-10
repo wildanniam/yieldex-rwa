@@ -2,6 +2,7 @@ import type React from 'react';
 import { useId } from 'react';
 import { svgId } from '../lib/anim';
 import { C } from '../theme';
+import { TokenBrand } from './TokenBrand';
 
 type VaultProps = {
   readonly width?: number;
@@ -158,18 +159,15 @@ export const Vault: React.FC<VaultProps> = ({
               strokeDasharray="2 6"
             />
             {isTop ? (
-              <text
-                x="0"
-                y="0"
-                transform={`translate(320 ${y + 11}) scale(1.25 0.62)`}
-                textAnchor="middle"
-                fontFamily="Inter"
-                fontWeight={600}
-                fontSize="40"
-                fill="#e2f7e4"
-              >
-                A
-              </text>
+              <g transform={`translate(320 ${y}) scale(1 0.5)`}>
+                <TokenBrand
+                  brand="AAPLx"
+                  size={56}
+                  x={-28}
+                  y={-28}
+                  monochrome="#e2f7e4"
+                />
+              </g>
             ) : null}
           </g>
         );

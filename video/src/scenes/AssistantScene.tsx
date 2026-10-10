@@ -194,31 +194,28 @@ export const AssistantScene: React.FC = () => {
                 {f >= A.listings[0] - 2 ? (
                   <>
                     <ListingRow
-                      glyph="A"
-                      ticker="demoAAPL"
+                      ticker="AAPLx"
                       kind="Primary"
                       share="50%"
                       term="6 months"
-                      price="90 DemoUSD"
+                      price="90 USDC"
                       show={pop(f, A.listings[0])}
                       highlight={tween(f, A.highlight, A.highlight + 12)}
                     />
                     <ListingRow
-                      glyph="M"
-                      ticker="demoMSFT"
+                      ticker="MSFTx"
                       kind="Primary"
                       share="30%"
                       term="3 months"
-                      price="40 DemoUSD"
+                      price="40 USDC"
                       show={pop(f, A.listings[1])}
                     />
                     <ListingRow
-                      glyph="S"
-                      ticker="demoSPY"
+                      ticker="NVDAx"
                       kind="Resale"
                       share="50%"
                       term="42 days"
-                      price="25 DemoUSD"
+                      price="25 USDC"
                       show={pop(f, A.listings[2])}
                     />
                   </>
@@ -306,7 +303,7 @@ export const AssistantScene: React.FC = () => {
           opacity: enter,
         }}
       >
-        Illustrative listings · simulated demo tokens · Sepolia
+        Illustrative listings · Ethereum Sepolia
       </div>
     </AbsoluteFill>
   );

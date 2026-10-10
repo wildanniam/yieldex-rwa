@@ -122,7 +122,7 @@ type BalanceProps = {
   readonly show?: number;
 };
 
-/** Wallet balance in DemoUSD with an optional +/− flash. */
+/** Wallet balance in USDC with an optional +/− flash. */
 export const Balance: React.FC<BalanceProps> = ({
   amount,
   delta,
@@ -163,7 +163,7 @@ export const Balance: React.FC<BalanceProps> = ({
       >
         {Math.round(amount).toLocaleString('en-US')}
       </span>
-      <span style={{ fontSize: 22, color: C.text2 }}>DemoUSD</span>
+      <span style={{ fontSize: 22, color: C.text2 }}>USDC</span>
       {delta !== undefined && flash > 0 ? (
         <span
           style={{
@@ -183,7 +183,7 @@ export const Balance: React.FC<BalanceProps> = ({
 };
 
 type ClaimTrayProps = {
-  /** Claimable demoAAPL. */
+  /** Claimable AAPLx. */
   readonly amount: number;
   readonly show?: number;
   readonly pulse?: number;
@@ -316,7 +316,7 @@ export const ClaimTray: React.FC<ClaimTrayProps> = ({
         >
           {amount.toFixed(2)}{' '}
           <span style={{ fontSize: 24, fontWeight: 500, color: C.text2 }}>
-            demoAAPL
+            AAPLx
           </span>
         </div>
         {note ? (

@@ -201,10 +201,10 @@ export const AssetSheetObjects: React.FC = () => (
         gap: 22,
       }}
     >
-      <Cell label="Stock token" note="Principal · demoAAPL (simulated)">
+      <Cell label="Stock token" note="Principal · AAPLx (simulated)">
         <StockCoin size={220} spin={24} tilt={6} />
       </Cell>
-      <Cell label="Payment token" note="DemoUSD · always neutral silver">
+      <Cell label="Payment token" note="USDC · always neutral silver">
         <PayCoin size={200} spin={24} />
       </Cell>
       <Cell label="Income right" note="Ring = right · outer track = term clock">
@@ -293,7 +293,7 @@ export const AssetSheetInterface: React.FC = () => (
           <LedgerBlock
             index={1}
             name="ListingFilled"
-            detail="90 DemoUSD → Alice · right → Bob"
+            detail="90 USDC → Alice · right → Bob"
             glow={0.5}
           />
         </div>
@@ -308,12 +308,11 @@ export const AssetSheetInterface: React.FC = () => (
           }}
         >
           <ListingRow
-            glyph="A"
-            ticker="demoAAPL"
+            ticker="AAPLx"
             kind="Primary"
             share="50%"
             term="6 months"
-            price="90 DemoUSD"
+            price="90 USDC"
             show={1}
             highlight={1}
           />
@@ -352,10 +351,10 @@ export const AssetSheetInterface: React.FC = () => (
           }}
         >
           <Chip tone="green" size={24}>
-            Dividend event · +1 demoAAPL
+            Dividend event · +1 AAPLx
           </Chip>
           <Chip tone="neutral" size={24}>
-            Backing · 100 demoAAPL · locked
+            Backing · 100 AAPLx · locked
           </Chip>
           <Chip tone="purple" size={24}>
             Read-only quotes

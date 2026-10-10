@@ -27,7 +27,7 @@ export const copy = {
   },
   assistant: {
     headline: ['Not sure?', 'Ask Yieldex AI.'],
-    prompt: 'Find income rights under 100 DemoUSD and explain the risks.',
+    prompt: 'Find income rights under 100 USDC and explain the risks.',
     explain: [
       'You buy income, not the shares.',
       'Income can be lower, or zero.',
@@ -37,7 +37,7 @@ export const copy = {
   },
   numbers: {
     headline: ['The price is fixed.', 'The income isn’t.'],
-    fine: 'Hypothetical DemoUSD-equivalent values · Not a forecast · Not a loan',
+    fine: 'Hypothetical USDC-equivalent values · Not a forecast · Not a loan',
   },
   close: {
     headline: ['Backing, rights and claims,', 'enforced by smart contracts.'],
@@ -47,15 +47,15 @@ export const copy = {
       'Full lifecycle tested · 23 transactions',
     ],
     tagline: ['Your shares stay yours.', 'Your income has options.'],
-    cta: 'Explore the Sepolia demo',
-    fine: 'Testnet demo with simulated tokens. Not investment advice. Income is never guaranteed.',
+    cta: 'Explore Yieldex',
+    fine: 'Built on Sepolia · Illustrative assets · Income is never guaranteed.',
   },
 } as const;
 
 /** Real contract event names from IIncomeRightsMarket.sol. */
 export const LEDGER_EVENTS = [
   { name: 'ListingCreated', detail: 'Backing locked · offer open' },
-  { name: 'ListingFilled', detail: '90 DemoUSD → Alice · right → Bob' },
+  { name: 'ListingFilled', detail: '90 USDC → Alice · right → Bob' },
   { name: 'IncomeAllocated', detail: '0.50 Alice · 0.50 Bob' },
   { name: 'RightsOwnerChanged', detail: 'Bob → Carol · expiry kept' },
   { name: 'IncomeClaimed', detail: 'Each claim to its owner' },

@@ -236,7 +236,7 @@ export const Bokeh: React.FC<{
         overflow: 'hidden',
       }}
     >
-      {Array.from({ length: 9 }, (_, i) => {
+      {Array.from({ length: 6 }, (_, i) => {
         const r = (k: string) => random(`bokeh-${i}-${k}`);
         const size = 90 + r('s') * 170;
         const span = 1920 + 600;
@@ -246,7 +246,11 @@ export const Bokeh: React.FC<{
             span) %
             span) -
           300;
-        const y = r('y') * 1080 - camY * 0.8 + Math.sin(frame / 60 + i) * 20;
+        // Keep foreground glass near the edges, clear of the story and captions.
+        const y =
+          (i % 2 === 0 ? 60 + r('y') * 130 : 910 + r('y') * 100) -
+          camY * 0.15 +
+          Math.sin(frame / 60 + i) * 20;
         const tint =
           purple > 0.5 || r('t') > 0.75 ? '185, 175, 255' : '190, 240, 200';
         return (
