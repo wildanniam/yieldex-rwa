@@ -4,7 +4,7 @@ import { AllocationDial } from '../assets/Dial';
 import { Caption, Chip, Kicker } from '../assets/Type';
 import { copy } from '../copy';
 import { Burst, Motes } from '../fx/Particles';
-import { easeIn, easeInOut, easeOut, keys, pop, tween } from '../lib/anim';
+import { easeIn, easeOut, keys, pop, tween } from '../lib/anim';
 import { C, FONT } from '../theme';
 import { NUMBERS as N, SCENES } from '../timeline';
 
@@ -12,9 +12,12 @@ export const NUMBERS_DURATION = SCENES.numbers.duration;
 
 const PRICE = 90;
 const SHARE = 0.5;
-/** Dial center on screen; the close scene's ledger line starts here. */
+/** Shared center for the circular aperture into the proof scene. */
 export const DIAL_CENTER = { x: 960, y: 600 };
 const DIAL = 480;
+
+export const proofPortalRadius = (frame: number) =>
+  tween(frame, N.portal[0], N.portal[1], (DIAL * 128) / 300, 1800, easeIn);
 
 const SCENARIOS = [
   { label: 'Higher income', income: 200 },
@@ -45,9 +48,13 @@ export const NumbersScene: React.FC = () => {
           ? 'The full price is lost'
           : 'Below the price paid';
 
-  // Exit: everything else leaves while the dial flattens into a line of light.
-  const squash = tween(f, N.exit[0], N.exit[1] - 6, 0, 1, easeInOut);
-  const othersOut = tween(f, N.exit[0], N.exit[0] + 16, 0, 1, easeIn);
+  // Clear the information before pushing through an undistorted circular rim.
+  const othersOut = tween(f, N.exit[0], N.portal[0], 0, 1, easeIn);
+  const portal = tween(f, N.portal[0], N.portal[1]);
+  const rim =
+    tween(f, N.exit[0] + 4, N.portal[0]) *
+    (1 - tween(f, N.portal[1], N.exit[1]));
+  const radius = proofPortalRadius(f);
   const push = tween(f, 0, N.exit[0], 0.97, 1.03, (t) => t);
 
   return (
@@ -105,18 +112,10 @@ export const NumbersScene: React.FC = () => {
             position: 'absolute',
             left: DIAL_CENTER.x - DIAL / 2,
             top: DIAL_CENTER.y - DIAL / 2,
-            transform: `scale(${1 + squash * 2.6}, ${1 - squash * 0.985})`,
-            filter:
-              squash > 0
-                ? `brightness(${1 + squash * 2.5}) drop-shadow(0 0 ${squash * 30}px rgba(153,227,158,0.9))`
-                : undefined,
+            opacity: 1 - othersOut,
           }}
         >
-          <AllocationDial
-            size={DIAL}
-            income={squash > 0 ? 200 * squash + income * (1 - squash) : income}
-            share={SHARE}
-          >
+          <AllocationDial size={DIAL} income={income} share={SHARE}>
             <div style={{ opacity: 1 - othersOut }}>
               <Kicker size={20}>Bob’s 50% of income</Kicker>
               <div
@@ -157,6 +156,56 @@ export const NumbersScene: React.FC = () => {
           />
         </div>
       </div>
+
+      {/* A lens-like rim travels toward the viewer; text never stretches. */}
+      {rim > 0 ? (
+        <svg
+          width={1920}
+          height={1080}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            opacity: rim,
+            overflow: 'visible',
+            pointerEvents: 'none',
+          }}
+        >
+          <circle
+            cx={DIAL_CENTER.x}
+            cy={DIAL_CENTER.y}
+            r={radius}
+            fill="none"
+            stroke={C.green1}
+            strokeWidth={12 - portal * 8}
+            strokeOpacity={0.7}
+            style={{ filter: 'drop-shadow(0 0 18px rgba(153,227,158,0.75))' }}
+          />
+          <circle
+            cx={DIAL_CENTER.x}
+            cy={DIAL_CENTER.y}
+            r={radius + 16}
+            fill="none"
+            stroke="#dcffdf"
+            strokeWidth={2}
+            strokeOpacity={0.5}
+          />
+          <circle
+            cx={DIAL_CENTER.x}
+            cy={DIAL_CENTER.y}
+            r={radius}
+            fill="none"
+            stroke="#effff0"
+            strokeWidth={4}
+            pathLength={100}
+            strokeDasharray="16 34"
+            strokeDashoffset={-portal * 18}
+            style={{
+              rotate: `${-60 + portal * 90}deg`,
+              transformOrigin: `${DIAL_CENTER.x}px ${DIAL_CENTER.y}px`,
+            }}
+          />
+        </svg>
+      ) : null}
 
       <div style={{ opacity: 1 - othersOut }}>
         <div

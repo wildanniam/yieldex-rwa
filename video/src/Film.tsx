@@ -9,15 +9,19 @@ import {
 } from 'remotion';
 import { Atmosphere, FilmFinish } from './assets/Atmosphere';
 import { CameraRig } from './fx/Camera';
-import { Bloom, Bokeh, Flare, LightLeaks, Warp } from './fx/Light';
+import { Bloom, Bokeh, LightLeaks, Warp } from './fx/Light';
 import { keys } from './lib/anim';
 import { AssistantScene } from './scenes/AssistantScene';
 import { CloseScene } from './scenes/CloseScene';
 import { MarketScene, stageCamera } from './scenes/MarketScene';
-import { NumbersScene } from './scenes/NumbersScene';
+import {
+  DIAL_CENTER,
+  NumbersScene,
+  proofPortalRadius,
+} from './scenes/NumbersScene';
 import { OriginScene, portalRadius } from './scenes/OriginScene';
 import { C } from './theme';
-import { FILM_DURATION as DURATION, ORIGIN, SCENES } from './timeline';
+import { FILM_DURATION as DURATION, NUMBERS, ORIGIN, SCENES } from './timeline';
 
 export const FILM_DURATION = DURATION;
 
@@ -27,8 +31,8 @@ const peak = (f: number, at: number, rise: number, fall: number) =>
 
 /**
  * Scenes overlap briefly; each owns its entrance/exit so transitions read as
- * camera moves: through the ring, into purple light, through the AI, and a
- * dial that flattens into the ledger line.
+ * camera moves: through the ring, into purple light, through the AI, and
+ * a circular camera push from the allocation dial into the onchain ledger.
  */
 export const YieldexFilm: React.FC<{ readonly audio?: boolean }> = ({
   audio = true,
@@ -121,7 +125,16 @@ export const YieldexFilm: React.FC<{ readonly audio?: boolean }> = ({
           durationInFrames={S.close.duration}
           premountFor={fps}
         >
-          <CloseScene />
+          <AbsoluteFill
+            style={{
+              clipPath:
+                f < nStart + NUMBERS.portal[1]
+                  ? `circle(${Math.max(0, proofPortalRadius(f - nStart) - 8)}px at ${DIAL_CENTER.x}px ${DIAL_CENTER.y}px)`
+                  : undefined,
+            }}
+          >
+            <CloseScene />
+          </AbsoluteFill>
         </Sequence>
       </CameraRig>
 
@@ -142,11 +155,10 @@ export const YieldexFilm: React.FC<{ readonly audio?: boolean }> = ({
       />
       <Warp amount={peak(f, nStart, 16, 16) * 0.7} />
       <Bloom amount={peak(f, nStart + 2, 10, 22) * 0.5} />
-      <Flare
-        x={960}
-        y={560}
-        amount={peak(f, S.close.start + 4, 8, 20)}
-        width={1900}
+      <Bloom
+        amount={peak(f, S.close.start + 24, 16, 20) * 0.18}
+        x={DIAL_CENTER.x}
+        y={DIAL_CENTER.y}
       />
 
       <Bokeh

@@ -25,7 +25,7 @@ import {
   tween,
   type Point,
 } from '../lib/anim';
-import { C, FONT } from '../theme';
+import { FONT } from '../theme';
 import { ASSISTANT as A, SCENES } from '../timeline';
 
 export const ASSISTANT_DURATION = SCENES.assistant.duration;
@@ -62,7 +62,7 @@ export const AssistantScene: React.FC = () => {
   const scroll = keys(
     f,
     [A.scroll[0], A.scroll[1], A.scroll[2], A.scroll[3]],
-    [0, -190, -190, -340],
+    [0, -190, -190, -335],
   );
   const yaw = -12 + enter * 4 + tween(f, 40, 300) * 3;
 
@@ -145,7 +145,7 @@ export const AssistantScene: React.FC = () => {
       />
 
       <div
-        style={{ position: 'absolute', left: 860, top: 140, perspective: 2000 }}
+        style={{ position: 'absolute', left: 860, top: 116, perspective: 2000 }}
       >
         <div
           style={{
@@ -154,81 +154,93 @@ export const AssistantScene: React.FC = () => {
             opacity: enter,
           }}
         >
-          <ChatPanel width={900} height={730}>
+          <ChatPanel width={900} height={760}>
             <ChatHeader orb={<AiOrb size={46} activity={thinking} />} />
+            {/* Clip the scrolling conversation below the fixed header. */}
             <div
               style={{
                 position: 'absolute',
-                left: 34,
-                right: 34,
-                top: 122,
-                translate: `0 ${scroll}px`,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 18,
+                inset: '96px 0 20px',
+                overflow: 'hidden',
+                zIndex: 1,
+                maskImage:
+                  'linear-gradient(180deg, transparent, black 20px, black calc(100% - 16px), transparent)',
               }}
             >
-              <UserBubble
-                text={a.prompt.slice(0, chars) + caret}
-                show={pop(f, A.typing[0] - 16)}
-              />
-              {f >= A.dots[0] && f < A.answer ? (
-                <TypingDots frame={f} show={pop(f, A.dots[0])} />
-              ) : null}
-              {f >= A.answer ? (
-                <AiText show={pop(f, A.answer)}>
-                  3 listings match. Prices are fixed; income isn’t.
-                </AiText>
-              ) : null}
-              {f >= A.listings[0] - 2 ? (
-                <>
-                  <ListingRow
-                    glyph="A"
-                    ticker="demoAAPL"
-                    kind="Primary"
-                    share="50%"
-                    term="6 months"
-                    price="90 DemoUSD"
-                    show={pop(f, A.listings[0])}
-                    highlight={tween(f, A.highlight, A.highlight + 12)}
-                  />
-                  <ListingRow
-                    glyph="M"
-                    ticker="demoMSFT"
-                    kind="Primary"
-                    share="30%"
-                    term="3 months"
-                    price="40 DemoUSD"
-                    show={pop(f, A.listings[1])}
-                  />
-                  <ListingRow
-                    glyph="S"
-                    ticker="demoSPY"
-                    kind="Resale"
-                    share="50%"
-                    term="42 days"
-                    price="25 DemoUSD"
-                    show={pop(f, A.listings[2])}
-                  />
-                </>
-              ) : null}
-              {f >= A.explain - 2 ? (
-                <ExplainCard
-                  lines={a.explain}
-                  show={pop(f, A.explain)}
-                  lineShow={[
-                    pop(f, A.explainLines[0]),
-                    pop(f, A.explainLines[1]),
-                    pop(f, A.explainLines[2]),
-                  ]}
+              <div
+                style={{
+                  position: 'absolute',
+                  left: 34,
+                  right: 34,
+                  top: 26,
+                  translate: `0 ${scroll}px`,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 18,
+                }}
+              >
+                <UserBubble
+                  text={a.prompt.slice(0, chars) + caret}
+                  show={pop(f, A.typing[0] - 16)}
                 />
-              ) : null}
-              {f >= A.preview - 2 ? (
-                <PreviewCard
-                  show={pop(f, A.preview)}
-                  glow={life(f, A.confirm)}
-                />
-              ) : null}
+                {f >= A.dots[0] && f < A.answer ? (
+                  <TypingDots frame={f} show={pop(f, A.dots[0])} />
+                ) : null}
+                {f >= A.answer ? (
+                  <AiText show={pop(f, A.answer)}>
+                    3 listings match. Prices are fixed; income isn’t.
+                  </AiText>
+                ) : null}
+                {f >= A.listings[0] - 2 ? (
+                  <>
+                    <ListingRow
+                      glyph="A"
+                      ticker="demoAAPL"
+                      kind="Primary"
+                      share="50%"
+                      term="6 months"
+                      price="90 DemoUSD"
+                      show={pop(f, A.listings[0])}
+                      highlight={tween(f, A.highlight, A.highlight + 12)}
+                    />
+                    <ListingRow
+                      glyph="M"
+                      ticker="demoMSFT"
+                      kind="Primary"
+                      share="30%"
+                      term="3 months"
+                      price="40 DemoUSD"
+                      show={pop(f, A.listings[1])}
+                    />
+                    <ListingRow
+                      glyph="S"
+                      ticker="demoSPY"
+                      kind="Resale"
+                      share="50%"
+                      term="42 days"
+                      price="25 DemoUSD"
+                      show={pop(f, A.listings[2])}
+                    />
+                  </>
+                ) : null}
+                {f >= A.explain - 2 ? (
+                  <ExplainCard
+                    lines={a.explain}
+                    show={pop(f, A.explain)}
+                    lineShow={[
+                      pop(f, A.explainLines[0]),
+                      pop(f, A.explainLines[1]),
+                      pop(f, A.explainLines[2]),
+                    ]}
+                  />
+                ) : null}
+                {f >= A.preview - 2 ? (
+                  <PreviewCard
+                    show={pop(f, A.preview)}
+                    glow={life(f, A.confirm)}
+                  />
+                ) : null}
+              </div>
             </div>
             <div
               style={{
@@ -263,26 +275,13 @@ export const AssistantScene: React.FC = () => {
               }}
             />
           </ChatPanel>
-          <div
-            style={{
-              marginTop: 14,
-              marginLeft: 34,
-              fontSize: 19,
-              color: '#8d89b5',
-              fontFamily: FONT,
-              letterSpacing: '0.04em',
-            }}
-          >
-            Illustrative listings · simulated demo tokens ·{' '}
-            <span style={{ color: C.text2 }}>Sepolia</span>
-          </div>
         </div>
       </div>
 
       <div
         style={{
           position: 'absolute',
-          bottom: 104,
+          top: 924,
           left: 0,
           right: 0,
           display: 'flex',
@@ -292,6 +291,22 @@ export const AssistantScene: React.FC = () => {
         <Chip tone="purple" size={30} show={pop(f, A.chip)}>
           {a.note}
         </Chip>
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          top: 1004,
+          left: 0,
+          right: 0,
+          textAlign: 'center',
+          fontSize: 22,
+          color: '#b5afd3',
+          fontFamily: FONT,
+          letterSpacing: '0.02em',
+          opacity: enter,
+        }}
+      >
+        Illustrative listings · simulated demo tokens · Sepolia
       </div>
     </AbsoluteFill>
   );

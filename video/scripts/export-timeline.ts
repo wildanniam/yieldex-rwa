@@ -12,7 +12,27 @@ const voice = VOICE.map((v) => {
   const start = (SCENES[v.scene].start + v.at) / FPS;
   const length = durations[v.id];
   if (length === undefined) throw new Error(`Missing VO line ${v.id}`);
-  return { id: v.id, start, end: start + length };
+  const pauses = v.pauses ?? [];
+  let previousAt = 0;
+  for (const pause of pauses) {
+    if (
+      !Number.isFinite(pause.at) ||
+      !Number.isFinite(pause.duration) ||
+      pause.at <= previousAt ||
+      pause.at >= length ||
+      pause.duration <= 0
+    ) {
+      throw new Error(`Invalid source pause in VO ${v.id}`);
+    }
+    previousAt = pause.at;
+  }
+  return {
+    id: v.id,
+    start,
+    end:
+      start + length + pauses.reduce((sum, pause) => sum + pause.duration, 0),
+    pauses,
+  };
 }).sort((x, y) => x.start - y.start);
 
 // Lines must not overlap; keep a short breath between them.

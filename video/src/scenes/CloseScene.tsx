@@ -13,7 +13,7 @@ import { DIAL_CENTER } from './NumbersScene';
 
 export const CLOSE_DURATION = SCENES.close.duration;
 
-const SPACING = 480;
+const SPACING = 500;
 const LOGO_Y = 400;
 
 /** Proof that the rules live onchain, then the brand promise and one CTA. */
@@ -22,11 +22,8 @@ export const CloseScene: React.FC = () => {
   const c = copy.close;
   const converge = tween(f, K.converge[0], K.converge[1], 0, 1, easeIn);
   const pan =
-    keys(f, [0, K.converge[0]], [560, -620], easeInOut) * (1 - converge);
+    keys(f, [0, K.converge[0]], [1200, -620], easeInOut) * (1 - converge);
   const lineDraw = tween(f, K.line[0], K.line[1], 0, 1, easeOut);
-  const pulseX =
-    (-2.5 + tween(f, K.blocks, K.blocks + 5 * K.blockGap, 0, 5, (t) => t)) *
-    SPACING;
   const boom = f < K.boom ? 0 : Math.exp(-(f - K.boom) / 16);
   const endFade = tween(f, K.end[0], K.end[1]);
 
@@ -34,7 +31,11 @@ export const CloseScene: React.FC = () => {
     <AbsoluteFill style={{ opacity: 1 - endFade }}>
       {/* --- proof: the lifecycle as real contract events */}
       <AbsoluteFill
-        style={{ opacity: 1 - tween(f, K.converge[1] - 6, K.converge[1] + 2) }}
+        style={{
+          opacity: 1 - tween(f, K.converge[1] - 6, K.converge[1] + 2),
+          background:
+            'radial-gradient(ellipse at 50% 55%, rgba(12,28,21,0.82), rgba(3,8,11,0.94))',
+        }}
       >
         <div style={{ opacity: 1 - converge }}>
           <Caption
@@ -58,7 +59,8 @@ export const CloseScene: React.FC = () => {
         >
           <div
             style={{
-              transformStyle: 'preserve-3d',
+              // Flatten this group so cards always occlude the connectors.
+              isolation: 'isolate',
               transform: `rotateX(${12 * tween(f, 0, 30)}deg) rotateY(${-16 * tween(f, 0, 40)}deg) translateX(${pan}px) translateY(${tween(f, 0, 30, 40, 0)}px)`,
             }}
           >
@@ -71,30 +73,65 @@ export const CloseScene: React.FC = () => {
                 top: -10,
                 overflow: 'visible',
                 opacity: 1 - converge,
+                zIndex: 0,
               }}
             >
-              <line
-                x1={SPACING * 3 * (1 - lineDraw)}
-                y1={10}
-                x2={SPACING * 3 + SPACING * 3 * lineDraw}
-                y2={10}
-                stroke={C.green1}
-                strokeOpacity={0.7}
-                strokeWidth={4}
-                strokeLinecap="round"
-                style={{
-                  filter: 'drop-shadow(0 0 10px rgba(153,227,158,0.8))',
-                }}
-              />
-              {f >= K.blocks && f < K.blocks + 5 * K.blockGap + 8 ? (
-                <circle
-                  cx={SPACING * 3 + pulseX}
-                  cy={10}
-                  r={10}
-                  fill="#effff0"
-                  style={{ filter: 'drop-shadow(0 0 14px #99E39E)' }}
-                />
-              ) : null}
+              {/* Connections occupy only the 80px gaps, never the card faces. */}
+              {LEDGER_EVENTS.slice(0, -1).map((event, i) => {
+                const x1 = (i + 0.5) * SPACING + 210;
+                const x2 = (i + 1.5) * SPACING - 210;
+                const draw = Math.min(
+                  Math.max(0, Math.min(1, lineDraw * 5 - i)),
+                  tween(
+                    f,
+                    K.blocks + i * K.blockGap + 10,
+                    K.blocks + (i + 1) * K.blockGap + 8,
+                  ),
+                );
+                const travel = tween(
+                  f,
+                  K.blocks + i * K.blockGap + 8,
+                  K.blocks + (i + 1) * K.blockGap + 8,
+                  0,
+                  1,
+                  (t) => t,
+                );
+                return (
+                  <g key={event.name} opacity={draw}>
+                    <line
+                      x1={x1}
+                      x2={x2}
+                      y1={10}
+                      y2={10}
+                      stroke={C.green1}
+                      strokeOpacity={0.22}
+                      strokeWidth={2}
+                    />
+                    <line
+                      x1={x1}
+                      x2={x1 + (x2 - x1) * draw}
+                      y1={10}
+                      y2={10}
+                      stroke={C.green1}
+                      strokeOpacity={0.75}
+                      strokeWidth={3}
+                      strokeLinecap="round"
+                    />
+                    {[x1, x2].map((x) => (
+                      <circle key={x} cx={x} cy={10} r={3} fill={C.green1} />
+                    ))}
+                    {travel > 0 && travel < 1 ? (
+                      <circle
+                        cx={x1 + (x2 - x1) * travel}
+                        cy={10}
+                        r={5}
+                        fill="#effff0"
+                        style={{ filter: 'drop-shadow(0 0 9px #99E39E)' }}
+                      />
+                    ) : null}
+                  </g>
+                );
+              })}
             </svg>
             {LEDGER_EVENTS.map((e, i) => {
               const at = K.blocks + i * K.blockGap;
@@ -107,7 +144,8 @@ export const CloseScene: React.FC = () => {
                   style={{
                     position: 'absolute',
                     left: x * (1 - converge) - 210 * converge,
-                    top: -100 + converge * (LOGO_Y - DIAL_CENTER.y + 40),
+                    top: -96 + converge * (LOGO_Y - DIAL_CENTER.y + 40),
+                    zIndex: 1,
                     opacity: vis * (1 - converge * 0.8),
                     transform: `translateY(${(1 - p) * 120}px) rotateX(${(1 - vis) * 40}deg) scale(${1 - converge * 0.85})`,
                   }}
@@ -238,6 +276,9 @@ export const CloseScene: React.FC = () => {
             left: 0,
             right: 0,
             display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 8,
             justifyContent: 'center',
           }}
         >
@@ -246,10 +287,14 @@ export const CloseScene: React.FC = () => {
             weight={440}
             start={K.tagline}
             stagger={2}
-            lines={[
-              { text: c.tagline[0] },
-              { text: c.tagline[1], color: C.mint },
-            ]}
+            lines={[{ text: c.tagline[0] }]}
+          />
+          <Kinetic
+            size={64}
+            weight={440}
+            start={K.taglineSecond}
+            stagger={2}
+            lines={[{ text: c.tagline[1], color: C.mint }]}
           />
         </div>
         <div

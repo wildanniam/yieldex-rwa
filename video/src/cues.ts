@@ -290,7 +290,8 @@ export const CUES: readonly Cue[] = [
   { at: n(NUMBERS.lower[0]), sfx: 'dialDown', gain: 0.5, dur: 20 },
   { at: n(NUMBERS.zero[0]), sfx: 'dialDown', gain: 0.5, dur: 20, pitch: 0.8 },
   { at: n(NUMBERS.zero[0] + 2), sfx: 'subDrop', gain: 0.7, shake: 0.15 },
-  { at: n(NUMBERS.exit[0]), sfx: 'zap', gain: 0.6 },
+  { at: n(NUMBERS.exit[0]), sfx: 'swell', gain: 0.4, dur: 54 },
+  { at: n(NUMBERS.portal[0] + 14), sfx: 'whoosh', gain: 0.3, dur: 26 },
 
   // Close
   { at: c(CLOSE.line[0]), sfx: 'hum', gain: 0.35, dur: 80 },

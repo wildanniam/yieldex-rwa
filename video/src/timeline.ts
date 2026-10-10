@@ -10,8 +10,8 @@ export const SCENES = {
   origin: { start: 0, duration: 540 },
   market: { start: 500, duration: 1390 },
   assistant: { start: 1860, duration: 340 },
-  numbers: { start: 2172, duration: 290 },
-  close: { start: 2434, duration: 380 },
+  numbers: { start: 2172, duration: 306 },
+  close: { start: 2434, duration: 398 },
 } as const;
 
 export type SceneName = keyof typeof SCENES;
@@ -119,28 +119,36 @@ export const NUMBERS = {
   higher: [96, 126],
   lower: [146, 166],
   zero: [188, 208],
-  exit: [258, 290],
+  exit: [246, 306],
+  portal: [262, 302],
 } as const;
 
 export const CLOSE = {
-  line: [0, 80],
-  blocks: 14,
+  line: [10, 94],
+  blocks: 4,
   blockGap: 15,
-  headline: [14, 176],
+  headline: [28, 176],
   chips: 120,
   address: 150,
   converge: [180, 212],
   boom: 212,
   logo: 214,
   sweep: [236, 286],
-  tagline: 250,
-  cta: 290,
-  fine: 304,
-  end: [366, 380],
+  tagline: 262,
+  taglineSecond: 306,
+  cta: 334,
+  fine: 340,
+  end: [384, 398],
 } as const;
 
 /** Voice-over placement: line id (src/audio/voiceover.json) → local start frame. */
-export const VOICE: readonly { id: string; scene: SceneName; at: number }[] = [
+export const VOICE: readonly {
+  id: string;
+  scene: SceneName;
+  at: number;
+  /** Insert silence at a quiet boundary in the source FLAC, in seconds. */
+  pauses?: readonly { at: number; duration: number }[];
+}[] = [
   { id: 'hook_earn', scene: 'origin', at: 15 },
   { id: 'hook_slow', scene: 'origin', at: 84 },
   { id: 'problem_cash', scene: 'origin', at: 138 },
@@ -163,7 +171,12 @@ export const VOICE: readonly { id: string; scene: SceneName; at: number }[] = [
   { id: 'could_lower', scene: 'numbers', at: 150 },
   { id: 'could_nothing', scene: 'numbers', at: 190 },
   { id: 'proof_contracts', scene: 'close', at: 20 },
-  { id: 'close_tagline', scene: 'close', at: 222 },
+  {
+    id: 'close_tagline',
+    scene: 'close',
+    at: 222,
+    pauses: [{ at: 0.644, duration: 0.65 }],
+  },
 ];
 
 export const global = (scene: SceneName, local: number) =>

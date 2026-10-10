@@ -626,6 +626,17 @@ def build_voice() -> np.ndarray:
     bus = np.zeros(N)
     for line in TL["voice"]:
         x, sr = sf.read(ROOT / "public/audio/vo" / f"{line['id']}.flac", dtype="float64")
+        # Insert a real breath after the brand without resynthesizing the voice.
+        # Work backwards so source-relative offsets remain stable.
+        for pause in reversed(line.get("pauses", [])):
+            cut = int(round(pause["at"] * sr))
+            if not 0 < cut < len(x):
+                raise ValueError(f"Pause outside VO source: {line['id']}")
+            fade = min(max(1, round(sr * 0.003)), cut, len(x) - cut)
+            before, after = x[:cut].copy(), x[cut:].copy()
+            before[-fade:] *= np.linspace(1, 0, fade)
+            after[:fade] *= np.linspace(0, 1, fade)
+            x = np.concatenate([before, np.zeros(round(pause["duration"] * sr)), after])
         x = resample_poly(x, SR // 1000, sr // 1000)
         x = filt(x, "highpass", 85)
         # Gentle compression: RMS-ish envelope, 3:1 above -24 dBFS.

@@ -18,6 +18,7 @@ export const ChatPanel: React.FC<{
   <div
     style={{
       position: 'relative',
+      isolation: 'isolate',
       width,
       height,
       borderRadius: 40,
@@ -49,8 +50,8 @@ export const ChatHeader: React.FC<{ readonly orb: React.ReactNode }> = ({
       gap: 18,
       padding: '0 34px',
       borderBottom: '1px solid rgba(124, 114, 254, 0.2)',
-      background: 'rgba(14, 12, 34, 0.96)',
-      zIndex: 2,
+      background: '#0e0c22',
+      zIndex: 3,
     }}
   >
     {orb}

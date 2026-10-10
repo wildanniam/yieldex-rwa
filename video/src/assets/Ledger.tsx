@@ -18,7 +18,9 @@ export const LedgerBlock: React.FC<LedgerBlockProps> = ({
   <div
     style={{
       position: 'relative',
+      boxSizing: 'border-box',
       width: 420,
+      height: 192,
       padding: '26px 28px 24px',
       borderRadius: 26,
       fontFamily: FONT,
