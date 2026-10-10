@@ -116,6 +116,12 @@ Submitted hashes SHALL be validated against RPC transaction identity. Status SHA
 - **WHEN** transaction receipt status is reverted
 - **THEN** UI SHALL show REVERTED; purchased rights, payment and claim balances SHALL reflect contract state rather than optimistic success.
 
+#### Scenario: Wallet wraps the submitted action
+- **GIVEN** the wallet returned the original submitted hash and its canonical receipt matches the sender and known nonce
+- **WHEN** wallet-added execution wrapping changes the outer target or calldata and the receipt reverts
+- **THEN** UI SHALL show REVERTED rather than cancellation, including after revalidating a persisted journal from an older client.
+- **AND** a successful receipt whose action identity cannot be verified SHALL remain UNKNOWN without optimistic state or automatic resubmission.
+
 #### Scenario: Gas repricing replaces transaction
 - **WHEN** the wallet replaces a pending transaction with the same action and nonce at a higher fee
 - **THEN** tracking SHALL follow the replacement hash and verify its calldata before reporting success.

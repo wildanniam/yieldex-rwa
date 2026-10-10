@@ -333,18 +333,35 @@ export class MarketplaceWallet {
       onUpdate(tracked);
       return { tracked, listing: null, position: null };
     }
-    if (
-      tx.from.toLowerCase() !== tracked.wallet ||
-      tx.to?.toLowerCase() !== tracked.to ||
-      tx.value !== 0n ||
-      tx.input !== tracked.data
-    ) {
+    const sameSenderAndNonce =
+      tx.from.toLowerCase() === tracked.wallet &&
+      (tracked.nonce === null
+        ? receipt.transactionHash === tracked.hash
+        : tx.nonce === tracked.nonce);
+    const sameAction =
+      tx.to?.toLowerCase() === tracked.to &&
+      tx.value === 0n &&
+      tx.input === tracked.data;
+    // A wallet may wrap the original call (for example, a protected smart-account
+    // execution). Its reverted receipt is still a failure, not a cancellation.
+    // A successful wrapper is not proof of the reviewed action: keep it unknown.
+    if (!sameSenderAndNonce) {
+      tracked.status = 'UNKNOWN';
+      onUpdate(tracked);
+      return { tracked, listing: null, position: null };
+    }
+    if (!sameAction && receipt.transactionHash !== tracked.hash) {
       tracked.status = 'CANCELLED';
       onUpdate(tracked);
       return { tracked, listing: null, position: null };
     }
     if (receipt.status === 'reverted') {
       tracked.status = 'REVERTED';
+      onUpdate(tracked);
+      return { tracked, listing: null, position: null };
+    }
+    if (!sameAction) {
+      tracked.status = 'UNKNOWN';
       onUpdate(tracked);
       return { tracked, listing: null, position: null };
     }

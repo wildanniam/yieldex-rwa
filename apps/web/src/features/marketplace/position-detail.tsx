@@ -186,19 +186,26 @@ export function PositionDetail({ positionKey }: { positionKey: string }) {
               </Link>
             )}
           </section>
-          {(read.error || assets.error) && (
-            <p role="alert" className={s.notice}>
-              {read.error || assets.error}{' '}
-              <button
-                onClick={() => {
-                  read.refresh();
-                  assets.refresh();
-                  currentListing.refresh();
-                }}
-              >
-                Retry
-              </button>
+          {read.error === 'NOT_FOUND' && overlay && !assets.error ? (
+            <p role="status" className={s.notice}>
+              Your position is confirmed onchain. It is not in the finalized
+              index yet; the receipt above provides the current position.
             </p>
+          ) : (
+            (read.error || assets.error) && (
+              <p role="alert" className={s.notice}>
+                {read.error || assets.error}{' '}
+                <button
+                  onClick={() => {
+                    read.refresh();
+                    assets.refresh();
+                    currentListing.refresh();
+                  }}
+                >
+                  Retry
+                </button>
+              </p>
+            )
           )}
           {!access.identity.wallet ? (
             <Link className={s.back} href="/wallet">

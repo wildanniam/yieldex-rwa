@@ -6,7 +6,7 @@ Sumber asli, urutan bagian, dan SHA-256 tercantum di bawah. Link relatif di bagi
 File ini menyertakan kontrak data dan fixtures; beberapa fixture sengaja invalid untuk pengujian. Jangan menganggap fixture sebagai transaksi/provider data nyata.
 UI visual mengikuti Afer; chatbot Rafi; core/backend/contracts/quote Wildan/Codex. Lihat execution plan untuk scope dan gate. Jangan menambah swap execution/NFT/training ML di luar scope.
 
-Bundle source digest: `61f053cddd8be1ac01e2065ba2c644f3d0844302d510165de3d5dfa212bda566`
+Bundle source digest: `3061e5fecc8cd270f473f4df5fdb6214a0f6b10f712cf6fffbd181e6c8e5421a`
 
 ## Source Manifest
 
@@ -32,7 +32,7 @@ Bundle source digest: `61f053cddd8be1ac01e2065ba2c644f3d0844302d510165de3d5dfa21
 | `openspec/changes/build-rwa-income-rights/specs/quote-recommendations/spec.md` | `6c661eb646d46bf33a7a7d478ceb5a44806b7a894fa468a34f3df448d8a64706` |
 | `openspec/changes/build-rwa-income-rights/specs/read-model/spec.md` | `28b85a24265c066395bca87bc7de43b3290c05f90f8e451b44d293c487a89b4d` |
 | `openspec/changes/build-rwa-income-rights/specs/rights-market/spec.md` | `66d1f6def241ff8d7103b8e0084f37c91b072937e0d90703fe8f084c055dac25` |
-| `openspec/changes/build-rwa-income-rights/specs/wallet-transactions/spec.md` | `afccf562c8033f609771914cba23388000dec2c57da5ff46dbbb6133e90ab2e0` |
+| `openspec/changes/build-rwa-income-rights/specs/wallet-transactions/spec.md` | `7950f1e9b5fd45a03e95f85c39613bba9e9ff71b3267354ccf0f3737d0202889` |
 | `docs/spec/accounting-and-finality.md` | `14f1e66b2bdce2e6283bf1540ebb6f20ee9a5a68d838fc63084516b4a09fbca8` |
 | `docs/spec/ai-and-quotes.md` | `f71d5b19faeb756f777e0f061675ed9b916599d8ea70494742afdbbb457b5b32` |
 | `docs/spec/api-contract.md` | `c8d3e0920459f07ff309306c821951aba1270c371368b15e9c57f1d205607f51` |
@@ -2491,6 +2491,12 @@ Submitted hashes SHALL be validated against RPC transaction identity. Status SHA
 #### Scenario: Receipt reverts
 - **WHEN** transaction receipt status is reverted
 - **THEN** UI SHALL show REVERTED; purchased rights, payment and claim balances SHALL reflect contract state rather than optimistic success.
+
+#### Scenario: Wallet wraps the submitted action
+- **GIVEN** the wallet returned the original submitted hash and its canonical receipt matches the sender and known nonce
+- **WHEN** wallet-added execution wrapping changes the outer target or calldata and the receipt reverts
+- **THEN** UI SHALL show REVERTED rather than cancellation, including after revalidating a persisted journal from an older client.
+- **AND** a successful receipt whose action identity cannot be verified SHALL remain UNKNOWN without optimistic state or automatic resubmission.
 
 #### Scenario: Gas repricing replaces transaction
 - **WHEN** the wallet replaces a pending transaction with the same action and nonce at a higher fee

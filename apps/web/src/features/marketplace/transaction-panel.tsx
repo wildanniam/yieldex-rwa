@@ -283,8 +283,9 @@ export function WalletActivity() {
             .map((t) => (
               <li key={t.hash}>
                 <span className={s.badge}>
-                  {['CONFIRMED', 'FINALIZED'].includes(t.status) &&
-                  !verifiedReceipts.has(t.hash)
+                  {['CONFIRMED', 'FINALIZED', 'CANCELLED', 'REVERTED'].includes(
+                    t.status,
+                  ) && !verifiedReceipts.has(t.hash)
                     ? 'checking receipt'
                     : t.status.toLowerCase()}
                 </span>
@@ -298,6 +299,12 @@ export function WalletActivity() {
                   </a>
                 ) : (
                   <code>{shortAddress(t.replacementHash ?? t.hash)}</code>
+                )}
+                {t.status === 'UNKNOWN' && (
+                  <span className={s.muted}>
+                    The reviewed action could not be verified. Check its receipt
+                    before retrying; no success is assumed.
+                  </span>
                 )}
               </li>
             ))}
