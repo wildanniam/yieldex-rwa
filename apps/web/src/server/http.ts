@@ -11,6 +11,29 @@ export class ApiFailure extends Error {
   }
 }
 export function apiError(error: unknown, requestId = randomUUID()) {
+  if (!(error instanceof ApiFailure)) {
+    // Never log provider URLs, request bodies, SQL or raw error messages.
+    const causes: { name: string; status?: number; code?: number }[] = [];
+    let current: unknown = error;
+    for (let i = 0; i < 6 && current && typeof current === 'object'; i++) {
+      const item = current as {
+        name?: unknown;
+        status?: unknown;
+        code?: unknown;
+        cause?: unknown;
+      };
+      causes.push({
+        name:
+          typeof item.name === 'string' && /^[A-Za-z]{1,60}$/.test(item.name)
+            ? item.name
+            : 'UnknownError',
+        ...(typeof item.status === 'number' ? { status: item.status } : {}),
+        ...(typeof item.code === 'number' ? { code: item.code } : {}),
+      });
+      current = item.cause;
+    }
+    console.error('market_api_failure', { requestId, causes });
+  }
   const e =
     error instanceof ApiFailure
       ? error
