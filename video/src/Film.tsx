@@ -1,90 +1,164 @@
 import type React from 'react';
+import { Audio } from '@remotion/media';
 import {
   AbsoluteFill,
   Sequence,
+  staticFile,
   useCurrentFrame,
   useVideoConfig,
 } from 'remotion';
 import { Atmosphere, FilmFinish } from './assets/Atmosphere';
+import { CameraRig } from './fx/Camera';
+import { Bloom, Bokeh, Flare, LightLeaks, Warp } from './fx/Light';
 import { keys } from './lib/anim';
 import { AssistantScene } from './scenes/AssistantScene';
 import { CloseScene } from './scenes/CloseScene';
 import { MarketScene, stageCamera } from './scenes/MarketScene';
 import { NumbersScene } from './scenes/NumbersScene';
-import { OriginScene } from './scenes/OriginScene';
+import { OriginScene, portalRadius } from './scenes/OriginScene';
 import { C } from './theme';
+import { FILM_DURATION as DURATION, ORIGIN, SCENES } from './timeline';
 
-export const FILM_DURATION = 2626;
+export const FILM_DURATION = DURATION;
 
-/** Global start frame of each scene; neighbours overlap briefly. */
-export const SCENE_START = {
-  origin: 0,
-  market: 456,
-  assistant: 1726,
-  numbers: 2040,
-  close: 2296,
-} as const;
+const S = SCENES;
+const peak = (f: number, at: number, rise: number, fall: number) =>
+  keys(f, [at - rise, at, at + fall], [0, 1, 0], (t) => t);
 
 /**
- * Scenes overlap by 30 frames; each scene owns its own entrance/exit so
- * transitions read as camera moves rather than slide wipes.
+ * Scenes overlap briefly; each owns its entrance/exit so transitions read as
+ * camera moves: through the ring, into purple light, through the AI, and a
+ * dial that flattens into the ledger line.
  */
-export const YieldexFilm: React.FC = () => {
+export const YieldexFilm: React.FC<{ readonly audio?: boolean }> = ({
+  audio = true,
+}) => {
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const stage = keys(f, [456, 496, 1706, 1746], [0, 1, 1, 0]);
-  const cam = stageCamera(Math.max(0, f - SCENE_START.market));
+  const mStart = S.market.start;
+  const aStart = S.assistant.start;
+  const nStart = S.numbers.start;
+  const stage = keys(
+    f,
+    [mStart, mStart + 40, aStart - 10, aStart + 30],
+    [0, 1, 1, 0],
+  );
+  const cam = stageCamera(Math.max(0, f - mStart));
+  const purple = keys(
+    f,
+    [aStart - 12, aStart + 24, nStart - 4, nStart + 30],
+    [0, 1, 1, 0],
+  );
+  const portalOpen = f >= ORIGIN.portal[0] && f < ORIGIN.portal[1];
 
   return (
     <AbsoluteFill style={{ background: C.deep }}>
       <Atmosphere
         camX={cam.x * stage}
         camY={cam.y * stage}
-        purple={keys(f, [1700, 1746, 2030, 2070], [0, 1, 1, 0])}
+        purple={purple}
         floor={stage}
-        trails={keys(f, [446, 486, 1706, 1746], [1, 0.25, 0.25, 0.5])}
+        trails={keys(
+          f,
+          [mStart - 10, mStart + 30, aStart - 10, aStart + 30],
+          [1, 0.25, 0.25, 0.5],
+        )}
+        energy={1 + peak(f, S.close.start + 212, 6, 40) * 0.8}
       />
-      <Sequence
-        name="Origin"
-        from={SCENE_START.origin}
-        durationInFrames={480}
-        premountFor={fps}
-      >
-        <OriginScene />
-      </Sequence>
-      <Sequence
-        name="Market"
-        from={SCENE_START.market}
-        durationInFrames={1290}
-        premountFor={fps}
-      >
-        <MarketScene />
-      </Sequence>
-      <Sequence
-        name="Assistant"
-        from={SCENE_START.assistant}
-        durationInFrames={330}
-        premountFor={fps}
-      >
-        <AssistantScene />
-      </Sequence>
-      <Sequence
-        name="Numbers"
-        from={SCENE_START.numbers}
-        durationInFrames={270}
-        premountFor={fps}
-      >
-        <NumbersScene />
-      </Sequence>
-      <Sequence
-        name="Close"
-        from={SCENE_START.close}
-        durationInFrames={330}
-        premountFor={fps}
-      >
-        <CloseScene />
-      </Sequence>
+      <LightLeaks
+        purple={purple}
+        amount={
+          0.55 +
+          peak(f, mStart + 10, 30, 50) +
+          peak(f, aStart, 20, 40) +
+          peak(f, S.close.start + 214, 10, 90) * 0.8
+        }
+      />
+      <CameraRig>
+        <Sequence
+          name="Origin"
+          from={S.origin.start}
+          durationInFrames={S.origin.duration}
+          premountFor={fps}
+        >
+          <OriginScene />
+        </Sequence>
+        <Sequence
+          name="Market"
+          from={mStart}
+          durationInFrames={S.market.duration}
+          premountFor={fps}
+        >
+          <AbsoluteFill
+            style={{
+              clipPath: portalOpen
+                ? `circle(${portalRadius(f)}px at 960px 540px)`
+                : undefined,
+            }}
+          >
+            <MarketScene />
+          </AbsoluteFill>
+        </Sequence>
+        <Sequence
+          name="Assistant"
+          from={aStart}
+          durationInFrames={S.assistant.duration}
+          premountFor={fps}
+        >
+          <AssistantScene />
+        </Sequence>
+        <Sequence
+          name="Numbers"
+          from={nStart}
+          durationInFrames={S.numbers.duration}
+          premountFor={fps}
+        >
+          <NumbersScene />
+        </Sequence>
+        <Sequence
+          name="Close"
+          from={S.close.start}
+          durationInFrames={S.close.duration}
+          premountFor={fps}
+        >
+          <CloseScene />
+        </Sequence>
+      </CameraRig>
+
+      {/* transition light */}
+      <Warp amount={peak(f, ORIGIN.portal[0] + 26, 26, 22)} />
+      <Bloom amount={peak(f, ORIGIN.portal[0] + 34, 14, 26) * 0.7} />
+      <Warp
+        amount={peak(f, aStart, 20, 18) * 0.8}
+        x={450}
+        y={650}
+        color="190, 180, 255"
+      />
+      <Bloom
+        amount={peak(f, aStart + 2, 14, 30)}
+        x={450}
+        y={650}
+        color="124, 114, 254"
+      />
+      <Warp amount={peak(f, nStart, 16, 16) * 0.7} />
+      <Bloom amount={peak(f, nStart + 2, 10, 22) * 0.5} />
+      <Flare
+        x={960}
+        y={560}
+        amount={peak(f, S.close.start + 4, 8, 20)}
+        width={1900}
+      />
+
+      <Bokeh
+        camX={cam.x * stage}
+        camY={cam.y * stage}
+        purple={purple}
+        amount={0.8}
+      />
       <FilmFinish />
+      {audio ? (
+        <Audio src={staticFile('audio/mix.wav')} premountFor={fps} />
+      ) : null}
     </AbsoluteFill>
   );
 };

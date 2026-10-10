@@ -4,54 +4,62 @@ import { LedgerBlock } from '../assets/Ledger';
 import { Lockup } from '../assets/Logo';
 import { Caption, Chip, Kinetic } from '../assets/Type';
 import { copy, LEDGER_EVENTS, MARKET_ADDRESS } from '../copy';
+import { Bloom, Flare } from '../fx/Light';
+import { Burst, Shockwave } from '../fx/Particles';
 import { easeIn, easeInOut, easeOut, keys, pop, tween } from '../lib/anim';
 import { C, FONT, primaryGradient } from '../theme';
+import { CLOSE as K, SCENES } from '../timeline';
+import { DIAL_CENTER } from './NumbersScene';
 
-export const CLOSE_DURATION = 330;
+export const CLOSE_DURATION = SCENES.close.duration;
 
 const SPACING = 480;
+const LOGO_Y = 400;
 
 /** Proof that the rules live onchain, then the brand promise and one CTA. */
 export const CloseScene: React.FC = () => {
   const f = useCurrentFrame();
   const c = copy.close;
-  const chainOut = tween(f, 160, 188, 0, 1, easeIn);
-  const pan = keys(f, [0, 170], [560, -620], easeInOut);
-  const flash = f < 180 ? 0 : Math.exp(-(f - 180) / 18);
-  const endFade = tween(f, 320, 330);
+  const converge = tween(f, K.converge[0], K.converge[1], 0, 1, easeIn);
+  const pan =
+    keys(f, [0, K.converge[0]], [560, -620], easeInOut) * (1 - converge);
+  const lineDraw = tween(f, K.line[0], K.line[1], 0, 1, easeOut);
+  const pulseX =
+    (-2.5 + tween(f, K.blocks, K.blocks + 5 * K.blockGap, 0, 5, (t) => t)) *
+    SPACING;
+  const boom = f < K.boom ? 0 : Math.exp(-(f - K.boom) / 16);
+  const endFade = tween(f, K.end[0], K.end[1]);
 
   return (
-    <AbsoluteFill style={{ opacity: Math.min(tween(f, 6, 22), 1 - endFade) }}>
+    <AbsoluteFill style={{ opacity: 1 - endFade }}>
       {/* --- proof: the lifecycle as real contract events */}
       <AbsoluteFill
-        style={{
-          opacity: 1 - chainOut,
-          scale: String(1 - chainOut * 0.55),
-          filter: chainOut > 0 ? `blur(${chainOut * 10}px)` : undefined,
-        }}
+        style={{ opacity: 1 - tween(f, K.converge[1] - 6, K.converge[1] + 2) }}
       >
-        <Caption
-          position="top"
-          size={80}
-          start={14}
-          end={160}
-          lines={[
-            { text: c.headline[0] },
-            { text: c.headline[1], color: C.mint },
-          ]}
-        />
+        <div style={{ opacity: 1 - converge }}>
+          <Caption
+            position="top"
+            size={80}
+            start={K.headline[0]}
+            end={K.headline[1]}
+            lines={[
+              { text: c.headline[0] },
+              { text: c.headline[1], color: C.mint },
+            ]}
+          />
+        </div>
         <div
           style={{
             position: 'absolute',
-            left: 960,
-            top: 560,
+            left: DIAL_CENTER.x,
+            top: DIAL_CENTER.y - 40,
             perspective: 2400,
           }}
         >
           <div
             style={{
               transformStyle: 'preserve-3d',
-              transform: `rotateX(12deg) rotateY(-16deg) translateX(${pan}px)`,
+              transform: `rotateX(${12 * tween(f, 0, 30)}deg) rotateY(${-16 * tween(f, 0, 40)}deg) translateX(${pan}px) translateY(${tween(f, 0, 30, 40, 0)}px)`,
             }}
           >
             <svg
@@ -59,15 +67,16 @@ export const CloseScene: React.FC = () => {
               height={20}
               style={{
                 position: 'absolute',
-                left: -SPACING * 2.5 - 10,
+                left: -SPACING * 3,
                 top: -10,
                 overflow: 'visible',
+                opacity: 1 - converge,
               }}
             >
               <line
-                x1={0}
+                x1={SPACING * 3 * (1 - lineDraw)}
                 y1={10}
-                x2={SPACING * 5 * tween(f, 18, 18 + 5 * 15, 0, 1, (t) => t)}
+                x2={SPACING * 3 + SPACING * 3 * lineDraw}
                 y2={10}
                 stroke={C.green1}
                 strokeOpacity={0.7}
@@ -77,109 +86,155 @@ export const CloseScene: React.FC = () => {
                   filter: 'drop-shadow(0 0 10px rgba(153,227,158,0.8))',
                 }}
               />
+              {f >= K.blocks && f < K.blocks + 5 * K.blockGap + 8 ? (
+                <circle
+                  cx={SPACING * 3 + pulseX}
+                  cy={10}
+                  r={10}
+                  fill="#effff0"
+                  style={{ filter: 'drop-shadow(0 0 14px #99E39E)' }}
+                />
+              ) : null}
             </svg>
             {LEDGER_EVENTS.map((e, i) => {
-              const at = 14 + i * 15;
+              const at = K.blocks + i * K.blockGap;
               const p = pop(f, at, { damping: 14, stiffness: 120 });
               const vis = Math.max(0, Math.min(1, p));
+              const x = (i - 2.5) * SPACING - 210;
               return (
                 <div
                   key={e.name}
                   style={{
                     position: 'absolute',
-                    left: (i - 2.5) * SPACING - 210,
-                    top: -100,
-                    opacity: vis,
-                    transform: `translateY(${(1 - p) * 120}px) rotateX(${(1 - vis) * 40}deg)`,
+                    left: x * (1 - converge) - 210 * converge,
+                    top: -100 + converge * (LOGO_Y - DIAL_CENTER.y + 40),
+                    opacity: vis * (1 - converge * 0.8),
+                    transform: `translateY(${(1 - p) * 120}px) rotateX(${(1 - vis) * 40}deg) scale(${1 - converge * 0.85})`,
                   }}
                 >
                   <LedgerBlock
                     index={i}
                     name={e.name}
                     detail={e.detail}
-                    glow={f < at ? 0 : Math.exp(-(f - at) / 14)}
+                    glow={f < at ? 0 : Math.exp(-(f - at) / 14) + converge}
                   />
                 </div>
               );
             })}
           </div>
         </div>
-        <div
-          style={{
-            position: 'absolute',
-            top: 820,
-            left: 0,
-            right: 0,
-            display: 'flex',
-            justifyContent: 'center',
-            gap: 20,
-          }}
-        >
-          {c.proof.map((p, i) => (
-            <Chip
-              key={p}
-              show={pop(f, 92 + i * 10)}
-              tone={i === 0 ? 'green' : 'neutral'}
-              size={27}
-            >
-              {p}
-            </Chip>
-          ))}
-        </div>
-        <div
-          style={{
-            position: 'absolute',
-            top: 910,
-            left: 0,
-            right: 0,
-            textAlign: 'center',
-            fontFamily: FONT,
-            fontSize: 24,
-            color: C.text3,
-            letterSpacing: '0.04em',
-            opacity: tween(f, 124, 140),
-          }}
-        >
-          SEPOLIA MARKET · {MARKET_ADDRESS.slice(0, 8)}…
-          {MARKET_ADDRESS.slice(-4)}
+        <div style={{ opacity: 1 - converge }}>
+          <div
+            style={{
+              position: 'absolute',
+              top: 820,
+              left: 0,
+              right: 0,
+              display: 'flex',
+              justifyContent: 'center',
+              gap: 20,
+            }}
+          >
+            {c.proof.map((p, i) => (
+              <Chip
+                key={p}
+                show={pop(f, K.chips + i * 10)}
+                tone={i === 0 ? 'green' : 'neutral'}
+                size={27}
+              >
+                {p}
+              </Chip>
+            ))}
+          </div>
+          <div
+            style={{
+              position: 'absolute',
+              top: 910,
+              left: 0,
+              right: 0,
+              textAlign: 'center',
+              fontFamily: FONT,
+              fontSize: 24,
+              color: C.text3,
+              letterSpacing: '0.04em',
+              opacity: tween(f, K.address, K.address + 16),
+            }}
+          >
+            SEPOLIA MARKET · {MARKET_ADDRESS.slice(0, 8)}…
+            {MARKET_ADDRESS.slice(-4)}
+          </div>
         </div>
       </AbsoluteFill>
 
       {/* --- brand resolve */}
-      <AbsoluteFill style={{ opacity: tween(f, 176, 190) }}>
+      <Bloom amount={boom} x={960} y={LOGO_Y} />
+      <Shockwave
+        frame={f}
+        at={K.boom}
+        x={960}
+        y={LOGO_Y}
+        radius={900}
+        life={34}
+        width={8}
+      />
+      <Shockwave
+        frame={f}
+        at={K.boom + 6}
+        x={960}
+        y={LOGO_Y}
+        radius={600}
+        life={30}
+        width={4}
+        color="#c9c4ff"
+      />
+      <Burst
+        frame={f}
+        at={K.boom}
+        x={960}
+        y={LOGO_Y}
+        count={60}
+        speed={22}
+        life={50}
+        gravity={0.05}
+        seed="logo"
+      />
+      <Flare x={960} y={LOGO_Y} amount={boom} width={1800} />
+      <AbsoluteFill style={{ opacity: tween(f, K.boom - 2, K.boom + 6) }}>
         <div
           style={{
             position: 'absolute',
             left: 960 - 700,
-            top: 420 - 700,
+            top: LOGO_Y - 700,
             width: 1400,
             height: 1400,
             borderRadius: '50%',
-            background: `radial-gradient(circle, rgba(153,227,158,${0.1 + flash * 0.35}) 0%, transparent 55%)`,
+            background: `radial-gradient(circle, rgba(153,227,158,${0.12 + boom * 0.3}) 0%, transparent 55%)`,
           }}
         />
         <div
           style={{
             position: 'absolute',
-            top: 330,
+            top: LOGO_Y - 90,
             left: 0,
             right: 0,
             display: 'flex',
             justifyContent: 'center',
-            translate: `0 ${(1 - tween(f, 184, 214, 0, 1, easeOut)) * 30}px`,
+            scale: String(
+              1.08 - 0.08 * tween(f, K.logo, K.logo + 60, 0, 1, easeOut),
+            ),
           }}
         >
           <Lockup
             size={150}
-            assembleAt={184}
-            sweep={tween(f, 212, 262, -0.3, 1.3)}
-            glow={0.6}
+            assembleAt={K.logo}
+            sweep={tween(f, K.sweep[0], K.sweep[1], -0.3, 1.3)}
+            glow={0.6 + boom * 0.6}
           />
         </div>
         <div
           style={{
             position: 'absolute',
-            top: 560,
+            top: 580,
             left: 0,
             right: 0,
             display: 'flex',
@@ -189,7 +244,7 @@ export const CloseScene: React.FC = () => {
           <Kinetic
             size={64}
             weight={440}
-            start={220}
+            start={K.tagline}
             stagger={2}
             lines={[
               { text: c.tagline[0] },
@@ -200,7 +255,7 @@ export const CloseScene: React.FC = () => {
         <div
           style={{
             position: 'absolute',
-            top: 780,
+            top: 790,
             left: 0,
             right: 0,
             display: 'flex',
@@ -208,7 +263,7 @@ export const CloseScene: React.FC = () => {
           }}
         >
           <CtaPill
-            show={pop(f, 250)}
+            show={pop(f, K.cta)}
             glow={0.5 + 0.5 * Math.sin(f / 10)}
             label={c.cta}
           />
@@ -216,14 +271,14 @@ export const CloseScene: React.FC = () => {
         <div
           style={{
             position: 'absolute',
-            top: 940,
+            top: 950,
             left: 0,
             right: 0,
             textAlign: 'center',
             fontFamily: FONT,
             fontSize: 22,
             color: C.text3,
-            opacity: tween(f, 262, 280),
+            opacity: tween(f, K.fine, K.fine + 18),
           }}
         >
           {c.fine}

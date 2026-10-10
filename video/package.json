@@ -6,6 +6,8 @@
   "packageManager": "pnpm@11.3.0",
   "scripts": {
     "studio": "remotion studio src/index.ts",
+    "audio": "tsx scripts/export-timeline.ts && uv run --no-project --with numpy==2.5.3 --with scipy==1.18.1 --with soundfile==0.14.0 --with pyloudnorm==0.2.0 python scripts/audio/build.py",
+    "voiceover": "uv run --no-project --with kokoro-onnx==0.6.1 --with soundfile==0.14.0 --with numpy==2.5.3 python scripts/audio/voiceover.py",
     "render": "remotion render src/index.ts YieldexFilm out/yieldex-film.mp4",
     "render:draft": "remotion render src/index.ts YieldexFilm out/yieldex-film-draft.mp4 --scale=0.5",
     "stills": "node scripts/render-stills.mjs",
@@ -16,6 +18,7 @@
     "@remotion/bundler": "4.0.534",
     "@remotion/cli": "4.0.534",
     "@remotion/fonts": "4.0.534",
+    "@remotion/media": "4.0.534",
     "@remotion/renderer": "4.0.534",
     "react": "19.3.0",
     "react-dom": "19.3.0",

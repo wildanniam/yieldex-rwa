@@ -1,0 +1,98 @@
+{
+  "voice": "af_heart",
+  "speed": 1.0,
+  "lines": [
+    {
+      "id": "hook_earn",
+      "text": "Your tokenized stocks earn income."
+    },
+    {
+      "id": "hook_slow",
+      "text": "Slowly, over months."
+    },
+    {
+      "id": "problem_cash",
+      "text": "But what if you need cash today? Selling means giving up the asset."
+    },
+    {
+      "id": "idea_income",
+      "text": "So what if you could sell, just the income?"
+    },
+    {
+      "id": "intro_yieldex",
+      "text": "Meet Yieldex. A marketplace for time-limited income rights on tokenized stocks."
+    },
+    {
+      "id": "lock_vault",
+      "text": "Alice locks her shares in a vault. She still owns them."
+    },
+    {
+      "id": "set_terms",
+      "text": "Then she sets her terms: half the income, for six months, at a fixed price of ninety DemoUSD."
+    },
+    {
+      "id": "bob_buys",
+      "text": "Bob buys it. The payment and the right move in a single transaction. Both happen, or neither."
+    },
+    {
+      "id": "clock_starts",
+      "text": "His six-month clock starts now."
+    },
+    {
+      "id": "dividend_split",
+      "text": "When a dividend lands, the contract splits it by the agreed share."
+    },
+    {
+      "id": "claim_anytime",
+      "text": "Each side claims their part, in the asset token, whenever they like."
+    },
+    {
+      "id": "resale_carol",
+      "text": "Want out early? Bob resells the whole right to Carol."
+    },
+    {
+      "id": "same_deadline",
+      "text": "New owner. Same deadline. And what Bob already earned stays his."
+    },
+    {
+      "id": "summary_accounted",
+      "text": "Every share of income, accounted for."
+    },
+    {
+      "id": "ask_ai",
+      "text": "Not sure what you're buying? Ask Yieldex AI."
+    },
+    {
+      "id": "ai_does",
+      "text": "It finds offers, explains the risks, and prepares a preview."
+    },
+    {
+      "id": "wallet_final",
+      "text": "Your wallet always has the final say."
+    },
+    {
+      "id": "price_fixed",
+      "text": "Because the price is fixed. The income isn't."
+    },
+    {
+      "id": "could_higher",
+      "text": "It could be higher."
+    },
+    {
+      "id": "could_lower",
+      "text": "Lower."
+    },
+    {
+      "id": "could_nothing",
+      "text": "Or nothing at all."
+    },
+    {
+      "id": "proof_contracts",
+      "text": "Backing, rights and claims are enforced by smart contracts, live on Ethereum Sepolia."
+    },
+    {
+      "id": "close_tagline",
+      "text": "Yieldex. Your shares stay yours. Your income has options."
+    }
+  ]
+}

@@ -19,6 +19,8 @@ type OfferTicketProps = {
   readonly buttonLabel?: string;
   readonly kind?: string;
   readonly spin?: number;
+  /** 0..1 progress of a light sweep across the card. */
+  readonly sheen?: number;
 };
 
 const Row: React.FC<{
@@ -187,6 +189,7 @@ export const OfferTicket: React.FC<OfferTicketProps> = ({
   buttonLabel = 'Buy rights',
   kind = 'INCOME RIGHTS',
   spin = 0,
+  sheen = 0,
 }) => (
   <div
     style={{
@@ -345,5 +348,16 @@ export const OfferTicket: React.FC<OfferTicketProps> = ({
         {buttonLabel}
       </div>
     </div>
+    {sheen > 0 && sheen < 1 ? (
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          pointerEvents: 'none',
+          mixBlendMode: 'screen',
+          background: `linear-gradient(115deg, transparent ${sheen * 160 - 50}%, rgba(220, 255, 225, 0.22) ${sheen * 160 - 35}%, transparent ${sheen * 160 - 20}%)`,
+        }}
+      />
+    ) : null}
   </div>
 );

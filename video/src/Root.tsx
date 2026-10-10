@@ -7,6 +7,8 @@ import {
   type AssetName,
 } from './AssetSheet';
 import { FILM_DURATION, YieldexFilm } from './Film';
+
+const SilentFilm = () => <YieldexFilm audio={false} />;
 import { SceneFrame } from './SceneFrame';
 import { ASSISTANT_DURATION, AssistantScene } from './scenes/AssistantScene';
 import { CLOSE_DURATION, CloseScene } from './scenes/CloseScene';
@@ -45,6 +47,14 @@ export const RemotionRoot = () => (
     <Composition
       id="YieldexFilm"
       component={YieldexFilm}
+      width={1920}
+      height={1080}
+      fps={30}
+      durationInFrames={FILM_DURATION}
+    />
+    <Composition
+      id="YieldexFilmSilent"
+      component={SilentFilm}
       width={1920}
       height={1080}
       fps={30}

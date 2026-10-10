@@ -1,0 +1,28 @@
+{
+  "voice": "af_heart",
+  "durations": {
+    "hook_earn": 1.849,
+    "hook_slow": 1.304,
+    "problem_cash": 3.374,
+    "idea_income": 2.046,
+    "intro_yieldex": 5.296,
+    "lock_vault": 3.031,
+    "set_terms": 5.903,
+    "bob_buys": 5.705,
+    "clock_starts": 1.733,
+    "dividend_split": 3.552,
+    "claim_anytime": 3.781,
+    "resale_carol": 3.029,
+    "same_deadline": 3.92,
+    "summary_accounted": 2.118,
+    "ask_ai": 2.555,
+    "ai_does": 3.382,
+    "wallet_final": 2.12,
+    "price_fixed": 2.487,
+    "could_higher": 0.876,
+    "could_lower": 0.556,
+    "could_nothing": 1.08,
+    "proof_contracts": 5.525,
+    "close_tagline": 3.468
+  }
+}

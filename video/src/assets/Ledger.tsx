@@ -45,7 +45,7 @@ export const LedgerBlock: React.FC<LedgerBlockProps> = ({
           strokeWidth="1.6"
         />
         <path
-          d="m4 7.4 8 4.6 8-4.6M12 12v9.2"
+          d="M 4 7.4 L 12 12 L 20 7.4 M 12 12 V 21.2"
           stroke={C.green1}
           strokeOpacity="0.5"
           strokeWidth="1.6"
