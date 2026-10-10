@@ -169,3 +169,20 @@ The contract SHALL remain authoritative when buyers race, users open multiple ta
 #### Scenario: Session service unavailable
 - **WHEN** Supabase or chat is down but the chain and wallet remain available
 - **THEN** the standard wallet flow/direct contract path SHALL preserve its onchain permissions and SHALL not depend on a database success flag.
+
+### Requirement: TX-010 Explicit wallet disconnection
+The application SHALL expose Disconnect wallet in shared wallet controls for connected and verified accounts, including wrong-network states. Disconnect SHALL immediately hide wallet-specific data and invalidate reviews and in-flight identity/login results, clear the private session, and persist the disconnected preference across reloads and tabs until explicit reconnect. It SHALL preserve submitted transaction hashes; disconnect is not transaction cancellation or token-approval revocation.
+
+#### Scenario: Disconnect then refresh
+- **WHEN** a connected user disconnects and reloads or the provider emits account changes
+- **THEN** the application SHALL remain disconnected until an explicit successful reconnect.
+- **AND** private chat history SHALL stay hidden while server session cleanup is pending or fails; a failed reconnect SHALL not restore the previous identity.
+
+#### Scenario: Provider cannot revoke connection permissions
+- **WHEN** wallet permission revocation is unsupported or rejected
+- **THEN** local disconnection SHALL remain effective and UI SHALL explain that site permissions can be removed in the wallet.
+
+#### Scenario: Another tab or pending operation
+- **WHEN** disconnection occurs while another tab is connected or preparation/login is in flight
+- **THEN** old identity, private chat and transaction reviews SHALL be invalidated, with no automatic send or reconnect.
+- **AND** any transaction already handed to the wallet or broadcast SHALL retain its actual outcome and receipt tracking after reconnect.

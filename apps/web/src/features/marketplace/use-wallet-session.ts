@@ -20,6 +20,14 @@ import {
   type Identity,
 } from './session-auth';
 
+import {
+  walletDisconnected,
+  setWalletDisconnected,
+  revokeWalletConnection,
+  walletConnectionKey,
+  walletConnectionEvent,
+} from './wallet-connection';
+
 export const walletSessionEvent = 'yieldex:wallet-session-changed';
 function announce(pending = false) {
   window.dispatchEvent(
@@ -35,10 +43,16 @@ function announce(pending = false) {
 async function reconcileWalletSession(beforeInvalidate?: () => void) {
   const provider = (window as unknown as { ethereum?: WalletProvider })
     .ethereum;
-  if (!provider) return false;
+  if (!provider && !walletDisconnected()) return false;
   return authMutation(async () => {
     const current = await currentServerSession();
     if (!current) return false;
+    if (walletDisconnected()) {
+      beforeInvalidate?.();
+      await marketRequest('/session', { method: 'DELETE' });
+      return true;
+    }
+    if (!provider) return false;
     const accounts = await provider.request({ method: 'eth_accounts' });
     const chain = await provider.request({ method: 'eth_chainId' });
     if (
@@ -52,7 +66,7 @@ async function reconcileWalletSession(beforeInvalidate?: () => void) {
   });
 }
 let initialReconciliation: Promise<void> | undefined;
-/** Chat waits for this read-only identity check before using a remembered ticket. */
+/** Chat waits for identity reconciliation before using a remembered ticket. */
 export function ensureWalletSession() {
   initialReconciliation ??= reconcileWalletSession(() => announce(true))
     .then((changed) => {
@@ -74,6 +88,7 @@ export function WalletSessionGuard() {
     let changing = false;
     let change = 0;
     const changed = () => {
+      initialReconciliation = undefined;
       const version = ++change;
       changing = true;
       announce(true);
@@ -101,11 +116,19 @@ export function WalletSessionGuard() {
     queueMicrotask(() => {
       if (active) void ensureWalletSession().catch(() => {});
     });
+    const connectionChanged = () => changed();
+    const storageChanged = (event: StorageEvent) => {
+      if (event.key === walletConnectionKey) connectionChanged();
+    };
+    window.addEventListener(walletConnectionEvent, connectionChanged);
+    window.addEventListener('storage', storageChanged);
     provider?.on?.('accountsChanged', changed);
     provider?.on?.('chainChanged', changed);
     window.addEventListener('focus', focused);
     return () => {
       active = false;
+      window.removeEventListener(walletConnectionEvent, connectionChanged);
+      window.removeEventListener('storage', storageChanged);
       provider?.removeListener?.('accountsChanged', changed);
       provider?.removeListener?.('chainChanged', changed);
       window.removeEventListener('focus', focused);
@@ -127,13 +150,31 @@ export function useWalletSession(manifest: DeploymentManifest) {
   const epoch = useRef(0);
   const readSequence = useRef(0);
   const mounted = useRef(false);
+  const connectionVersion = useRef(0);
+  const [connectionNotice, setConnectionNotice] = useState('');
   const refresh = useCallback(
     async (instance: MarketplaceWallet, request = false) => {
       const version = ++readSequence.current;
+      if (walletDisconnected() && !request) {
+        identityRef.current = { wallet: null, chainId: null };
+        setIdentity(identityRef.current);
+        setSession(null);
+        return;
+      }
       const who = await instance.identity(request);
-      if (version !== readSequence.current || !mounted.current) return;
+      if (
+        version !== readSequence.current ||
+        !mounted.current ||
+        walletDisconnected()
+      )
+        return;
       const data = await marketRequest('/session').catch(() => null);
-      if (version !== readSequence.current || !mounted.current) return;
+      if (
+        version !== readSequence.current ||
+        !mounted.current ||
+        walletDisconnected()
+      )
+        return;
       if (
         who.wallet !== identityRef.current.wallet ||
         who.chainId !== identityRef.current.chainId
@@ -182,6 +223,13 @@ export function useWalletSession(manifest: DeploymentManifest) {
       }).catch(() => {});
     };
     const sync = () => {
+      if (walletDisconnected()) {
+        epoch.current++;
+        readSequence.current++;
+        identityRef.current = { wallet: null, chainId: null };
+        setIdentity(identityRef.current);
+        setSession(null);
+      }
       if (instance) void refresh(instance).catch(() => {});
     };
     const channel =
@@ -199,6 +247,15 @@ export function useWalletSession(manifest: DeploymentManifest) {
       channel.onmessage = (event) => syncSession(!!event.data?.pending);
     const sessionChanged = (event: Event) =>
       syncSession(!!(event as CustomEvent).detail?.pending);
+    const connectionChanged = () => {
+      connectionVersion.current++;
+      sync();
+    };
+    const storageChanged = (event: StorageEvent) => {
+      if (event.key === walletConnectionKey) connectionChanged();
+    };
+    window.addEventListener(walletConnectionEvent, connectionChanged);
+    window.addEventListener('storage', storageChanged);
     window.addEventListener(walletSessionEvent, sessionChanged);
     provider?.on?.('accountsChanged', changed);
     provider?.on?.('chainChanged', changed);
@@ -212,6 +269,8 @@ export function useWalletSession(manifest: DeploymentManifest) {
       readSequence.current++;
       channel?.close();
       window.removeEventListener('focus', sync);
+      window.removeEventListener(walletConnectionEvent, connectionChanged);
+      window.removeEventListener('storage', storageChanged);
       window.removeEventListener(walletSessionEvent, sessionChanged);
       provider?.removeListener?.('accountsChanged', changed);
       provider?.removeListener?.('chainChanged', changed);
@@ -223,7 +282,54 @@ export function useWalletSession(manifest: DeploymentManifest) {
       throw new Error(
         'Buka dengan wallet EVM, misalnya MetaMask, untuk melanjutkan.',
       );
-    await refresh(wallet, true);
+    const version = connectionVersion.current;
+    await authMutation(async () => {
+      // Drain an incomplete logout before allowing a new connection.
+      if (walletDisconnected() && (await currentServerSession()))
+        await marketRequest('/session', { method: 'DELETE' });
+      const who = await wallet.identity(true);
+      if (
+        !mounted.current ||
+        version !== connectionVersion.current ||
+        !who.wallet
+      )
+        throw new Error('Connection changed. Please connect again.');
+      setWalletDisconnected(false);
+      setConnectionNotice('');
+      await refresh(wallet);
+      initialReconciliation = undefined;
+      announce();
+    });
+  }
+  async function disconnect() {
+    initialReconciliation = undefined;
+    const persisted = setWalletDisconnected(true);
+    setConnectionNotice('Disconnecting…');
+    announce(true);
+    try {
+      await authMutation(async () => {
+        if (await currentServerSession())
+          await marketRequest('/session', { method: 'DELETE' });
+        const revoked = wallet
+          ? await revokeWalletConnection(wallet.provider)
+          : true;
+        setConnectionNotice(
+          !persisted
+            ? 'Disconnected for this page. Browser storage is unavailable; remove this site in your wallet to stay disconnected after reload.'
+            : revoked
+              ? 'Wallet disconnected.'
+              : 'Disconnected from Yieldex. To also remove site permissions, disconnect this site in your wallet.',
+        );
+      });
+      announce();
+    } catch {
+      setConnectionNotice(
+        'Wallet disconnected. Chat sign-out could not finish; reconnect to retry. Private chat stays hidden.',
+      );
+      throw new Error(
+        'Chat sign-out could not finish. Check your connection and reconnect to retry.',
+      );
+    }
   }
   async function switchChain() {
     if (!wallet) return;
@@ -241,7 +347,8 @@ export function useWalletSession(manifest: DeploymentManifest) {
     const requestedIdentity = { ...identity };
     const version = epoch.current;
     await authMutation(async () => {
-      const unchanged = () => mounted.current && version === epoch.current;
+      const unchanged = () =>
+        mounted.current && version === epoch.current && !walletDisconnected();
       const stale = () =>
         new Error('Wallet berubah. Login kembali dengan akun yang aktif.');
       if (!unchanged()) throw stale();
@@ -315,5 +422,7 @@ export function useWalletSession(manifest: DeploymentManifest) {
     switchChain,
     login,
     logout,
+    disconnect,
+    connectionNotice,
   };
 }
