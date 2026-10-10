@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import { useRef, useState } from 'react';
-import type { DeploymentManifest } from '@rwa/shared/config';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { useWalletSession } from './use-wallet-session';
 import { walletError } from './client-api';
+import { usePlatform } from './platform-provider';
 import s from './live.module.css';
 
 export function WalletControls({
@@ -45,16 +45,25 @@ export function WalletControls({
               : 'Your wallet, your decisions'}
           </strong>
           <p>
-            {session
-              ? 'Signed in · transaksi memerlukan konfirmasi terpisah'
-              : 'Connect untuk review. Sign in untuk chat tersimpan.'}
+            {!identity.wallet
+              ? 'Connect to view your portfolio and review transactions.'
+              : identity.chainId !== chainId
+                ? 'Switch network to use the marketplace.'
+                : session
+                  ? 'Ownership verified. Your private chat history is available.'
+                  : 'Portfolio and transactions are available. Chat history is optional.'}
           </p>
+          {identity.wallet && (
+            <span className={s.badge}>
+              {session ? 'Verified' : 'Connected'}
+            </span>
+          )}
         </div>
       </div>
       <div className={s.actions}>
         {!identity.wallet ? (
           <Button
-            disabled={!ready || busy}
+            disabled={!ready || busy || !wallet}
             isLoading={busy}
             onClick={() => void act(access.connect)}
           >
@@ -79,10 +88,16 @@ export function WalletControls({
             isLoading={busy}
             onClick={() => void act(access.login)}
           >
-            Sign in with wallet
+            Verify for saved chats
           </Button>
         )}
       </div>
+      {identity.wallet && !session && identity.chainId === chainId && (
+        <p className={s.muted}>
+          Optional: sign a message to prove ownership. No token approval, gas
+          fee or transfer.
+        </p>
+      )}
       {ready && !wallet && (
         <p className={s.muted}>
           Gunakan browser dengan wallet EVM. Chat dan pencarian tetap bisa
@@ -98,23 +113,19 @@ export function WalletControls({
   );
 }
 
-export function WalletAccess({ manifest }: { manifest: DeploymentManifest }) {
-  const access = useWalletSession(manifest);
+export function WalletAccess() {
+  const { access, manifest } = usePlatform();
   return (
     <div className={s.page}>
-      <Link href="/chat" className={s.back}>
-        ← Back to assistant
+      <Link href="/dashboard" className={s.back}>
+        ← My portfolio
       </Link>
       <header className={s.heading}>
         <p className={s.eyebrow}>YIELDEX / WALLET</p>
-        <h1>
-          One wallet.
-          <br />
-          <span>A connected workspace.</span>
-        </h1>
+        <h1>Your wallet.</h1>
         <p>
-          Login membuktikan kepemilikan wallet. Tanda tangan ini tidak
-          memindahkan token dan tidak memberikan izin transaksi.
+          Connect for your portfolio. Verify ownership for saved conversations.
+          You approve every transaction separately in your wallet.
         </p>
       </header>
       <WalletControls access={access} chainId={manifest.chainId} />

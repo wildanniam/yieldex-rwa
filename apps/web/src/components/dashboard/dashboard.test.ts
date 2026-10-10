@@ -1,56 +1,61 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
-import { PortfolioDashboard, type DashboardPreview } from './dashboard';
-vi.mock('@/components/ChatbotWrapper', () => ({
-  useAssistant: () => ({ open: vi.fn(), busy: false }),
+import { PortfolioDashboard } from './dashboard';
+const state = vi.hoisted(() => ({
+  who: null as string | null,
+  data: null as null | { claims: unknown[] },
+  error: '',
+  loading: false,
 }));
-const render = (initialPreview: DashboardPreview) =>
-  renderToStaticMarkup(createElement(PortfolioDashboard, { initialPreview }));
-describe('dashboard presentation boundaries', () => {
-  it('starts empty without inventing a connected identity or activity', () => {
-    const html = render('empty');
-    expect(html).toContain('No positions yet');
-    expect(html).toContain('Nothing to claim yet');
-    expect(html).toContain('No activity yet');
+vi.mock('@/features/marketplace/platform-provider', () => ({
+  usePlatform: () => ({
+    access: { identity: { wallet: state.who }, session: null },
+  }),
+}));
+vi.mock('@/features/marketplace/use-portfolio', () => ({
+  useAssets: () => ({ data: { items: [] }, refresh: vi.fn() }),
+  usePortfolio: () => ({
+    data: state.data,
+    positions: [],
+    error: state.error,
+    loading: state.loading,
+    refresh: vi.fn(),
+  }),
+}));
+vi.mock('@/features/marketplace/transaction-panel', () => ({
+  WalletActivity: () => null,
+  TransactionPanel: () => null,
+}));
+const render = () => renderToStaticMarkup(createElement(PortfolioDashboard));
+describe('portfolio data boundaries', () => {
+  it('does not call disconnected balances zero or invent activity', () => {
+    state.who = null;
+    state.data = null;
+    const html = render();
+    expect(html).toContain('Connect to view your portfolio');
+    expect(html).not.toContain('0.00');
     expect(html).not.toContain('Income allocated');
-    expect(html).toContain('No wallet connected');
-    expect(html).toContain('disabled=""');
-    expect(html.match(/<h1\b/g)).toHaveLength(1);
+    expect(html).not.toContain('UI preview');
   });
-  it('labels examples and avoids fabricated dollar valuations or receipts', () => {
-    const html = render('example');
-    expect(html).toContain('Illustrative data');
-    expect(html).toContain('Not live receipts');
-    expect(html).toContain('0.50');
-    expect(html).toContain('demoAAPL');
-    expect(html).not.toContain('dNVDA');
-    expect(html).not.toContain('$50');
-    expect(html).not.toContain('etherscan.io/tx');
-    expect(html).toContain(
-      'No wallet is connected here and no transaction will be sent',
-    );
+  it('distinguishes failed account reads from an empty account', () => {
+    state.who = '0x' + '1'.repeat(40);
+    state.data = null;
+    state.error = 'INDEXER_UNAVAILABLE';
+    const html = render();
+    expect(html).toContain('Balance unavailable');
+    expect(html).toContain('Try again');
+    expect(html).not.toContain('No income rights yet');
+    expect(html).not.toContain('No income yet');
   });
-  it.each(['loading', 'error'] as const)(
-    'does not present unavailable %s data as empty balances',
-    (state) => {
-      const html = render(state);
-      expect(html).toContain('Balance unavailable');
-      expect(html).not.toContain('0.00');
-      expect(html).not.toContain('Income allocated');
-      expect(html).not.toContain('No positions yet');
-      if (state === 'error') expect(html).toContain('Retry preview');
-      else expect(html).toContain('aria-busy="true"');
-    },
-  );
-  it('renders portfolio tabs and links to the implemented product routes', () => {
-    const html = render('empty');
+  it('only shows empty state once canonical account data exists', () => {
+    state.error = '';
+    state.data = { claims: [] };
+    const html = render();
+    expect(html).toContain('No income yet');
+    expect(html).toContain('No income rights yet');
     expect(html).toContain('role="tablist"');
     expect(html).toContain('role="tabpanel"');
-    expect(html).toContain('aria-selected="true"');
-    expect(html).toContain('href="/lab"');
-    expect(html).toContain('href="/marketplace"');
-    expect(html).toContain('href="/sell"');
-    expect(html).toContain('Enable JavaScript');
+    expect(html).not.toContain('UI preview');
   });
 });

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Marketplace } from '@/components/marketplace/marketplace';
 
 export const metadata: Metadata = {
-  title: 'Marketplace — Yieldex',
+  title: 'Marketplace',
   description: 'Explore time-limited income rights on Yieldex.',
 };
 

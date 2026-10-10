@@ -1,18 +1,17 @@
 import { routeKey } from '@/features/marketplace/data';
-import type { Metadata } from 'next';
+export const metadata = { title: 'Income position' };
 import { notFound } from 'next/navigation';
 import { marketContext } from '@/server/market/context';
-import { LiveListing } from '@/features/marketplace/live-listing';
-export const metadata: Metadata = { title: 'Income rights' };
-export default async function ListingDetailPage({
+import { PositionDetail } from '@/features/marketplace/position-detail';
+export default async function PositionPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const id = routeKey((await params).id);
   const context = await marketContext().catch(() => null);
-  if (!context) return null; // The shared layout renders the configuration error.
+  if (!context) return null;
   const m = context.reader.manifest;
   if (!id || !id.startsWith(`eip155:${m.chainId}:${m.market}:`)) notFound();
-  return <LiveListing key={id} listingKey={id} />;
+  return <PositionDetail key={id} positionKey={id} />;
 }

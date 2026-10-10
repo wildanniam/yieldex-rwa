@@ -1,37 +1,46 @@
 'use client';
-
-// Adapts diamondver's PR #12 marketplace composition to the shared product shell.
+// Preserves diamondver's composition with canonical cursor-backed search.
 import Link from 'next/link';
 import { useState } from 'react';
-import { buttonVariants } from '@/components/ui/button';
+import type {
+  AssetsPage,
+  ListingsPage,
+  SearchListingsQuery,
+} from '@rwa/shared';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
+import { usePlatform } from '@/features/marketplace/platform-provider';
+import { useRead } from '@/features/marketplace/use-read';
 import { AssetCard } from './asset-card';
-import { MarketplacePagination } from './marketplace-pagination';
-import {
-  filterPreviewListings,
-  paginatePreviewListings,
-  previewListings,
-  type PreviewMarket,
-  type PreviewSort,
-} from './preview-data';
 import styles from './marketplace.module.css';
 
 export function Marketplace() {
-  const [market, setMarket] = useState<PreviewMarket>('ANY');
-  const [sort, setSort] = useState<PreviewSort>('NEWEST');
-  const [search, setSearch] = useState('');
+  const { manifest: m, revision } = usePlatform();
+  const [market, setMarket] = useState<SearchListingsQuery['market']>('ANY');
+  const [sort, setSort] = useState<SearchListingsQuery['sort']>('NEWEST');
+  const [assetId, setAssetId] = useState('');
   const [view, setView] = useState<'grid' | 'list'>('grid');
-  const [page, setPage] = useState(1);
-  const rows = filterPreviewListings({ search, market, sort });
-  const visible = paginatePreviewListings(rows, page);
-
-  function resetFilters() {
-    setSearch('');
+  const [cursors, setCursors] = useState<(string | null)[]>([null]);
+  const assets = useRead<AssetsPage>(
+    `/chains/${m.chainId}/registries/${m.registry}/assets`,
+    'api.AssetsPage',
+    revision,
+  );
+  const query = new URLSearchParams({ market, sort, limit: '6' });
+  if (assetId) query.set('assetId', assetId);
+  if (cursors.at(-1)) query.set('cursor', cursors.at(-1)!);
+  const data = useRead<ListingsPage>(
+    `/chains/${m.chainId}/markets/${m.market}/listings?${query}`,
+    'api.ListingsPage',
+    revision,
+  );
+  function reset() {
     setMarket('ANY');
+    setAssetId('');
     setSort('NEWEST');
-    setPage(1);
+    setCursors([null]);
+    data.refresh();
   }
-
   return (
     <div className={styles.page}>
       <header className={styles.heading}>
@@ -42,7 +51,7 @@ export function Marketplace() {
         </div>
         <Link href="/sell" className={buttonVariants({ size: 'md' })}>
           <Icon name="plus" inheritColor alt="" size={18} />
-          <span>Create an offer</span>
+          Create an offer
         </Link>
       </header>
       <div className={styles.toolbar}>
@@ -54,7 +63,7 @@ export function Marketplace() {
               aria-pressed={market === value}
               onClick={() => {
                 setMarket(value);
-                setPage(1);
+                setCursors([null]);
               }}
             >
               {value === 'ANY'
@@ -62,35 +71,31 @@ export function Marketplace() {
                 : value === 'PRIMARY'
                   ? 'Primary'
                   : 'Resale'}
-              <span>
-                {value === 'ANY'
-                  ? previewListings.length
-                  : previewListings.filter((item) => item.market === value)
-                      .length}
-              </span>
             </button>
           ))}
         </div>
         <div className={styles.tools}>
-          <label className={styles.search}>
-            <Icon name="search" alt="" inheritColor size={17} />
-            <input
-              type="search"
-              aria-label="Search offers"
-              placeholder="Search assets or offers"
-              value={search}
-              onChange={(event) => {
-                setSearch(event.target.value);
-                setPage(1);
-              }}
-            />
-          </label>
+          <select
+            aria-label="Filter by asset"
+            value={assetId}
+            onChange={(e) => {
+              setAssetId(e.target.value);
+              setCursors([null]);
+            }}
+          >
+            <option value="">All assets</option>
+            {assets.data?.items.map((a) => (
+              <option key={a.assetId} value={a.assetId}>
+                {a.token.symbol}
+              </option>
+            ))}
+          </select>
           <select
             aria-label="Sort offers"
             value={sort}
-            onChange={(event) => {
-              setSort(event.target.value as PreviewSort);
-              setPage(1);
+            onChange={(e) => {
+              setSort(e.target.value as SearchListingsQuery['sort']);
+              setCursors([null]);
             }}
           >
             <option value="NEWEST">Newest</option>
@@ -123,40 +128,113 @@ export function Marketplace() {
       </div>
       <div className={styles.resultsMeta}>
         <span aria-live="polite">
-          {rows.length} {rows.length === 1 ? 'offer' : 'offers'}
-          {search.trim() ? ` for “${search.trim()}”` : ' to explore'}
+          {data.loading
+            ? 'Loading offers…'
+            : data.data
+              ? `${data.data.items.length} offers on this page`
+              : 'Offers unavailable'}
         </span>
-        <span className={styles.previewBadge}>UI preview</span>
+        <Button
+          variant="ghost"
+          size="sm"
+          disabled={data.loading}
+          onClick={() => {
+            setCursors([null]);
+            data.refresh();
+          }}
+        >
+          Refresh
+        </Button>
       </div>
-      {rows.length ? (
+      {assets.error && (
+        <p role="status">
+          Asset filters unavailable.{' '}
+          <button onClick={assets.refresh}>Retry filters</button>
+        </p>
+      )}
+      {data.error ? (
+        <section className={styles.empty} role="alert">
+          <h2>We couldn’t load the offers.</h2>
+          <p>
+            {data.error === 'CURSOR_INVALIDATED'
+              ? 'The snapshot changed. Refresh to start from the latest page.'
+              : data.error}
+          </p>
+          <Button
+            variant="outline"
+            onClick={() => {
+              setCursors([null]);
+              data.refresh();
+            }}
+          >
+            Try again
+          </Button>
+        </section>
+      ) : data.loading ? (
+        <p role="status">Reading the marketplace…</p>
+      ) : data.data?.items.length ? (
         <div className={view === 'grid' ? styles.grid : styles.list}>
-          {visible.items.map((listing) => (
+          {data.data.items.map((d) => (
             <AssetCard
-              listing={listing}
+              key={d.listing.listingKey}
+              listing={d}
               list={view === 'list'}
-              key={listing.id}
             />
           ))}
         </div>
       ) : (
         <section className={styles.empty}>
-          <Icon name="search" alt="" size={30} inheritColor />
-          <h2>No offers match yet.</h2>
-          <p>Try another asset, seller or offer number.</p>
-          <button type="button" onClick={resetFilters}>
-            Clear filters <span aria-hidden="true">↗</span>
-          </button>
+          <Icon name="tag" alt="" size={30} inheritColor />
+          <h2>
+            {assetId || market !== 'ANY'
+              ? 'No offers match these filters.'
+              : 'The next offer could be yours.'}
+          </h2>
+          <p>
+            {assetId || market !== 'ANY'
+              ? 'Try another asset or listing type.'
+              : 'There are no open offers in the latest indexed snapshot.'}
+          </p>
+          {assetId || market !== 'ANY' ? (
+            <Button variant="outline" onClick={reset}>
+              Clear filters
+            </Button>
+          ) : (
+            <Link href="/sell" className={buttonVariants({ size: 'sm' })}>
+              Create a listing
+            </Link>
+          )}
         </section>
       )}
-      <MarketplacePagination
-        currentPage={visible.currentPage}
-        totalPages={visible.totalPages}
-        onPageChange={setPage}
-      />
-      <p className={styles.previewNote}>
-        Illustrative offers for this design preview. No live listings or income
-        estimates are shown.
-      </p>
+      {(cursors.length > 1 || data.data?.pagination.hasMore) && (
+        <nav className={styles.resultsMeta} aria-label="Marketplace pages">
+          <Button
+            variant="ghost"
+            disabled={cursors.length === 1 || data.loading}
+            onClick={() => setCursors((old) => old.slice(0, -1))}
+          >
+            Previous
+          </Button>
+          <span>Page {cursors.length}</span>
+          <Button
+            variant="ghost"
+            disabled={!data.data?.pagination.hasMore || data.loading}
+            onClick={() =>
+              setCursors((old) => [...old, data.data!.pagination.nextCursor])
+            }
+          >
+            Next
+          </Button>
+        </nav>
+      )}
+      {data.data && (
+        <p className={styles.previewNote}>
+          Block #{data.data.snapshot.blockNumber} ·{' '}
+          {data.data.snapshot.finality.toLowerCase()} ·{' '}
+          {data.data.snapshot.indexerStatus.toLowerCase()}. Offers are checked
+          again before purchase.
+        </p>
+      )}
     </div>
   );
 }
