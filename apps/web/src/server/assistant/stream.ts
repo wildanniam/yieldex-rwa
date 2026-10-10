@@ -3,7 +3,10 @@ export function guardedStream(
   source: ReadableStream<Uint8Array>,
   signal: AbortSignal,
   finish: () => void | Promise<void>,
-  onEvent?: (event: Record<string, unknown>) => void,
+  onEvent?: (
+    event: Record<string, unknown>,
+  ) => Record<string, unknown>[] | void,
+  onEnd?: (completed: boolean) => Record<string, unknown>[],
 ) {
   const reader = source.getReader();
   const encoder = new TextEncoder(),
@@ -12,6 +15,10 @@ export function guardedStream(
     buffered = '',
     bytes = 0;
   let terminal: Uint8Array | undefined;
+  let completed = false;
+  let flushed: Record<string, unknown>[] | undefined;
+  const flushOnce = () =>
+    (flushed ??= onEnd?.(completed && !signal.aborted) ?? []);
   let cancelled = false;
   let finishing: Promise<void> | undefined;
   let detach = () => {};
@@ -40,6 +47,11 @@ export function guardedStream(
         ended = true;
         signal.removeEventListener('abort', abort);
         try {
+          for (const event of flushOnce())
+            if (!cancelled)
+              target.enqueue(
+                encoder.encode('data: ' + JSON.stringify(event) + '\n\n'),
+              );
           await finishOnce();
           if (!cancelled && terminal) target.enqueue(terminal);
         } catch {
@@ -61,7 +73,8 @@ export function guardedStream(
       };
       const abort = () => {
         if (ended) return;
-        target.enqueue(failure());
+        completed = false;
+        terminal = failure();
         void reader.cancel().catch(() => {});
         end();
       };
@@ -77,6 +90,7 @@ export function guardedStream(
             const part = await reader.read();
             if (ended) return;
             if (part.done) {
+              terminal ??= failure();
               end();
               return;
             }
@@ -103,15 +117,24 @@ export function guardedStream(
               }
               try {
                 const event = JSON.parse(data);
-                onEvent?.(event);
-                if (event.type === 'RUN_ERROR') target.enqueue(failure());
-                else {
-                  delete event.rawEvent;
+                delete event.rawEvent;
+                const output = onEvent?.(event) ?? [event];
+                for (const next of output) {
+                  if (next.type === 'RUN_ERROR') {
+                    terminal = failure();
+                    completed = false;
+                    void reader.cancel().catch(() => {});
+                    end();
+                    return;
+                  }
+                  delete next.rawEvent;
                   const frame = encoder.encode(
-                    'data: ' + JSON.stringify(event) + '\n\n',
+                    'data: ' + JSON.stringify(next) + '\n\n',
                   );
-                  if (event.type === 'RUN_FINISHED') terminal = frame;
-                  else target.enqueue(frame);
+                  if (next.type === 'RUN_FINISHED') {
+                    terminal = frame;
+                    completed = true;
+                  } else target.enqueue(frame);
                 }
               } catch {
                 abort();
@@ -121,7 +144,8 @@ export function guardedStream(
           }
         } catch {
           if (!ended) {
-            target.enqueue(failure());
+            completed = false;
+            terminal = failure();
             end();
           }
         }
@@ -132,6 +156,7 @@ export function guardedStream(
       ended = true;
       detach();
       await reader.cancel().catch(() => {});
+      flushOnce();
       await finishOnce();
     },
   });

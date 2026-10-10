@@ -1,6 +1,9 @@
 import { expect, it, vi, beforeEach } from 'vitest';
 import { randomUUID } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { issueTicket } from './security';
+import { historyResult } from './transcript';
+import type { AssistantMessage } from './state';
 const harness = vi.hoisted(() => ({
   cookie: '',
   frames: [] as Record<string, unknown>[],
@@ -245,4 +248,114 @@ it('refuses saved-history access through a separate temporary-state database', a
     if (previous === undefined) delete process.env.AI_STATE_DATABASE_URL;
     else process.env.AI_STATE_DATABASE_URL = previous;
   }
+});
+
+it('streams canonical quote cards while discarding false model prose from the wire, checkpoint and reconnect', async () => {
+  const runId = randomUUID();
+  const payload = {
+    kind: 'QUOTE_COMPARISON',
+    payload: {
+      meta: {
+        schemaVersion: '1.0',
+        requestId: runId,
+        observedAt: 1791417605,
+      },
+      data: JSON.parse(
+        readFileSync(
+          new URL(
+            '../../../../../examples/quote-hypothetical-ranked.valid.json',
+            import.meta.url,
+          ),
+          'utf8',
+        ),
+      ),
+    },
+  };
+  const card = {
+    type: 'TOOL_CALL_RESULT',
+    toolCallId: 'quote',
+    messageId: 'quote-result',
+    content: JSON.stringify(payload),
+  };
+  harness.frames = [
+    { type: 'TEXT_MESSAGE_START', messageId: 'wrong-before' },
+    {
+      type: 'TEXT_MESSAGE_CONTENT',
+      messageId: 'wrong-before',
+      delta: '2.4878 juta USDC guaranteed.',
+    },
+    { type: 'TEXT_MESSAGE_END', messageId: 'wrong-before' },
+    {
+      type: 'TOOL_CALL_START',
+      toolCallId: 'quote',
+      toolCallName: 'getPaymentQuotes',
+      parentMessageId: 'tool-parent',
+    },
+    { type: 'TOOL_CALL_ARGS', toolCallId: 'quote', delta: '{}' },
+    { type: 'TOOL_CALL_END', toolCallId: 'quote' },
+    card,
+    card,
+    { type: 'TEXT_MESSAGE_START', messageId: 'wrong-after' },
+    {
+      type: 'TEXT_MESSAGE_CONTENT',
+      messageId: 'wrong-after',
+      delta: 'Gas is free. Net profit guaranteed.',
+    },
+    { type: 'TEXT_MESSAGE_END', messageId: 'wrong-after' },
+    {
+      type: 'MESSAGES_SNAPSHOT',
+      messages: [{ role: 'assistant', content: 'Snapshot bypass guaranteed.' }],
+    },
+    { type: 'RUN_FINISHED', result: { prose: 'Hidden result guaranteed.' } },
+  ];
+  const response = await handleAssistant(
+    request({
+      method: 'agent/run',
+      params: { agentId: 'default' },
+      body: {
+        threadId,
+        runId,
+        messages: [
+          { id: randomUUID(), role: 'user', content: 'Bandingkan quote.' },
+        ],
+      },
+    }),
+  );
+  const wire = await response.text();
+  const events = wire
+    .split('\n\n')
+    .filter(Boolean)
+    .map((frame) => JSON.parse(frame.slice(6)));
+  expect(events.filter((event) => event.type === 'TOOL_CALL_RESULT')).toEqual([
+    card,
+  ]);
+  const narration = events
+    .filter((event) => event.type === 'TEXT_MESSAGE_CONTENT')
+    .map((event) => event.delta)
+    .join('');
+  expect(narration).toMatch(/Quote|quote/);
+  expect(wire).not.toMatch(
+    /juta|guaranteed|Gas is free|wrong-before|wrong-after/,
+  );
+  expect(JSON.stringify(harness.stored)).not.toMatch(
+    /juta|guaranteed|Gas is free/,
+  );
+  const history = historyResult(
+    threadId,
+    harness.stored as AssistantMessage[],
+    1,
+  );
+  expect(history.text).toBe(narration);
+  expect(history.cards).toHaveLength(1);
+  expect(history.cards[0]?.payload).toEqual(payload.payload);
+  expect(events.at(-1)?.type).toBe('RUN_FINISHED');
+  const restored = await handleAssistant(
+    request({
+      method: 'agent/connect',
+      params: { agentId: 'default' },
+      body: { threadId },
+    }),
+  );
+  const snapshot = JSON.parse((await restored.text()).slice(6));
+  expect(snapshot.messages).toEqual(harness.stored);
 });

@@ -8,6 +8,8 @@ Greeting, composer, markdown, bubble ungu dan hierarchy card Rafi diadaptasi ke 
 
 Server tools tetap `searchListings`, `getListing`, `getPosition`, `getAssetContext`, `getPaymentQuotes`, dan `preparePurchase` untuk user terautentikasi. Tool menggunakan domain service yang sama dengan API marketplace; kartu dirender dari shared `AssistantCard {kind,payload}`. Nilai atomic tetap string dan tampilan menggunakan decimals token. Harga hak memakai payment token manifest, bukan diasumsikan USDC. Search kosong atau kegagalan provider tidak diganti listing, ticker, harga, ataupun quote contoh.
 
+Pengujian OpenAI sungguhan menemukan bahwa instruksi prompt saja tidak cukup: model mengubah skala USDC dalam narasi dan mencampur token backing dengan posisi hak pendapatan meskipun kartunya benar. Karena itu, respons yang memakai tool mendapatkan penjelasan deterministik dari DTO tervalidasi. Kartu tetap muncul progresif; prose model ditahan sampai run selesai agar klaim sebelum pemanggilan tool tidak telanjur tampil. Respons tanpa tool tetap memakai model, sehingga tidak dianggap bebas dari kesalahan. Checkpoint dan saved history menyimpan keluaran yang sama dengan yang dilihat pengguna.
+
 Halaman account tambahan yang ada di sumber PR18 berisi fixture untuk positions/listings/claims dan belum menjadi implementasi live. Sumber kontribusi tetap tersedia di PR/commit asli; halaman tersebut tidak diaktifkan sebagai data akun sungguhan melalui integrasi chat ini.
 
 ## Alur yang dapat dilanjutkan tim
