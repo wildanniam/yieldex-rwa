@@ -1,0 +1,6 @@
+# Standalone root: keeps Remotion out of the product workspace install.
+packages: []
+engineStrict: true
+saveExact: true
+allowBuilds:
+  esbuild: true
