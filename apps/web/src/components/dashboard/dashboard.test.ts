@@ -43,14 +43,14 @@ describe('dashboard presentation boundaries', () => {
       else expect(html).toContain('aria-busy="true"');
     },
   );
-  it('renders accessible navigation and no speculative product routes', () => {
+  it('renders portfolio tabs and links to the implemented product routes', () => {
     const html = render('empty');
     expect(html).toContain('role="tablist"');
     expect(html).toContain('role="tabpanel"');
     expect(html).toContain('aria-selected="true"');
     expect(html).toContain('href="/lab"');
-    expect(html).toContain('href="/"');
-    expect(html).not.toContain('href="/marketplace"');
+    expect(html).toContain('href="/marketplace"');
+    expect(html).toContain('href="/sell"');
     expect(html).toContain('Enable JavaScript');
   });
 });

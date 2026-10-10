@@ -22,7 +22,7 @@ Design variance 6, motion intensity 5, density 4. Existing Inter + navy/green/pu
 
 ## Primary path and boundaries
 
-`/` explains product → Explore demo opens `/lab`; contextual AI buttons open the existing assistant. `/workspace` retains the old developer home. `/lab` and `/design-system` retain their desktop workspace shell and URLs. A single top-level ChatbotWrapper persists between routes. Marketing illustrations are labeled examples, never live offers or signed transactions.
+`/` explains product → Launch app opens `/dashboard`; contextual AI buttons open the existing assistant. `/workspace` retains the old developer home. `/lab` and `/design-system` retain their desktop workspace shell and URLs. A single top-level ChatbotWrapper persists between routes. Marketing illustrations are labeled examples, never live offers or signed transactions.
 
 ## Motion and states
 
@@ -67,3 +67,9 @@ The specimen collection, quiet zero-income illustration and faceted closing scul
 ## Footer signature
 
 The landing footer uses an editorial brand statement, two navigation groups and a large logo and typographic Yieldex signature on the continuous page canvas. Footer artwork is live text/CSS, not a bitmap. Use the existing product/resource destinations and a native back-to-top anchor; avoid invented social links or status claims. Compact Sepolia/payment/no-real-backing disclosure remains visible at all breakpoints. Keep bottom clearance for the persistent assistant launcher. No divider lines or numbered menu headings. A mouse-following light is clipped to the wordmark; touch, reduced motion and no JavaScript retain the static gradient.
+
+## Shared product shell — 10 October integration preview
+
+The accepted minimal portfolio is the design source of truth for product pages. `app/(platform)/(product)/layout.tsx` owns `PlatformShell`: one transparent sidebar, compact header and main landmark for portfolio, marketplace/detail and create-listing. The outer platform layout owns the single persistent city/crypto background. `/lab` remains its sibling with the existing console shell; root landing retains its own navigation. This supersedes the original PR12 all-routes navigation placement and the dashboard's former page-local shell.
+
+Adapt PR12 page anatomy (offer cards, filters, purchase review and five-step creation) to this canvas. Prioritize company identity, price, income share and time period; secondary caveats belong in detail/disclosure. Use canonical components and subtle 150–200ms feedback, not landing choreography. Small preview labels distinguish examples; no fabricated connected identity, transaction receipt or successful creation. Actual financial actions remain in the wallet console.
