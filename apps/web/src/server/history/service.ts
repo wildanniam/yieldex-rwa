@@ -27,7 +27,12 @@ export class History {
   constructor(
     private db: Db,
     private cursors: HistoryCursor,
+    private transaction?: postgres.TransactionSql,
   ) {}
+  /** Server-only composition: caller owns commit/rollback and the same DB connection. */
+  withTransaction(sql: postgres.TransactionSql) {
+    return new History(this.db, this.cursors, sql);
+  }
   async create(s: Session, key: string, input: unknown) {
     idempotencyKey(key);
     const v = validateData('api.CreateConversationRequest', input);
@@ -125,7 +130,7 @@ export class History {
     };
     if (!validateData('api.ChatMessage', value).success)
       throw new ApiFailure(400, 'VALIDATION_ERROR', 'Pesan tidak valid.');
-    return this.db.begin(async (sql) => {
+    const write = async (sql: postgres.TransactionSql) => {
       const parent =
         await sql`select id from public.conversations where id=${id} and user_id=${s.userId} for update`;
       if (!parent.length) throw missing();
@@ -147,12 +152,14 @@ export class History {
         await sql`insert into public.messages(id,conversation_id,user_id,client_message_id,role,content) values(${value.messageId},${id},${s.userId},${key},${role},${sql.json({ text, cards: JSON.parse(JSON.stringify(cards)) })}) returning *`;
       await sql`update public.conversations set updated_at=now() where id=${id} and user_id=${s.userId}`;
       return this.message(r!);
-    });
+    };
+    return this.transaction ? write(this.transaction) : this.db.begin(write);
   }
   private async owner(s: Session, id: string) {
     if (!validateData('common.Uuid', id).success) throw missing();
-    const [r] = await this
-      .db`select id from public.conversations where id=${id} and user_id=${s.userId}`;
+    const sql = this.transaction ?? this.db;
+    const [r] =
+      await sql`select id from public.conversations where id=${id} and user_id=${s.userId}`;
     if (!r) throw missing();
   }
   private message(r: Record<string, unknown>): ChatMessage {

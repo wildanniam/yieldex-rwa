@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { useAssistant } from '@/components/ChatbotWrapper';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Icon, type IconName } from '@/components/ui/icon';
 import s from './shell.module.css';
@@ -13,6 +12,7 @@ const destinations: { label: string; href: string; icon: IconName }[] = [
   { label: 'My Portfolio', href: '/dashboard', icon: 'layers' },
   { label: 'Marketplace', href: '/marketplace', icon: 'tag' },
   { label: 'Create listing', href: '/sell', icon: 'plus' },
+  { label: 'AI Assistant', href: '/chat', icon: 'sparkles' },
 ];
 
 export function PlatformShell({ children }: { children: ReactNode }) {
@@ -22,7 +22,6 @@ export function PlatformShell({ children }: { children: ReactNode }) {
   const setMenuOpen = (open: boolean) => setMenuPath(open ? pathname : null);
   const menuButton = useRef<HTMLButtonElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
-  const assistant = useAssistant();
   const current = destinations.find(
     (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
   );
@@ -82,17 +81,6 @@ export function PlatformShell({ children }: { children: ReactNode }) {
               {item.label}
             </Link>
           ))}
-          <button
-            className={s.navItem}
-            type="button"
-            disabled={assistant.busy}
-            onClick={() => {
-              setMenuOpen(false);
-              assistant.open();
-            }}
-          >
-            <Icon name="sparkles" alt="" inheritColor size={20} /> AI Assistant
-          </button>
           <Link
             className={s.navItem}
             href="/dashboard#activity"
@@ -172,16 +160,16 @@ export function PlatformShell({ children }: { children: ReactNode }) {
         </div>
         <h2 id="wallet-handoff-title">Continue with your wallet</h2>
         <p id="wallet-handoff-description">
-          These pages are a design preview. Connect your wallet in the wallet
-          console to use the existing Sepolia transaction flow. Nothing is
-          signed here.
+          Connect your wallet, then sign in to save conversations and review
+          live listings. Every transaction needs a separate confirmation.
+          Nothing is signed here.
         </p>
         <Link
-          href="/lab"
+          href="/wallet"
           className={buttonVariants({ variant: 'accent' })}
           onClick={() => dialog.current?.close()}
         >
-          Open wallet console{' '}
+          Continue to wallet{' '}
           <Icon name="arrow-up-right" alt="" inheritColor size={16} />
         </Link>
       </dialog>

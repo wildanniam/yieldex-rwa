@@ -45,7 +45,8 @@
     "test:wallet:local": "tsx scripts/local/wallet.mts",
     "test:recovery:local": "node --import tsx scripts/local/recovery.mts",
     "test:worker:local": "node --import tsx scripts/local/worker-regression.mts",
-    "test:recovery:edges": "node --import tsx scripts/local/recovery-edges.mts"
+    "test:recovery:edges": "node --import tsx scripts/local/recovery-edges.mts",
+    "test:chatbot:local": "tsx scripts/local/chatbot.mts"
   },
   "devDependencies": {
     "@eslint/js": "9.39.4",

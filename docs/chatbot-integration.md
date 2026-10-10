@@ -1,5 +1,7 @@
 # Integrasi chatbot tahap pertama — PR #2 / issue #5
 
+> Catatan historis tahap pertama. Revisi PR18/issue21, checkpoint lintas instance, saved history dan handoff baru dijelaskan di [integrasi chatbot live](chatbot-live-integration.md). Status di bawah berlaku pada revision yang disebut, bukan seluruh aplikasi saat ini.
+
 Status: integrasi lokal di branch `codex/5-chatbot-core-integration`, belum merge/deploy. Baseline hosted berasal dari PR #4 yang kini sudah merged ke main. Kontribusi Rafi `86d03ef` dan revisi `c97fbfe` disertakan melalui merge history. Revisi terbaru mulai memakai v2 dan desain kartu putih dengan border/shadow netral; gaya itu diadaptasi ke renderer canonical. Fallback harga buatan, query langsung Supabase yang melewati layanan domain, dan runtime tanpa boundary tidak digunakan. Scope ini menghubungkan popup/kartu chatbot dengan layanan core; penerimaan UI designer, saved history dan handoff wallet dari kartu tetap gate terpisah.
 
 ## Perubahan dan batas

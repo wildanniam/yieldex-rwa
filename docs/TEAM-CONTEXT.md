@@ -6,7 +6,7 @@ Sumber asli, urutan bagian, dan SHA-256 tercantum di bawah. Link relatif di bagi
 File ini menyertakan kontrak data dan fixtures; beberapa fixture sengaja invalid untuk pengujian. Jangan menganggap fixture sebagai transaksi/provider data nyata.
 UI visual mengikuti Afer; chatbot Rafi; core/backend/contracts/quote Wildan/Codex. Lihat execution plan untuk scope dan gate. Jangan menambah swap execution/NFT/training ML di luar scope.
 
-Bundle source digest: `21fe88b46038039213a5e5ef02c69a887336d1b4e2d76c37d3f1abac61c1bab4`
+Bundle source digest: `62ab8b48b02c21697b7bd3ced38fbabe4bd1fba4673912ded33b92ac0ac841bf`
 
 ## Source Manifest
 
@@ -34,7 +34,7 @@ Bundle source digest: `21fe88b46038039213a5e5ef02c69a887336d1b4e2d76c37d3f1abac6
 | `openspec/changes/build-rwa-income-rights/specs/rights-market/spec.md` | `66d1f6def241ff8d7103b8e0084f37c91b072937e0d90703fe8f084c055dac25` |
 | `openspec/changes/build-rwa-income-rights/specs/wallet-transactions/spec.md` | `afccf562c8033f609771914cba23388000dec2c57da5ff46dbbb6133e90ab2e0` |
 | `docs/spec/accounting-and-finality.md` | `14f1e66b2bdce2e6283bf1540ebb6f20ee9a5a68d838fc63084516b4a09fbca8` |
-| `docs/spec/ai-and-quotes.md` | `7d9e4944ebbba5ae14f727306924058231690cbbe80e7eae88d53f8b85cf405f` |
+| `docs/spec/ai-and-quotes.md` | `78d6b3ef54752a6fe027de4e4c748451fc2b89afae2f89b691cd8dc401118784` |
 | `docs/spec/api-contract.md` | `c8d3e0920459f07ff309306c821951aba1270c371368b15e9c57f1d205607f51` |
 | `docs/spec/contract-interface.md` | `af73a698537a83c1c85b86ea1e94990d948268883bb9966d969c2667ee3875d3` |
 | `docs/spec/coverage.md` | `34b86ec1dbad3fa23756c67c16763a7081c534c8884d053d19fdb810bb9307c8` |
@@ -2700,7 +2700,7 @@ LLM memahami permintaan dan menjelaskan hasil. Query, nominal, validasi, ranking
 
 Pilihan implementasi: **CopilotKit v2 BuiltInAgent dengan OpenAI provider**, server tools lokal, dan komponen React yang ditulis tim. Next.js melayani runtime dan frontend pada origin yang sama. Tidak menggunakan orchestrator kedua atau custom Responses loop bersamaan dengan BuiltInAgent. OpenAI tetap penyedia model; BuiltInAgent mengelola pemanggilan melalui AI SDK. Detail HTTP provider tidak menjadi kontrak domain produk.
 
-Gunakan entrypoint `@copilotkit/runtime/v2` untuk `BuiltInAgent`, `CopilotRuntime`, `createCopilotRuntimeHandler`, dan `defineTool`; `@copilotkit/react-core/v2` untuk provider/chat/render hooks. Jangan mencampur tutorial v1 `OpenAIAdapter` dengan runtime ini. `defineTool.parameters` menerima validator Standard Schema seperti Zod, bukan objek JSON Schema mentah. Validator tersebut harus dibangun dari kontrak bersama atau mempunyai conformance tests terhadap JSON Schema bersama. `useRenderTool` hanya merender hasil tool server, bukan menjalankannya kembali. Dokumentasi runtime mendukung jalur ini; instalasi, peer dependencies, streaming, dan wallet integration belum diuji [S1–S4].
+Gunakan entrypoint `@copilotkit/runtime/v2` untuk `BuiltInAgent`, `CopilotRuntime`, `createCopilotRuntimeHandler`, dan `defineTool`; `@copilotkit/react-core/v2` untuk provider/chat/render hooks. Jangan mencampur tutorial v1 `OpenAIAdapter` dengan runtime ini. `defineTool.parameters` menerima validator Standard Schema seperti Zod, bukan objek JSON Schema mentah. Validator tersebut harus dibangun dari kontrak bersama atau mempunyai conformance tests terhadap JSON Schema bersama. `useRenderTool` hanya merender hasil tool server, bukan menjalankannya kembali. Dokumentasi runtime mendukung jalur ini [S1–S4]. Bukti implementasi dan batas verifikasi terbaru dicatat di [integrasi chatbot](../chatbot-live-integration.md); sumber dokumentasi sendiri bukan bukti runtime.
 
 `OPENAI_API_KEY` dan `ZEROX_API_KEY` hanya tersedia di server. `AI_MODEL` wajib dikonfigurasi sebagai model OpenAI yang tersedia bagi akun tim dan lolos schema/tool tests; jangan hardcode model dari contoh dokumentasi sebagai bukti akses akun. Versi paket dipin bersamaan pada foundation PR setelah compatibility spike. Tidak memasang CopilotKit Intelligence, external MCP, pembelajaran otomatis, atau memory lintas pengguna sebagai prasyarat.
 
@@ -2708,7 +2708,17 @@ Default operasional aplikasi: maksimal 6 langkah tool/model per run, 1 run aktif
 
 Satu assistant cukup. Komponen normal marketplace dan form quote tetap bisa digunakan ketika model tidak tersedia. Fallback manual tidak menyamar sebagai jawaban AI.
 
-Guest dapat menggunakan chat sementara untuk pencarian, penjelasan, dan quote tanpa wallet/login. Server menerbitkan transient run/session identifier, menerapkan quota, dan tidak membaca/menulis private conversation DB. Identifier guest tidak bisa dipakai untuk memilih saved thread. Tool set guest hanya lima read tools; `preparePurchase` tidak didaftarkan untuk guest. Login Supabase Web3 diperlukan untuk menyimpan history atau menyiapkan server purchase intent. Wallet login signature adalah proses autentikasi terpisah yang dijelaskan UI, bukan izin swap atau purchase. Setelah login, jangan memindahkan guest transcript ke akun secara diam-diam; penyimpanan berlangsung melalui aksi aplikasi yang jelas.
+Guest dapat menggunakan chat sementara untuk pencarian, penjelasan, dan quote tanpa wallet/login. Server menerbitkan transient run/session identifier, menerapkan quota, dan tidak membaca/menulis tabel saved conversation milik akun. Checkpoint sementara disimpan di tabel privat khusus assistant dengan TTL 30 menit untuk pemulihan stream lintas instance; ini bukan saved history dan tidak dapat diakses melalui PostgREST. Identifier guest tidak bisa dipakai untuk memilih saved thread. Tool set guest hanya lima read tools; `preparePurchase` tidak didaftarkan untuk guest. Login Supabase Web3 diperlukan untuk menyimpan history atau menyiapkan server purchase intent. Wallet login signature adalah proses autentikasi terpisah yang dijelaskan UI, bukan izin swap atau purchase. Setelah login, jangan memindahkan guest transcript ke akun secara diam-diam; penyimpanan berlangsung melalui aksi aplikasi yang jelas.
+
+### Sesi, pemulihan, dan halaman aplikasi
+
+`POST /api/assistant/session` adalah adapter internal UI/runtime, bukan DTO finansial baru. Body kosong membuat chat sementara. `{ticket}` memulihkan checkpoint thread yang sama setelah server memverifikasi cookie browser, principal dan masa berlaku. `{persistence: "SAVED", conversationId?: UUID}` hanya tersedia setelah login wallet; tanpa ID membuat percakapan tersimpan baru, dengan ID memuat percakapan milik akun tersebut. Respons memuat `threadId`, `ticket`, `authenticated`, `persistence`, dan `conversationId` (null untuk sementara). Ticket dikirim dalam header, tidak di URL atau log.
+
+Server hanya menerima pesan user baru dari browser; riwayat model/tool berasal dari checkpoint tervalidasi di server. Satu thread memiliki satu lease run, heartbeat, dan fence `runId + version`; run yang sudah digantikan tidak dapat menimpa jawaban baru. Pesan user dan checkpoint diterima secara atomik; hasil assistant dan snapshot kartu pada chat tersimpan juga di-commit bersama sebelum event selesai diteruskan. Stop menyimpan bagian valid yang sudah tersedia; pesan tidak dikirim ulang otomatis. Reconnect pada run aktif mengembalikan konflik yang dapat dipulihkan, bukan menjalankan ulang prompt.
+
+`/chat` dan bubble menggunakan satu provider CopilotKit dan conversation surface yang sama. Pergantian wallet/logout segera melepaskan konteks chat lama sambil cookie sesi diselaraskan. Guest transcript tidak disalin otomatis ke akun. Kartu listing membuka `/marketplace/live/[listingKey]`, yang memuat ulang data canonical. `/wallet` menyediakan connect dan login terpisah. Review/approval/purchase memerlukan klik eksplisit dan validasi ulang melalui wallet executor yang sama dengan `/lab`.
+
+Migrasi `202610100001_assistant_state.sql` diperlukan sebelum mengaktifkan runtime baru. `AI_STATE_DATABASE_URL` opsional hanya untuk memisahkan checkpoint sementara dalam pengujian; jika berbeda dari `DATABASE_URL`, saved history ditolak. Produksi menggunakan satu database transaksi untuk checkpoint dan saved history.
 
 ## 3. Kontrak tool server
 
