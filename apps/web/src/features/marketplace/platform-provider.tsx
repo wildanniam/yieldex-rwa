@@ -116,13 +116,9 @@ export function PlatformProvider({
     const watching = new Set<string>();
     const tick = () => {
       for (const item of rows.current) {
-        // Final receipts are read once after mount too, to reconstruct overlays after refresh.
-        if (
-          item.wallet !== who ||
-          ['CANCELLED', 'REVERTED'].includes(item.status) ||
-          watching.has(item.hash)
-        )
-          continue;
+        // Revalidate terminal receipts once per connection too. Local journal
+        // statuses may be stale or classified by an older application revision.
+        if (item.wallet !== who || watching.has(item.hash)) continue;
         watching.add(item.hash);
         void wallet
           .track(item, (update) => {
@@ -149,7 +145,11 @@ export function PlatformProvider({
             )
               setRevision((n) => n + 1);
             if (result.tracked.status === 'REORGED') setRevision((n) => n + 1);
-            if (result.tracked.status !== 'FINALIZED')
+            if (
+              !['FINALIZED', 'CANCELLED', 'REVERTED'].includes(
+                result.tracked.status,
+              )
+            )
               watching.delete(item.hash);
           })
           .catch(() => {

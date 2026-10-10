@@ -27,6 +27,8 @@ import { ToolActivityContext, ToolResult } from '@/features/assistant/cards';
 import { ConversationView } from '@/features/assistant/presentation';
 import {
   CHAT_STORAGE_KEY,
+  ChatSessionFailure,
+  chatSessionFailure,
   latestUserMessage,
   parseChatSession,
   type ChatSession,
@@ -154,6 +156,9 @@ export function ChatbotWrapper({ children }: { children: ReactNode }) {
   const [running, setRunning] = useState(false);
   const [sparkMotion, setSparkMotion] = useState(true);
   const [error, setError] = useState('');
+  const [sessionRecovery, setSessionRecovery] = useState<
+    ChatSessionFailure['recovery'] | null
+  >(null);
   const [notice, setNotice] = useState('');
   const [open, setOpen] = useState(false);
   const [fullHost, setFullHost] = useState<HTMLElement | null>(null);
@@ -212,6 +217,7 @@ export function ChatbotWrapper({ children }: { children: ReactNode }) {
       setBusy(true);
       const generation = ++identityGeneration.current;
       setError('');
+      setSessionRecovery(null);
       setNotice('');
       setHistory(null);
       setHistoryError('');
@@ -233,7 +239,8 @@ export function ChatbotWrapper({ children }: { children: ReactNode }) {
         });
         const data: unknown = await response.json();
         const parsed = parseChatSession(data);
-        if (!response.ok || !parsed) throw new Error('SESSION_UNAVAILABLE');
+        if (!response.ok) throw chatSessionFailure(data);
+        if (!parsed) throw chatSessionFailure(null);
         if (
           controller.signal.aborted ||
           request.current !== controller ||
@@ -252,15 +259,18 @@ export function ChatbotWrapper({ children }: { children: ReactNode }) {
         } catch {
           /* Storage may be disabled; in-memory session still works. */
         }
-      } catch {
+      } catch (cause) {
         if (
           !controller.signal.aborted &&
           request.current === controller &&
           generation === identityGeneration.current
         ) {
-          setError(
-            'Sesi chat belum tersedia atau sudah berakhir. Coba lagi, atau mulai percakapan baru. Marketplace tetap dapat digunakan.',
-          );
+          const failure =
+            cause instanceof ChatSessionFailure
+              ? cause
+              : chatSessionFailure(null);
+          setError(failure.message);
+          setSessionRecovery(failure.recovery);
         }
       } finally {
         if (request.current === controller) {
@@ -322,6 +332,7 @@ export function ChatbotWrapper({ children }: { children: ReactNode }) {
       setRunning(false);
       setHistory(null);
       setError('');
+      setSessionRecovery(null);
       setHistoryError('');
       try {
         sessionStorage.removeItem(CHAT_STORAGE_KEY);
@@ -405,7 +416,9 @@ export function ChatbotWrapper({ children }: { children: ReactNode }) {
             <p>
               {session?.persistence === 'SAVED'
                 ? 'Tersimpan di akun wallet'
-                : 'Chat sementara · data dari platform'}
+                : session
+                  ? 'Chat sementara · data dari platform'
+                  : 'Data dari platform · konfirmasi transaksi di wallet'}
             </p>
           </div>
         </div>
@@ -459,11 +472,15 @@ export function ChatbotWrapper({ children }: { children: ReactNode }) {
               {historyLoading ? 'Memuat…' : 'Riwayat tersimpan'}
             </button>
           </>
-        ) : (
+        ) : session ? (
           <Link href="/wallet?returnTo=/chat" onClick={() => setOpen(false)}>
-            Hubungkan wallet untuk menyimpan chat{' '}
+            Verifikasi wallet untuk menyimpan chat{' '}
             <Icon name="arrow-up-right" alt="" size={13} />
           </Link>
+        ) : (
+          <span>
+            {busy ? 'Memeriksa sesi chat…' : 'Sesi chat belum tersedia'}
+          </span>
         )}
         <span>AI tidak mengirim transaksi</span>
       </div>
@@ -510,27 +527,39 @@ export function ChatbotWrapper({ children }: { children: ReactNode }) {
         <div className={s.error} role="alert">
           <p>{error}</p>
           <div>
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={busy}
-              onClick={() => {
-                setError('');
-                setRunning(false);
-                if (session) void requestSession({ ticket: session.ticket });
-                else start();
-              }}
-            >
-              Hubungkan ulang
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              disabled={busy || running}
-              onClick={() => beginNew('TEMPORARY')}
-            >
-              Chat baru
-            </Button>
+            {(sessionRecovery === null || sessionRecovery === 'retry') && (
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={busy}
+                onClick={() => {
+                  setError('');
+                  setRunning(false);
+                  if (session) void requestSession({ ticket: session.ticket });
+                  else start();
+                }}
+              >
+                Coba lagi
+              </Button>
+            )}
+            {sessionRecovery === 'verify' && (
+              <Link
+                href="/wallet?returnTo=/chat"
+                onClick={() => setOpen(false)}
+              >
+                Verifikasi wallet
+              </Link>
+            )}
+            {sessionRecovery !== 'retry' && (
+              <Button
+                variant="ghost"
+                size="sm"
+                disabled={busy || running}
+                onClick={() => beginNew('TEMPORARY')}
+              >
+                Chat baru
+              </Button>
+            )}
           </div>
         </div>
       )}

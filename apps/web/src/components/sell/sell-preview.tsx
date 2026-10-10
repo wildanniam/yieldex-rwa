@@ -346,8 +346,9 @@ function SellFlow() {
               )}
               {draft.step === 4 && (
                 <p className={s.quiet}>
-                  Your review is below. No tokens have moved yet. You can go
-                  back to edit any term.
+                  Review the terms below before confirming. After submission,
+                  follow the receipt in Recent transactions and open your
+                  position.
                 </p>
               )}
             </form>
