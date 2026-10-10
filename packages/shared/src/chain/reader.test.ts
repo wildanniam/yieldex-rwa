@@ -89,6 +89,35 @@ function setup(fault: unknown = null, brokenRegistry = false) {
       if (fault) throw fault;
       return snap;
     }
+    if (p.functionName === 'getPosition')
+      return {
+        assetId: id,
+        principalOwner: '0x' + '55'.repeat(20),
+        rightsOwner: '0x' + '00'.repeat(20),
+        principalShares: 100n,
+        incomeBps: 5000,
+        durationSeconds: 2592000n,
+        createdAt: 1791417000n,
+        cancelledAt: 0n,
+        currentListingId: 1n,
+        startAt: 0n,
+        endAt: 0n,
+        activationEventCursor: 0n,
+        eventCursor: 0n,
+        state: 0,
+      };
+    if (p.functionName === 'getListing')
+      return {
+        positionId: 1n,
+        kind: 0,
+        state: 0,
+        seller: '0x' + '55'.repeat(20),
+        paymentToken: manifest.paymentToken.address,
+        priceAtomic: 1000000n,
+        createdAt: 1791417000n,
+        expiresAt: 1792022400n,
+        termsHash: '0x' + '88'.repeat(32),
+      };
     if (p.functionName === 'claimShares') return 7n;
     throw Error('Unexpected read');
   });
@@ -160,5 +189,33 @@ describe('asset-local adapter failure boundary', () => {
     expect(intent.state).toBe('BLOCKED');
     expect(intent.blockers).toEqual(['ADAPTER_UNAVAILABLE']);
     expect(client.call).not.toHaveBeenCalled();
+  });
+});
+
+describe('listing snapshot reuse', () => {
+  it('returns identical values with eight fewer RPC reads per listing', async () => {
+    const { reader, id, client } = setup();
+    const a = await reader.asset(id, fixture.snapshot);
+    const rpc = vi.mocked(client.readContract);
+    rpc.mockClear();
+    const baseline = await reader.listing(1n, 1n, fixture.snapshot);
+    expect(rpc).toHaveBeenCalledTimes(11);
+    rpc.mockClear();
+    const reused = await reader.listing(
+      1n,
+      1n,
+      fixture.snapshot,
+      new Map([[id, a]]),
+    );
+    expect(reused).toEqual(baseline);
+    expect(rpc).toHaveBeenCalledTimes(3);
+  });
+  it('rejects assets from another block instead of mixing snapshots', async () => {
+    const { reader, id } = setup();
+    const a = await reader.asset(id, fixture.snapshot);
+    a.snapshot = { ...a.snapshot, blockHash: '0x' + '99'.repeat(32) };
+    await expect(
+      reader.listing(1n, 1n, fixture.snapshot, new Map([[id, a]])),
+    ).rejects.toThrow('Mixed asset snapshot');
   });
 });

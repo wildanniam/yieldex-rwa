@@ -248,6 +248,7 @@ export class ChainReader {
     id: bigint,
     snapshot: ChainSnapshot,
     asset?: Asset,
+    assets?: ReadonlyMap<string, Asset>,
   ): Promise<Position> {
     this.assertSnapshot(snapshot);
     const m = this.manifest,
@@ -259,7 +260,10 @@ export class ChainReader {
       args: [id],
       blockNumber,
     });
-    const a = asset ?? (await this.asset(p.assetId, snapshot));
+    const a =
+      asset ??
+      assets?.get(p.assetId) ??
+      (await this.asset(p.assetId, snapshot));
     if (a.assetId !== p.assetId || a.snapshot.blockHash !== snapshot.blockHash)
       throw new Error('Mixed asset snapshot');
     if (
@@ -330,6 +334,7 @@ export class ChainReader {
     id: bigint,
     createdBlockNumber: bigint,
     snapshot: ChainSnapshot,
+    assets?: ReadonlyMap<string, Asset>,
   ): Promise<ListingDetail> {
     this.assertSnapshot(snapshot);
     const m = this.manifest;
@@ -340,8 +345,9 @@ export class ChainReader {
       args: [id],
       blockNumber: BigInt(snapshot.blockNumber),
     });
-    const p = await this.position(l.positionId, snapshot);
-    const a = await this.asset(p.assetKey.split(':').at(-1)!, snapshot);
+    const p = await this.position(l.positionId, snapshot, undefined, assets);
+    const assetId = p.assetKey.split(':').at(-1)!;
+    const a = assets?.get(assetId) ?? (await this.asset(assetId, snapshot));
     const storedStatus = listingStates[l.state];
     if (
       !storedStatus ||

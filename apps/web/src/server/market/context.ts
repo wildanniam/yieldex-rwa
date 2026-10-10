@@ -1,7 +1,8 @@
 import { readFile } from 'node:fs/promises';
 import type postgres from 'postgres';
 import { createDatabase } from '../database';
-import { createPublicClient, http } from 'viem';
+import { createPublicClient } from 'viem';
+import { marketTransport } from './transport';
 import { validateDeploymentManifest } from '@rwa/shared/config';
 import { ChainReader } from '@rwa/shared/chain';
 import { Cursors } from './cursor';
@@ -36,7 +37,7 @@ export function marketContext() {
         'Deployment backend belum dikonfigurasi.',
       );
     const client = createPublicClient({
-      transport: http(MARKETPLACE_RPC_URL, { retryCount: 0, timeout: 8000 }),
+      transport: marketTransport(MARKETPLACE_RPC_URL),
     });
     const manifest = validateDeploymentManifest(
       JSON.parse(

@@ -72,6 +72,27 @@ describe('latest marketplace over finalized discovery', () => {
     ).toBe(true);
     expect(base.payload.listings).toHaveLength(1);
   });
+  it('shares overlapping reads but fetches fresh state after completion', async () => {
+    const { base, reader, live } = setup();
+    const [one, two] = await Promise.all([
+      live.load(base, null),
+      live.load(base, null),
+    ]);
+    expect(one).toBe(two);
+    expect(reader.client.getLogs).toHaveBeenCalledTimes(3);
+    await live.load(base, null);
+    expect(reader.client.getLogs).toHaveBeenCalledTimes(6);
+  });
+  it('clears shared failures so a later request can recover', async () => {
+    const { base, reader, live } = setup();
+    reader.client.getLogs.mockRejectedValueOnce(new Error('rate limited'));
+    const results = await Promise.allSettled([
+      live.load(base, null),
+      live.load(base, null),
+    ]);
+    expect(results.map((r) => r.status)).toEqual(['rejected', 'rejected']);
+    expect((await live.load(base, null)).payload.listings).toHaveLength(2);
+  });
   it('pins a cursor and rejects a changed canonical block', async () => {
     const { base, live } = setup();
     const cursor = { blockNumber: '120', blockHash: 'hash120' } as PageCursor;

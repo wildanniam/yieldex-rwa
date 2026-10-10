@@ -15,8 +15,22 @@ const invalidated = () =>
 
 /** A disposable latest-state view, never persisted into the finalized index. */
 export class LiveMarket {
+  private pending = new Map<string, Promise<View>>();
   constructor(private reader: ChainReader) {}
-  load = async (base: View, cursor: PageCursor | null): Promise<View> => {
+  load = (base: View, cursor: PageCursor | null): Promise<View> => {
+    const key = `${base.snapshot.blockHash}:${cursor?.blockHash ?? 'latest'}:${cursor?.blockNumber ?? ''}`;
+    const existing = this.pending.get(key);
+    if (existing) return existing;
+    const request = this.read(base, cursor).finally(() =>
+      this.pending.delete(key),
+    );
+    this.pending.set(key, request);
+    return request;
+  };
+  private read = async (
+    base: View,
+    cursor: PageCursor | null,
+  ): Promise<View> => {
     const r = this.reader;
     const snapshot = await r.snapshot(
       cursor ? BigInt(cursor.blockNumber) : 'latest',
@@ -65,6 +79,7 @@ export class LiveMarket {
     const assets = await Promise.all(
       r.manifest.assets.map((a) => r.asset(a.assetId, snapshot)),
     );
+    const assetById = new Map(assets.map((asset) => [asset.assetId, asset]));
     const listings: Payload['listings'] = [];
     const positions = new Map<string, Payload['positions'][number]>();
     // Bounded concurrency prevents one request flooding the provider.
@@ -73,7 +88,9 @@ export class LiveMarket {
       const details = await Promise.all(
         entries
           .slice(i, i + 3)
-          .map(([id, block]) => r.listing(BigInt(id), block, snapshot)),
+          .map(([id, block]) =>
+            r.listing(BigInt(id), block, snapshot, assetById),
+          ),
       );
       for (const detail of details) {
         listings.push(detail.listing);
