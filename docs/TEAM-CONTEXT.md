@@ -6,7 +6,7 @@ Sumber asli, urutan bagian, dan SHA-256 tercantum di bawah. Link relatif di bagi
 File ini menyertakan kontrak data dan fixtures; beberapa fixture sengaja invalid untuk pengujian. Jangan menganggap fixture sebagai transaksi/provider data nyata.
 UI visual mengikuti Afer; chatbot Rafi; core/backend/contracts/quote Wildan/Codex. Lihat execution plan untuk scope dan gate. Jangan menambah swap execution/NFT/training ML di luar scope.
 
-Bundle source digest: `1f554b224cc65f07d0b3e01649175ec704e718c4df273b1178bf09ea0c7b7c85`
+Bundle source digest: `f0c187f27b20583a04737ad7e5922a90367ff263251ac6292c08da53fb664ae9`
 
 ## Source Manifest
 
@@ -32,12 +32,12 @@ Bundle source digest: `1f554b224cc65f07d0b3e01649175ec704e718c4df273b1178bf09ea0
 | `openspec/changes/build-rwa-income-rights/specs/quote-recommendations/spec.md` | `6c661eb646d46bf33a7a7d478ceb5a44806b7a894fa468a34f3df448d8a64706` |
 | `openspec/changes/build-rwa-income-rights/specs/read-model/spec.md` | `28b85a24265c066395bca87bc7de43b3290c05f90f8e451b44d293c487a89b4d` |
 | `openspec/changes/build-rwa-income-rights/specs/rights-market/spec.md` | `66d1f6def241ff8d7103b8e0084f37c91b072937e0d90703fe8f084c055dac25` |
-| `openspec/changes/build-rwa-income-rights/specs/wallet-transactions/spec.md` | `5d1f38764e11fb98917253a44dce55b134b79dc4caea51b7e75a81216fae341e` |
+| `openspec/changes/build-rwa-income-rights/specs/wallet-transactions/spec.md` | `49f6c09a22b8312b04dfb12f74407335af8d91dbceb1ec2ead9a914c71357129` |
 | `docs/spec/accounting-and-finality.md` | `14f1e66b2bdce2e6283bf1540ebb6f20ee9a5a68d838fc63084516b4a09fbca8` |
 | `docs/spec/ai-and-quotes.md` | `f71d5b19faeb756f777e0f061675ed9b916599d8ea70494742afdbbb457b5b32` |
 | `docs/spec/api-contract.md` | `c8d3e0920459f07ff309306c821951aba1270c371368b15e9c57f1d205607f51` |
 | `docs/spec/contract-interface.md` | `af73a698537a83c1c85b86ea1e94990d948268883bb9966d969c2667ee3875d3` |
-| `docs/spec/coverage.md` | `34b86ec1dbad3fa23756c67c16763a7081c534c8884d053d19fdb810bb9307c8` |
+| `docs/spec/coverage.md` | `f471c0366f0044292a51010f38c64fcaa4e3956e3943c9b05f712684b2f1ad8e` |
 | `docs/spec/data-contracts.md` | `5b9157d30122d02bf2521b462a5a9b0afd48ec55f9c6354af51731c63d7bca40` |
 | `docs/spec/execution-plan.md` | `ce087a721175e478e5d5d2bdee525807d3ed5ea8d53eb2854c2b594f365340eb` |
 | `docs/spec/sources.md` | `a1819d19113a41a401e78ef7fd72f04e01c71b17e8fbcc015ea3233f74121bc3` |
@@ -2755,6 +2755,23 @@ The contract SHALL remain authoritative when buyers race, users open multiple ta
 - **WHEN** Supabase or chat is down but the chain and wallet remain available
 - **THEN** the standard wallet flow/direct contract path SHALL preserve its onchain permissions and SHALL not depend on a database success flag.
 
+### Requirement: TX-010 Explicit wallet disconnection
+The application SHALL expose Disconnect wallet in shared wallet controls for connected and verified accounts, including wrong-network states. Disconnect SHALL immediately hide wallet-specific data and invalidate reviews and in-flight identity/login results, clear the private session, and persist the disconnected preference across reloads and tabs until explicit reconnect. It SHALL preserve submitted transaction hashes; disconnect is not transaction cancellation or token-approval revocation.
+
+#### Scenario: Disconnect then refresh
+- **WHEN** a connected user disconnects and reloads or the provider emits account changes
+- **THEN** the application SHALL remain disconnected until an explicit successful reconnect.
+- **AND** private chat history SHALL stay hidden while server session cleanup is pending or fails; a failed reconnect SHALL not restore the previous identity.
+
+#### Scenario: Provider cannot revoke connection permissions
+- **WHEN** wallet permission revocation is unsupported or rejected
+- **THEN** local disconnection SHALL remain effective and UI SHALL explain that site permissions can be removed in the wallet.
+
+#### Scenario: Another tab or pending operation
+- **WHEN** disconnection occurs while another tab is connected or preparation/login is in flight
+- **THEN** old identity, private chat and transaction reviews SHALL be invalidated, with no automatic send or reconnect.
+- **AND** any transaction already handed to the wallet or broadcast SHALL retain its actual outcome and receipt tracking after reconnect.
+
 ---
 
 # Source: docs/spec/accounting-and-finality.md
@@ -3794,6 +3811,7 @@ Setiap requirement berikut ditulis sebagai skenario teruji pada capability spec.
 | TX-007 User rejection and duplicate clicks are safe | [wallet-transactions](../../openspec/changes/build-rwa-income-rights/specs/wallet-transactions/spec.md) | 4.5, 5.2–5.6 | See [core evidence](../core-verification.md); full-product acceptance remains open |
 | TX-008 Receipt evidence determines progress | [wallet-transactions](../../openspec/changes/build-rwa-income-rights/specs/wallet-transactions/spec.md) | 4.5, 5.2–5.6 | See [core evidence](../core-verification.md); full-product acceptance remains open |
 | TX-009 Multiple frontends cannot bypass financial guards | [wallet-transactions](../../openspec/changes/build-rwa-income-rights/specs/wallet-transactions/spec.md) | 4.5, 5.2–5.6 | See [core evidence](../core-verification.md); full-product acceptance remains open |
+| TX-010 Explicit wallet disconnection | [wallet-transactions](../../openspec/changes/build-rwa-income-rights/specs/wallet-transactions/spec.md) | 5.2–5.6 | Wallet controls and connection persistence tests; native provider verification remains separate |
 | QA-008 Test prerequisites before dependent implementation | [integration-quality](../../openspec/changes/build-rwa-income-rights/specs/integration-quality/spec.md) | 1.4, 2.1–2.6, 3.8, 4.1, 5.6, 7.5 | See execution plan and implementation evidence |
 
 ---

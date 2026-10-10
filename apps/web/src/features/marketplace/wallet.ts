@@ -23,6 +23,7 @@ import type {
   ListingDetail,
   Position,
 } from '@rwa/shared';
+import { walletDisconnected } from './wallet-connection';
 import { matchesReviewedWalletExecution } from './wallet-execution';
 export type WalletProvider = EIP1193Provider & {
   on?: (event: string, listener: (...args: unknown[]) => void) => void;
@@ -97,13 +98,15 @@ export class MarketplaceWallet {
     this.reader = new ChainReader(this.publicClient, manifest);
   }
   async identity(request = false) {
+    if (!request && walletDisconnected())
+      return { wallet: null, chainId: null };
     const accounts = await this.provider.request({
       method: request ? 'eth_requestAccounts' : 'eth_accounts',
     });
-    return {
-      wallet: accounts[0]?.toLowerCase() ?? null,
-      chainId: await this.publicClient.getChainId(),
-    };
+    const chainId = await this.publicClient.getChainId();
+    if (!request && walletDisconnected())
+      return { wallet: null, chainId: null };
+    return { wallet: accounts[0]?.toLowerCase() ?? null, chainId };
   }
   async prepare(input: PrepareIntentRequest) {
     const who = await this.identity();

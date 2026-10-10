@@ -91,7 +91,26 @@ export function WalletControls({
             Verify for saved chats
           </Button>
         )}
+        {identity.wallet && (
+          <Button
+            variant="outline"
+            disabled={busy}
+            onClick={() => void act(access.disconnect)}
+          >
+            Disconnect wallet
+          </Button>
+        )}
       </div>
+      {access.connectionNotice && (
+        <p role="status" className={s.muted}>
+          {access.connectionNotice}
+        </p>
+      )}
+      {identity.wallet && (
+        <p className={s.muted}>
+          Disconnect does not cancel pending wallet requests or transactions.
+        </p>
+      )}
       {identity.wallet && !session && identity.chainId === chainId && (
         <p className={s.muted}>
           Optional: sign a message to prove ownership. No token approval, gas

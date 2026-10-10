@@ -19,6 +19,7 @@ describe('wallet connection versus authentication', () => {
   it('connected wallets show a badge and explain that chat verification is optional', () => {
     const html = render(access(account));
     expect(html).toContain('>Connected</span>');
+    expect(html).toContain('Disconnect wallet');
     expect(html).toContain('Verify for saved chats');
     expect(html).toContain('Optional: sign a message');
     expect(html).not.toContain('Sign in with wallet');
@@ -28,11 +29,19 @@ describe('wallet connection versus authentication', () => {
     const html = render(access(account, 11155111, true));
     expect(html).toContain('>Verified</span>');
     expect(html).toContain('Sign out');
+    expect(html).toContain('Disconnect wallet');
+    expect(html).not.toContain('Verify for saved chats');
+  });
+  it('disconnected wallets only offer connection', () => {
+    const html = render(access(null));
+    expect(html).toContain('Connect wallet');
+    expect(html).not.toContain('Disconnect wallet');
     expect(html).not.toContain('Verify for saved chats');
   });
   it('wrong-chain wallets are directed to switching rather than signing', () => {
     const html = render(access(account, 1));
     expect(html).toContain('Switch to');
+    expect(html).toContain('Disconnect wallet');
     expect(html).not.toContain('Verify for saved chats');
   });
 });
