@@ -104,8 +104,13 @@ export function TransactionPanel({
     if (!preview || !access.wallet || pending) return;
     const p = preview,
       version = generation.current;
-    setPreview(null);
-    await access.wallet.send(p, remember);
+    // Keep the reviewed terms and expiry visible while the wallet is open.
+    // Once the request finishes, the user must prepare a fresh review.
+    try {
+      await access.wallet.send(p, remember);
+    } finally {
+      if (mounted.current && generation.current === version) setPreview(null);
+    }
     if (mounted.current && generation.current === version)
       setNotice(
         'Submitted. Track the receipt below; no automatic resubmission.',
@@ -160,6 +165,13 @@ export function TransactionPanel({
                   ? 'Simulation passed'
                   : 'Action unavailable'}
           </span>
+          {busy && (
+            <p role="status" className={s.notice}>
+              {expired
+                ? 'This review expired while waiting for your wallet. If the request is still awaiting confirmation, cancel it there and refresh the review. If you already submitted it, wait for its receipt before retrying.'
+                : 'Complete the request in your wallet before this review expires. If you need more time, cancel the wallet request and refresh the review.'}
+            </p>
+          )}
           <dl className={s.facts}>
             <div>
               <dt>Action</dt>

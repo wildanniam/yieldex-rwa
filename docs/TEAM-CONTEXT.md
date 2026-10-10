@@ -6,7 +6,7 @@ Sumber asli, urutan bagian, dan SHA-256 tercantum di bawah. Link relatif di bagi
 File ini menyertakan kontrak data dan fixtures; beberapa fixture sengaja invalid untuk pengujian. Jangan menganggap fixture sebagai transaksi/provider data nyata.
 UI visual mengikuti Afer; chatbot Rafi; core/backend/contracts/quote Wildan/Codex. Lihat execution plan untuk scope dan gate. Jangan menambah swap execution/NFT/training ML di luar scope.
 
-Bundle source digest: `3061e5fecc8cd270f473f4df5fdb6214a0f6b10f712cf6fffbd181e6c8e5421a`
+Bundle source digest: `eecfee3047241974bfff1b79609b2e1b97c2cb7d2392850a95362910a074c7bc`
 
 ## Source Manifest
 
@@ -32,7 +32,7 @@ Bundle source digest: `3061e5fecc8cd270f473f4df5fdb6214a0f6b10f712cf6fffbd181e6c
 | `openspec/changes/build-rwa-income-rights/specs/quote-recommendations/spec.md` | `6c661eb646d46bf33a7a7d478ceb5a44806b7a894fa468a34f3df448d8a64706` |
 | `openspec/changes/build-rwa-income-rights/specs/read-model/spec.md` | `28b85a24265c066395bca87bc7de43b3290c05f90f8e451b44d293c487a89b4d` |
 | `openspec/changes/build-rwa-income-rights/specs/rights-market/spec.md` | `66d1f6def241ff8d7103b8e0084f37c91b072937e0d90703fe8f084c055dac25` |
-| `openspec/changes/build-rwa-income-rights/specs/wallet-transactions/spec.md` | `7950f1e9b5fd45a03e95f85c39613bba9e9ff71b3267354ccf0f3737d0202889` |
+| `openspec/changes/build-rwa-income-rights/specs/wallet-transactions/spec.md` | `5d1f38764e11fb98917253a44dce55b134b79dc4caea51b7e75a81216fae341e` |
 | `docs/spec/accounting-and-finality.md` | `14f1e66b2bdce2e6283bf1540ebb6f20ee9a5a68d838fc63084516b4a09fbca8` |
 | `docs/spec/ai-and-quotes.md` | `f71d5b19faeb756f777e0f061675ed9b916599d8ea70494742afdbbb457b5b32` |
 | `docs/spec/api-contract.md` | `c8d3e0920459f07ff309306c821951aba1270c371368b15e9c57f1d205607f51` |
@@ -2497,6 +2497,17 @@ Submitted hashes SHALL be validated against RPC transaction identity. Status SHA
 - **WHEN** wallet-added execution wrapping changes the outer target or calldata and the receipt reverts
 - **THEN** UI SHALL show REVERTED rather than cancellation, including after revalidating a persisted journal from an older client.
 - **AND** a successful receipt whose action identity cannot be verified SHALL remain UNKNOWN without optimistic state or automatic resubmission.
+
+#### Scenario: Recognized wallet execution succeeds
+- **GIVEN** a canonical receipt with matching sender and nonce wraps the action in the pinned Sepolia MetaMask execution documented in `docs/wallet-compatibility.md`
+- **WHEN** the wrapper has one root self-delegation, one SINGLE/DEFAULT execution, exact reviewed target/value/calldata, and matching account/manager/executor code at the receipt block
+- **THEN** UI SHALL recognize the action as CONFIRMED or FINALIZED and read resulting state from the chain.
+- **AND** unsupported wrapping SHALL remain UNKNOWN; provider read failures SHALL remain retryable verification failures rather than cancellation evidence.
+
+#### Scenario: Review expires while the wallet is open
+- **WHEN** the user is still handling the wallet request when the review expires
+- **THEN** UI SHALL retain the reviewed terms and expiration, disable duplicate submission, and instruct the user to cancel an unsigned wallet request before preparing a fresh review.
+- **AND** a transaction already submitted SHALL continue receipt tracking without automatic resubmission.
 
 #### Scenario: Gas repricing replaces transaction
 - **WHEN** the wallet replaces a pending transaction with the same action and nonce at a higher fee

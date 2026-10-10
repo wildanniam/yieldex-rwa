@@ -23,6 +23,7 @@ import type {
   ListingDetail,
   Position,
 } from '@rwa/shared';
+import { matchesReviewedWalletExecution } from './wallet-execution';
 export type WalletProvider = EIP1193Provider & {
   on?: (event: string, listener: (...args: unknown[]) => void) => void;
   removeListener?: (
@@ -316,8 +317,9 @@ export class MarketplaceWallet {
         tracked = {
           ...tracked,
           replacementHash: e.transaction.hash,
-
-          status: e.reason === 'cancelled' ? 'CANCELLED' : 'PENDING',
+          // Replacement hints do not prove cancellation until identity and the
+          // canonical receipt are checked (wallet wrapping can change the call).
+          status: 'PENDING',
         };
         onUpdate(tracked);
       },
@@ -338,19 +340,43 @@ export class MarketplaceWallet {
       (tracked.nonce === null
         ? receipt.transactionHash === tracked.hash
         : tx.nonce === tracked.nonce);
-    const sameAction =
+    let sameAction =
       tx.to?.toLowerCase() === tracked.to &&
       tx.value === 0n &&
       tx.input === tracked.data;
-    // A wallet may wrap the original call (for example, a protected smart-account
-    // execution). Its reverted receipt is still a failure, not a cancellation.
-    // A successful wrapper is not proof of the reviewed action: keep it unknown.
     if (!sameSenderAndNonce) {
       tracked.status = 'UNKNOWN';
       onUpdate(tracked);
       return { tracked, listing: null, position: null };
     }
-    if (!sameAction && receipt.transactionHash !== tracked.hash) {
+    // The original hash reverting is always a failure, even if the wallet wrapped
+    // the call. Avoid requiring wrapper/provider support merely to report failure.
+    if (
+      receipt.status === 'reverted' &&
+      receipt.transactionHash === tracked.hash
+    ) {
+      tracked.status = 'REVERTED';
+      onUpdate(tracked);
+      return { tracked, listing: null, position: null };
+    }
+    if (!sameAction) {
+      sameAction = await matchesReviewedWalletExecution(this.publicClient, {
+        chainId: tracked.chainId,
+        wallet: tracked.wallet,
+        to: tracked.to,
+        data: tracked.data,
+        transaction: tx,
+        blockNumber: receipt.blockNumber,
+      });
+    }
+    const differentDirectAction =
+      tx.to?.toLowerCase() === tracked.to ||
+      (tx.to?.toLowerCase() === tracked.wallet && tx.input === '0x');
+    if (
+      !sameAction &&
+      receipt.transactionHash !== tracked.hash &&
+      differentDirectAction
+    ) {
       tracked.status = 'CANCELLED';
       onUpdate(tracked);
       return { tracked, listing: null, position: null };

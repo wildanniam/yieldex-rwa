@@ -6,6 +6,7 @@ import {
 import type { Address } from 'viem';
 import deployment from '../../../../../deployments/sepolia.json';
 import { MarketplaceWallet, type TrackedTransaction } from './wallet';
+import * as walletExecution from './wallet-execution';
 
 const manifest = validateDeploymentManifest(
   deployment as DeploymentManifest,
@@ -69,6 +70,37 @@ function fixture({
 }
 
 describe('receipt identity and wallet wrapping', () => {
+  it.each([original.hash, replacementHash])(
+    'accepts a verified exact wrapper for original or repriced hash %s',
+    async (hash) => {
+      const match = vi
+        .spyOn(walletExecution, 'matchesReviewedWalletExecution')
+        .mockResolvedValue(true);
+      try {
+        const { wallet } = fixture({ hash, to: wrapper, input: '0xcef6d209' });
+        const result = await wallet.track(
+          {
+            ...original,
+            replacementHash: hash === original.hash ? null : hash,
+          },
+          () => {},
+        );
+        expect(result.tracked.status).toBe('FINALIZED');
+        expect(match).toHaveBeenCalledWith(
+          wallet.publicClient,
+          expect.objectContaining({
+            chainId: 11155111,
+            wallet: original.wallet,
+            data: original.data,
+            to: original.to,
+            blockNumber: 101n,
+          }),
+        );
+      } finally {
+        match.mockRestore();
+      }
+    },
+  );
   it.each(['PENDING', 'CANCELLED'] as const)(
     'repairs %s to reverted for the original wallet-wrapped hash without optimistic state',
     async (status) => {
@@ -94,6 +126,19 @@ describe('receipt identity and wallet wrapping', () => {
     const result = await wallet.track(original, () => {});
     expect(result.tracked.status).toBe('UNKNOWN');
     expect(result.position).toBeNull();
+    expect(snapshot).not.toHaveBeenCalled();
+  });
+  it('keeps an unsupported successful wrapped replacement unknown too', async () => {
+    const { wallet, snapshot } = fixture({
+      hash: replacementHash,
+      to: wrapper,
+      input: '0xcef6d209',
+    });
+    const result = await wallet.track(
+      { ...original, replacementHash },
+      () => {},
+    );
+    expect(result.tracked.status).toBe('UNKNOWN');
     expect(snapshot).not.toHaveBeenCalled();
   });
   it.each(['success', 'reverted'])(

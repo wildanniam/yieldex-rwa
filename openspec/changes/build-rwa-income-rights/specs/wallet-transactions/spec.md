@@ -122,6 +122,17 @@ Submitted hashes SHALL be validated against RPC transaction identity. Status SHA
 - **THEN** UI SHALL show REVERTED rather than cancellation, including after revalidating a persisted journal from an older client.
 - **AND** a successful receipt whose action identity cannot be verified SHALL remain UNKNOWN without optimistic state or automatic resubmission.
 
+#### Scenario: Recognized wallet execution succeeds
+- **GIVEN** a canonical receipt with matching sender and nonce wraps the action in the pinned Sepolia MetaMask execution documented in `docs/wallet-compatibility.md`
+- **WHEN** the wrapper has one root self-delegation, one SINGLE/DEFAULT execution, exact reviewed target/value/calldata, and matching account/manager/executor code at the receipt block
+- **THEN** UI SHALL recognize the action as CONFIRMED or FINALIZED and read resulting state from the chain.
+- **AND** unsupported wrapping SHALL remain UNKNOWN; provider read failures SHALL remain retryable verification failures rather than cancellation evidence.
+
+#### Scenario: Review expires while the wallet is open
+- **WHEN** the user is still handling the wallet request when the review expires
+- **THEN** UI SHALL retain the reviewed terms and expiration, disable duplicate submission, and instruct the user to cancel an unsigned wallet request before preparing a fresh review.
+- **AND** a transaction already submitted SHALL continue receipt tracking without automatic resubmission.
+
 #### Scenario: Gas repricing replaces transaction
 - **WHEN** the wallet replaces a pending transaction with the same action and nonce at a higher fee
 - **THEN** tracking SHALL follow the replacement hash and verify its calldata before reporting success.
