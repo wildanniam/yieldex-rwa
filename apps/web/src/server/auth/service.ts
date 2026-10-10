@@ -1,4 +1,5 @@
 import { randomBytes, randomUUID } from 'node:crypto';
+import { isIP } from 'node:net';
 import { createSiweMessage } from 'viem/siwe';
 import { getAddress, type Hex } from 'viem';
 import type postgres from 'postgres';
@@ -68,10 +69,17 @@ export class Web3Sessions {
     readonly config: Config,
   ) {
     const u = new URL(config.origin);
+    // Native SIWE rejects IP-literal domains, even for a valid signature.
+    // Fail before creating a challenge or prompting the user's wallet.
+    if (isIP(u.hostname.replace(/^\[|\]$/g, '')))
+      throw new ApiFailure(
+        503,
+        'AUTH_UNAVAILABLE',
+        'Verifikasi wallet belum tersedia pada alamat aplikasi ini.',
+      );
     if (
       u.origin !== config.origin ||
-      (!['localhost', '127.0.0.1'].includes(u.hostname) &&
-        u.protocol !== 'https:')
+      (u.hostname !== 'localhost' && u.protocol !== 'https:')
     )
       throw new Error('Explicit valid app origin required');
   }
