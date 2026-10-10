@@ -6,7 +6,7 @@ Sumber asli, urutan bagian, dan SHA-256 tercantum di bawah. Link relatif di bagi
 File ini menyertakan kontrak data dan fixtures; beberapa fixture sengaja invalid untuk pengujian. Jangan menganggap fixture sebagai transaksi/provider data nyata.
 UI visual mengikuti Afer; chatbot Rafi; core/backend/contracts/quote Wildan/Codex. Lihat execution plan untuk scope dan gate. Jangan menambah swap execution/NFT/training ML di luar scope.
 
-Bundle source digest: `5a0c200de868c9278dffd431d89e924515e5498a8c766f2a737b6802fb34c2fc`
+Bundle source digest: `a704d719a1f16cf0c5ef7de4b3f493523e93c844d89fa7d50cabf7f543b3b697`
 
 ## Source Manifest
 
@@ -21,7 +21,7 @@ Bundle source digest: `5a0c200de868c9278dffd431d89e924515e5498a8c766f2a737b6802f
 | `openspec/changes/build-rwa-income-rights/proposal.md` | `33ba944e0e5494948d5a4e73ceedccd29f31912e476e1cc26f1c541a6acd65d8` |
 | `openspec/changes/build-rwa-income-rights/design.md` | `7449d76bd4b9530a725e7393da0c9659ea443761deadf5d5dcd8fb23c8d759c7` |
 | `docs/repository-import.md` | `6beb2752dc2c2bb83fc73cb75cc5f1ccdac4af517f9c426bcb96d7d7c8d724e3` |
-| `docs/development.md` | `37a47d8e159e15454fe1816e9edd6fc25db3246b772d36800d53ecdcffb7400f` |
+| `docs/development.md` | `6269d84b0d70f7becf3d0c8897355b0e09376799db2f0737dea370feebff51d6` |
 | `docs/local-core.md` | `68c7570cb7b2dfd0433ec255f0c9cede6ec5c058a53d6718ed976f7ef992bfc8` |
 | `docs/core-verification.md` | `7b46c203119719e645159a890b2bd0e0da5194c45751c05d710cfb51753dd893` |
 | `docs/presepolia-remediation.md` | `61c562667f87498c4b39e548165358cb2bedc10026ae84da882188c7b37b0509` |
@@ -1332,6 +1332,8 @@ Receipt verification increments the platform revision and `useAssets` temporaril
 ### Marketplace RPC rate limits
 
 The live market reuses asset DTOs only within the same pinned block (the reader rejects a different block hash), reducing each listing from eleven RPC reads to three. Overlapping live reads with the same finalized base and cursor share in-flight work; completed or rejected reads are discarded, so the next request reads fresh state. HTTP RPC calls are batched in groups of at most twenty with two bounded transient retries. Canonical-block validation and finalized database accounting remain unchanged; provider failures never become empty or silently stale listings. Unexpected API errors log only request ID, error class and numeric status/code, never raw error text, URLs or SQL. Verify transient 429 recovery, persistent failure, concurrent requests and snapshot mismatch when changing this path.
+
+Sepolia reads additionally use `https://ethereum-sepolia-rpc.publicnode.com` as a backup after primary HTTP 429/408/5xx, timeout, or RPC limit-exceeded errors. Primary gets one attempt and backup at most two; deterministic contract/parameter errors do not switch providers. Other chains retain the configured provider only. This sends public chain-read requests to a second provider, not database credentials or signing keys. Manifest verification, block pinning and end-of-read canonical validation still apply; both providers failing remains an explicit error.
 
 ---
 

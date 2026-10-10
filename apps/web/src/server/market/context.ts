@@ -36,14 +36,21 @@ export function marketContext() {
         'INDEXER_UNAVAILABLE',
         'Deployment backend belum dikonfigurasi.',
       );
+    const rawManifest = JSON.parse(
+      DEPLOYMENT_MANIFEST_JSON ||
+        (await readFile(DEPLOYMENT_MANIFEST!, 'utf8')),
+    );
     const client = createPublicClient({
-      transport: marketTransport(MARKETPLACE_RPC_URL),
+      transport: marketTransport(
+        MARKETPLACE_RPC_URL,
+        fetch,
+        rawManifest.chainId === 11155111
+          ? 'https://ethereum-sepolia-rpc.publicnode.com'
+          : undefined,
+      ),
     });
     const manifest = validateDeploymentManifest(
-      JSON.parse(
-        DEPLOYMENT_MANIFEST_JSON ||
-          (await readFile(DEPLOYMENT_MANIFEST!, 'utf8')),
-      ),
+      rawManifest,
       await client.getChainId(),
     );
     const reader = new ChainReader(client, manifest);
