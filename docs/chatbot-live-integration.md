@@ -40,6 +40,17 @@ Runtime memerlukan konfigurasi existing `DATABASE_URL`, CA PostgreSQL jika remot
 
 `AI_STATE_DATABASE_URL` adalah override opsional untuk QA checkpoint sementara. Jika berbeda dari `DATABASE_URL`, mode SAVED ditolak agar transaksi riwayat tidak terpisah database. Lingkungan produksi cukup memakai `DATABASE_URL` yang sama. Jangan menyalin konfigurasi QA ke Vercel.
 
+### Gate rilis assistant
+
+Wallet berstatus Verified hanya membuktikan sesi ownership. Status tersebut tidak membuktikan model AI, tabel checkpoint, atau penyimpanan percakapan sudah tersedia di lingkungan rilis. Konfigurasi lokal juga tidak otomatis ikut deployment Vercel.
+
+1. Periksa migration ledger di database tujuan; terapkan dua migrasi assistant di atas secara berurutan dengan transaksi dan tanpa reset database.
+2. Pastikan `OPENAI_API_KEY` dan `AI_MODEL` tersedia di environment Vercel yang akan dirilis, bersama konfigurasi existing di atas. Key hanya ada di server. Perubahan environment memerlukan deployment baru.
+3. Jalankan `pnpm assistant:preflight` dengan environment tujuan yang disediakan secara aman. Pemeriksaan ini read-only: konfigurasi wajib, origin eksplisit, database history yang sama, ketiga tabel privat beserta RLS/akses baca, dan akses metadata model OpenAI. Output tidak menampilkan kredensial atau isi percakapan. Kelulusan hanya berarti siap menjalankan smoke test, bukan bukti seluruh alur chat sudah berhasil atau konfigurasi Vercel sudah sinkron.
+4. Setelah deployment ready, uji dari alias production: chat sementara, wallet Verified, chat tersimpan baru, jawaban dari data platform, popup ke halaman penuh, refresh dan membuka ulang riwayat. Periksa status request dan log server. Tandai tiap gate yang belum diuji; jangan menyimpulkan keberhasilan production dari tes lokal.
+
+Kegagalan sesi dibedakan dari kegagalan layanan. `AI_UNAVAILABLE` dan `AI_STATE_UNAVAILABLE` menawarkan retry tanpa meminta koneksi wallet ulang. Verifikasi ulang hanya ditawarkan untuk kegagalan autentikasi; sesi chat yang kedaluwarsa menawarkan chat baru. Selama sesi belum berhasil dibaca, UI tidak menyatakan pengguna sebagai guest.
+
 ## Verifikasi yang dapat diulang
 
 `pnpm check` menjalankan format, lint, types, TypeScript tests, Foundry, generated parity, spec validation dan build. Browser/provider gates tetap harus dilaporkan terpisah.

@@ -26,6 +26,7 @@
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm test:contracts && pnpm generate:check && pnpm spec:check && pnpm build",
     "chain:local": "anvil --host 127.0.0.1 --chain-id 31337",
     "doctor": "node scripts/doctor.mjs",
+    "assistant:preflight": "node --env-file-if-exists=apps/web/.env.local --import tsx scripts/deployment/assistant-preflight.mts",
     "test:fork": "node --env-file-if-exists=apps/web/.env.local scripts/test-fork.mjs",
     "local:deploy": "tsx scripts/local/deploy.mts",
     "test:local:lifecycle": "tsx scripts/local/lifecycle.mts",
