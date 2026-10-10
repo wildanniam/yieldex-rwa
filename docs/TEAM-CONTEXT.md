@@ -6,7 +6,7 @@ Sumber asli, urutan bagian, dan SHA-256 tercantum di bawah. Link relatif di bagi
 File ini menyertakan kontrak data dan fixtures; beberapa fixture sengaja invalid untuk pengujian. Jangan menganggap fixture sebagai transaksi/provider data nyata.
 UI visual mengikuti Afer; chatbot Rafi; core/backend/contracts/quote Wildan/Codex. Lihat execution plan untuk scope dan gate. Jangan menambah swap execution/NFT/training ML di luar scope.
 
-Bundle source digest: `21f82f9f0e0a708dcdac3ebabe805eae68e0ff37dbf2dff6622b79e5a2d2bd70`
+Bundle source digest: `af60facee1c9effa7ec07c8b22fb79c676599959d9c333ef89f4bd55d33de285`
 
 ## Source Manifest
 
@@ -21,7 +21,7 @@ Bundle source digest: `21f82f9f0e0a708dcdac3ebabe805eae68e0ff37dbf2dff6622b79e5a
 | `openspec/changes/build-rwa-income-rights/proposal.md` | `33ba944e0e5494948d5a4e73ceedccd29f31912e476e1cc26f1c541a6acd65d8` |
 | `openspec/changes/build-rwa-income-rights/design.md` | `7449d76bd4b9530a725e7393da0c9659ea443761deadf5d5dcd8fb23c8d759c7` |
 | `docs/repository-import.md` | `6beb2752dc2c2bb83fc73cb75cc5f1ccdac4af517f9c426bcb96d7d7c8d724e3` |
-| `docs/development.md` | `aec324309c5fed33023c6d72a22ab3508a3d0e65e54132cf12af5dd42a83df5e` |
+| `docs/development.md` | `0b84269fbdbb5a0e25b4064914946a1031217230868263dca42cfddebd155d3b` |
 | `docs/local-core.md` | `68c7570cb7b2dfd0433ec255f0c9cede6ec5c058a53d6718ed976f7ef992bfc8` |
 | `docs/core-verification.md` | `7b46c203119719e645159a890b2bd0e0da5194c45751c05d710cfb51753dd893` |
 | `docs/presepolia-remediation.md` | `61c562667f87498c4b39e548165358cb2bedc10026ae84da882188c7b37b0509` |
@@ -1326,6 +1326,8 @@ The final Sell step contains a dedicated `ListingCheckout` with visible token-ap
 `ListingCheckoutFlow` serializes clicks, retains a submitted hash for receipt-only retries, and stops continuation when the wallet context changes or the component unmounts. Confirmed creation requires verified listing data before displaying the offer link. Rejection keeps the current form and approval; unknown/reorged receipts never imply success. Form navigation is disabled while a request runs. Draft retention applies within this page session, not across reloads. Generic purchase, claim and resale transaction panels are unchanged.
 
 Verification: checkout flow tests cover approval, existing allowance, rejection/retry, duplicate clicks, receipt timeout, revert/cancel/unknown/reorg, missing listing data, context changes and unmount. Browser QA uses the actual Sell/checkout components with an explicitly simulated wallet; this is not proof of a native MetaMask or live Sepolia transaction.
+
+Receipt verification increments the platform revision and `useAssets` temporarily clears its data during refetch. Keep `ListingCheckout` mounted for the entire Wallet step, independently of asset-read availability; validate asset availability inside request construction instead. Gating its mount on `asset` loses the approval/receipt/success state. Regression browser verification must clear and restore the asset response after both approval and creation receipts, not only test the checkout controller in isolation.
 
 ---
 

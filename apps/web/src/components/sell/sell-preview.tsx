@@ -343,12 +343,14 @@ function SellFlow() {
                   </Button>
                 </div>
               )}
-              {draft.step === 4 && asset && (
+              {/* Keep checkout mounted while receipt-triggered asset reads refresh. */}
+              {draft.step === 4 && (
                 <ListingCheckout
                   onBusyChange={setCheckoutBusy}
                   buildRequest={async () => {
                     if (
                       !access.wallet ||
+                      !asset ||
                       !validation.amountAtomic ||
                       !validation.priceAtomic ||
                       Object.keys(errors).length
